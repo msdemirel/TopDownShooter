@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c4dee749614ad409bffcbf209dac3d, type: 3}
+  m_Name: '[SKL] PulseWave'
+  m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
+  title: Pulse Wave
+  description: 
+  icon: {fileID: 0}
+  skillType: 3
+  levels:
+  - cooldown: 5
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 2
+    waveCount: 3
+    waveInterval: 1.19
+    waveDamage: 5
+    waveRadius: 5.98
+    waveExpandTime: 3.03
+  effectPrefab: {fileID: 0}
+  autoImprovePerLevel: 0.05

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f WeponController.cs WeponController.cs.meta Pathfinding/GridPathfinder.cs Pathfinding/GridPathfinder.cs.meta)",
+      "Bash(rmdir Pathfinding)",
+      "Bash(rm -f Pathfinding.meta)",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\gen-icons.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\gen-assets.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\preview.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\gen-anim.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\preview-anim.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\regen-dash.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\gen-smooth.ps1\")",
+      "PowerShell(& \"C:\\\\Users\\\\msdem\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-msdem-Desktop-Unity-Projects-Top-Down-Shooter\\\\5c2bfa63-41fb-4923-b191-832c838dc639\\\\scratchpad\\\\preview-smooth.ps1\")"
+    ]
+  }
+}

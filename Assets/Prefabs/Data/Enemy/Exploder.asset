@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6109a99ee08b9b4e89af0f7007c6a4e, type: 3}
+  m_Name: Exploder
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyTypeData
+  typeName: Enemy
+  prefab: {fileID: 3841873125039074012, guid: fb556db35dd5997459f644a791250079, type: 3}
+  levels:
+  - maxHealth: 10
+    moveSpeed: 0.5
+    attackDamage: 1
+    attackRange: 2
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1
+  - maxHealth: 1
+    moveSpeed: 3
+    attackDamage: 1
+    attackRange: 1.5
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1.2
+  - maxHealth: 2
+    moveSpeed: 10
+    attackDamage: 2
+    attackRange: 1.5
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1.2
+  - maxHealth: 2
+    moveSpeed: 10
+    attackDamage: 3
+    attackRange: 1.5
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1.5
+  - maxHealth: 5
+    moveSpeed: 3
+    attackDamage: 5
+    attackRange: 1.5
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1.2

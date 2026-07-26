@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24769c8608fccce42a1e7301fb1df65a, type: 3}
+  m_Name: '[UP]Speed'
+  m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
+  title: Movement Speed
+  description: Increase Movement Speed by {0}
+  icon: {fileID: -1682201028, guid: 2a3137048d8c9e24ebea00bcafebcdf1, type: 3}
+  stat: 1
+  tierAmounts:
+  - 1
+  - 1.14
+  - 1.29
+  - 1.46
+  - 1.66
+  - 1.88
+  - 2.13
+  - 2.42
+  - 2.75
+  - 3.12
+  - 3.54
+  - 4.02
+  - 4.56
+  - 5.18
+  - 5.88
+  - 6.67
+  - 7.57
+  - 8.59
+  - 9.75
+  - 11.07
+  - 12.56
+  - 14.26
+  - 16.19
+  - 18.38
+  - 20.86
+  - 23.68
+  - 26.88
+  - 30.51
+  - 34.63
+  - 39.31
+  - 44.62
+  - 50.64
+  - 57.48
+  - 65.24
+  autoImprovePerTier: 0.135

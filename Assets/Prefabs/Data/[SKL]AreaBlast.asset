@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c4dee749614ad409bffcbf209dac3d, type: 3}
+  m_Name: '[SKL]AreaBlast'
+  m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
+  title: 'Area Blast '
+  description: Discharge energy into everything around you.
+  icon: {fileID: -855298285791758126, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  skillType: 1
+  levels:
+  - cooldown: 5
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 2
+  - cooldown: 4.9
+    dashSpeed: 18.36
+    dashDuration: 0.15
+    blastDamage: 20.4
+    blastRadius: 3.06
+    shieldDuration: 2.04
+  - cooldown: 4.8
+    dashSpeed: 18.73
+    dashDuration: 0.15
+    blastDamage: 20.81
+    blastRadius: 3.12
+    shieldDuration: 2.08
+  - cooldown: 4.7
+    dashSpeed: 19.1
+    dashDuration: 0.15
+    blastDamage: 21.23
+    blastRadius: 3.18
+    shieldDuration: 2.12
+  - cooldown: 4.61
+    dashSpeed: 19.48
+    dashDuration: 0.15
+    blastDamage: 21.65
+    blastRadius: 3.24
+    shieldDuration: 2.16
+  - cooldown: 4.52
+    dashSpeed: 19.87
+    dashDuration: 0.15
+    blastDamage: 22.08
+    blastRadius: 3.3
+    shieldDuration: 2.2
+  - cooldown: 4.43
+    dashSpeed: 20.27
+    dashDuration: 0.15
+    blastDamage: 22.52
+    blastRadius: 3.37
+    shieldDuration: 2.24
+  - cooldown: 4.34
+    dashSpeed: 20.68
+    dashDuration: 0.15
+    blastDamage: 22.97
+    blastRadius: 3.44
+    shieldDuration: 2.28
+  effectPrefab: {fileID: 3373953178648681342, guid: 91d7dab832420f0449fab20d7683e896, type: 3}
+  autoImprovePerLevel: 0.02

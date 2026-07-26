@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c4dee749614ad409bffcbf209dac3d, type: 3}
+  m_Name: SKL FireBurst
+  m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
+  title: FIRE
+  description: 
+  icon: {fileID: 0}
+  skillType: 4
+  levels:
+  - cooldown: 5
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 2
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 1
+    burstSpeed: 8
+  effectPrefab: {fileID: 0}
+  burstProjectile: {fileID: 6922202470875012919, guid: 86535388ef938c047b6cc88dc38cf409, type: 3}
+  burstSpawnRadius: 0.6
+  autoImprovePerLevel: 0.05

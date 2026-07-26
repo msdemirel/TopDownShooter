@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24769c8608fccce42a1e7301fb1df65a, type: 3}
+  m_Name: '[UP]Health'
+  m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
+  title: Health
+  description: Increases max health by {0}
+  icon: {fileID: 5123596842323659984, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  stat: 0
+  tierAmounts:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 9
+  - 13.5
+  - 20.25
+  - 30.38
+  - 45.57
+  - 68.35
+  - 102.52
+  - 153.78
+  - 230.67
+  - 346
+  - 519
+  - 778.5
+  - 1167.75
+  - 1751.62
+  - 2627.43
+  - 3941.14
+  - 5911.71
+  autoImprovePerTier: 0.5
