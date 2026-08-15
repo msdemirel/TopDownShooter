@@ -132,6 +132,7 @@ public class PlayerSkills : MonoBehaviour
         SkillLevelStats lv = s.GetLevel(skillLevels[slot]);   // mevcut seviyenin değerleri
 
         readyTimes[slot] = Time.time + Mathf.Max(0.1f, lv.cooldown);
+        AudioManager.PlaySkill();
 
         switch (s.skillType)
         {

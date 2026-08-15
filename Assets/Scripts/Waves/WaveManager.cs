@@ -160,6 +160,7 @@ public class WaveManager : MonoBehaviour
         WaveTimeLeft = WaveDuration;
 
         WaveActive = true;
+        AudioManager.PlayWave();
 
         // Beklemeyi ve geri sayımı AYNI döngüde yürütüyoruz: böylece ekrandaki
         // sayaç ile gerçek spawn zamanı birbirinden kayamaz.

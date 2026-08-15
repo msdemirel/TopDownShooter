@@ -3,6 +3,13 @@ using UnityEngine;
 // Pickup'tan gelen değeri doğru sisteme yönlendirir (exp/money -> stats, health -> Health).
 public class PlayerCollector : MonoBehaviour
 {
+    // Herhangi bir pickup toplanınca tetiklenir (ses vb. dinler).
+    public static event System.Action<PickupType> AnyCollected;
+
+    // Play Mode'a her girişte statik event'i temizle (domain reload kapalıysa kalır).
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics() => AnyCollected = null;
+
     [Header("References")]
     [SerializeField] PlayerStats stats;
     [SerializeField] Health health;
@@ -41,5 +48,7 @@ public class PlayerCollector : MonoBehaviour
                 if (stats != null) stats.AddMoney(Mathf.RoundToInt(amount));
                 break;
         }
+
+        AnyCollected?.Invoke(type);   // ses vb. için
     }
 }

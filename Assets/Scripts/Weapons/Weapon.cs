@@ -119,6 +119,8 @@ public class Weapon : MonoBehaviour
         if (baseDir.sqrMagnitude < 0.0001f) return;
         baseDir.Normalize();
 
+        AudioManager.PlayShoot();
+
         // Namlu efekti (varsa): atış yönüne dönük, kendini yok eden bir animasyon
         if (muzzleEffect != null)
         {
