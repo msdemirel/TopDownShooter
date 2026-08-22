@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
   title: Crit Chance
   description: 
-  icon: {fileID: 0}
+  icon: {fileID: 252879600164950588, guid: 63de9229f45c77eeae55217ab26e3983, type: 3}
   stat: 6
   tierAmounts:
   - 0.5

@@ -15,7 +15,7 @@ MonoBehaviour:
   typeName: Enemy
   prefab: {fileID: 3841873125039074012, guid: fb556db35dd5997459f644a791250079, type: 3}
   levels:
-  - maxHealth: 10
+  - maxHealth: 1
     moveSpeed: 0.5
     attackDamage: 1
     attackRange: 2

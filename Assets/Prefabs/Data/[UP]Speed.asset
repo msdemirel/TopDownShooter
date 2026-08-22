@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
   title: Movement Speed
   description: Increase Movement Speed by {0}
-  icon: {fileID: -1682201028, guid: 2a3137048d8c9e24ebea00bcafebcdf1, type: 3}
+  icon: {fileID: 1090713597792580856, guid: 8336e2d13f702cae66425cf30c71866a, type: 3}
   stat: 1
   tierAmounts:
   - 1

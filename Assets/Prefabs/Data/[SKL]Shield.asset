@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: Shield
   description: An energy barrier absorbs all damage briefly
-  icon: {fileID: -1699728817, guid: dad92f5a1a1b84648a2a06fe2d99251c, type: 3}
+  icon: {fileID: 321266653871289858, guid: 9e9c66ffa611739e75646b5f5dbca3f0, type: 3}
   skillType: 2
   levels:
   - cooldown: 5

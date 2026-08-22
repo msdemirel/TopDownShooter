@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2c4dee749614ad409bffcbf209dac3d, type: 3}
-  m_Name: SKL FireBurst
+  m_Name: '[SKL] FireBurst'
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: FIRE
   description: 
-  icon: {fileID: 0}
+  icon: {fileID: 819528662282372979, guid: 8a8a484745c8979642cd490ac79c15a8, type: 3}
   skillType: 4
   levels:
   - cooldown: 5

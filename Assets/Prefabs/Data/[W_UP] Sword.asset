@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6ff2e8effa51904493795fbaf9aced2, type: 3}
-  m_Name: '[W_UP]Pistol'
+  m_Name: '[W_UP] Sword'
   m_EditorClassIdentifier: Assembly-CSharp::WeaponUpgradeData
-  title: Pistol +1
-  description: Add 1 more Pistol
-  icon: {fileID: 764520945390414855, guid: e817e583b443777a53d1e105d24c684f, type: 3}
-  weapon: {fileID: 11400000, guid: f9e75fa9a8783e94e8c736d2bb5040c1, type: 2}
-  cost: 10
+  title: Buy +1 Sword
+  description: Adds 1 more sword to empty slot
+  icon: {fileID: 810011636930299403, guid: 3989ddd978fa1f5ab9f4771be9129f2d, type: 3}
+  weapon: {fileID: 11400000, guid: c0f3062b495396347a1f8e6f996b6142, type: 2}
+  cost: 3

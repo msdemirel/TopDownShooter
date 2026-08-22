@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
   title: Magnet Range
   description: Pulls loot from farther away.
-  icon: {fileID: 7877859379659916448, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  icon: {fileID: 199342349578758742, guid: 0af6ffd5f25482b0ba155d4eadc534f8, type: 3}
   stat: 5
   tierAmounts:
   - 1

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: 'Area Blast '
   description: Discharge energy into everything around you.
-  icon: {fileID: -855298285791758126, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  icon: {fileID: 863656961846390562, guid: e6dee4c91c8af1f81b526cdcd89a55b6, type: 3}
   skillType: 1
   levels:
   - cooldown: 5
