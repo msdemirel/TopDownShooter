@@ -24,3 +24,8 @@ MonoBehaviour:
     count: 20
     spawnInterval: 0.5
     startDelay: 0
+  - type: {fileID: 11400000, guid: 49a94bc184472e3449ab819c2833bf97, type: 2}
+    level: 1
+    count: 20
+    spawnInterval: 0.5
+    startDelay: 0

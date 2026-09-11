@@ -89,7 +89,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 13
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1950125668, guid: 75e84235a73861d448ece46d838e7dc6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e679334d62eaa554c8467f923665c8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 6
+  moveSpeed: 3
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!95 &3209146450441337326
 Animator:
@@ -271,7 +271,7 @@ MonoBehaviour:
   centerOffset: {x: 0, y: -0.24}
   firstSlotAngle: 0
   weaponPrefab: {fileID: 466636930007341634, guid: f96dfbd9065926d47b2f4ae7510ddb15, type: 3}
-  startingWeapon: {fileID: 11400000, guid: f9e75fa9a8783e94e8c736d2bb5040c1, type: 2}
+  startingWeapon: {fileID: 11400000, guid: c0f3062b495396347a1f8e6f996b6142, type: 2}
 --- !u!114 &1957679157681311204
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -69,13 +69,18 @@ public class WaveManager : MonoBehaviour
     [SerializeField] float countdownSeconds = 5f;
 
     [Header("Spawn alanı (harita sınırları)")]
-    [Tooltip("Haritayı kaplayan bir Collider2D (BoxCollider2D önerilir, Is Trigger açık). " +
-             "Atanırsa düşmanlar bu sınırların içinde rastgele doğar ve aşağıdaki iki yöntem kullanılmaz.")]
-    [SerializeField] Collider2D spawnArea;
+    [Tooltip("Haritayı kaplayan bir veya birden fazla Collider2D (Tilemap Collider 2D ya da BoxCollider2D). " +
+             "En az biri atanırsa düşmanlar bu alanların içinde rastgele doğar ve aşağıdaki iki yöntem " +
+             "kullanılmaz. Birden fazla alanda büyük olan, alanıyla orantılı olarak daha sık seçilir.")]
+    [SerializeField] Collider2D[] spawnAreas;
+
+    // Eski sürümdeki tek alanlı kurulum. Sahnede/prefabta atanmış referans kaybolmasın diye duruyor:
+    // OnValidate onu spawnAreas'a taşır, taşınmamış olsa bile çalışma anında yine kullanılır.
+    [SerializeField, HideInInspector] Collider2D spawnArea;
     [Tooltip("Oyuncuya bu mesafeden yakın doğmasın. 0 = kapalı.")]
     [SerializeField] float minDistanceFromPlayer = 4f;
 
-    [Header("Spawn konumu (spawnArea boşsa)")]
+    [Header("Spawn konumu (spawn alanı yoksa)")]
     [Tooltip("Doluysa bunlardan rastgele seçilir. Boşsa merkez etrafında halka üzerinde spawn olur.")]
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] Transform spawnCenter;  // boşsa bu objenin pozisyonu
@@ -97,10 +102,17 @@ public class WaveManager : MonoBehaviour
     readonly List<WaveData.SpawnEntry> bag = new List<WaveData.SpawnEntry>();
     readonly List<EndlessEnemyEntry> endlessCandidates = new List<EndlessEnemyEntry>();
 
+    // Geçerli spawn alanları ve seçim ağırlıkları (Start'ta bir kez toplanır).
+    readonly List<Collider2D> areas = new List<Collider2D>();
+    readonly List<float> areaWeights = new List<float>();
+    float totalAreaWeight;
+
     void Start()
     {
         var p = GameObject.FindGameObjectWithTag("Player");
         if (p != null) player = p.transform;
+
+        CollectSpawnAreas();
 
         StartCoroutine(RunWaves());
     }
@@ -407,9 +419,9 @@ public class WaveManager : MonoBehaviour
 
     Vector3 RandomCandidate()
     {
-        // 1) Harita alanı atanmışsa onun içinde rastgele bir nokta
-        if (spawnArea != null)
-            return RandomPointInArea();
+        // 1) Harita alanı/alanları atanmışsa onların içinde rastgele bir nokta
+        if (areas.Count > 0)
+            return RandomPointInAreas();
 
         // 2) Spawn noktaları
         if (spawnPoints != null && spawnPoints.Length > 0)
@@ -425,22 +437,81 @@ public class WaveManager : MonoBehaviour
         return center + (Vector3)(dir * spawnRadius);
     }
 
-    // spawnArea'nın sınırları içinde rastgele bir nokta.
-    Vector3 RandomPointInArea()
+    // Alanlardan biri seçilir, o alanın sınırları içinde rastgele bir nokta döner.
+    Vector3 RandomPointInAreas()
     {
-        Bounds b = spawnArea.bounds;
+        Collider2D area = PickArea();
+        Bounds b = area.bounds;
 
-        // Kutu olmayan şekillerde (polygon vb.) nokta gerçekten şeklin içinde mi diye bak.
+        // Kutu olmayan şekillerde (tilemap, polygon vb.) nokta gerçekten şeklin içinde mi diye bak.
         for (int i = 0; i < 30; i++)
         {
             Vector2 p = new Vector2(
                 UnityEngine.Random.Range(b.min.x, b.max.x),
                 UnityEngine.Random.Range(b.min.y, b.max.y));
 
-            if (spawnArea.OverlapPoint(p)) return p;
+            if (area.OverlapPoint(p)) return p;
         }
         return b.center;  // bulunamazsa merkez
     }
+
+    // Alan büyüklüğüyle orantılı seçim: küçük bir tilemap, büyüğüyle aynı sayıda düşman almasın.
+    Collider2D PickArea()
+    {
+        if (areas.Count == 1 || totalAreaWeight <= 0f) return areas[0];
+
+        float r = UnityEngine.Random.Range(0f, totalAreaWeight);
+        for (int i = 0; i < areas.Count; i++)
+        {
+            r -= areaWeights[i];
+            if (r <= 0f) return areas[i];
+        }
+        return areas[areas.Count - 1];   // kayan nokta hatasına karşı
+    }
+
+    // Atanmış alanları bir kez toplar ve ağırlıklarını (bounds alanı) hesaplar.
+    void CollectSpawnAreas()
+    {
+        areas.Clear();
+        areaWeights.Clear();
+        totalAreaWeight = 0f;
+
+        AddSpawnArea(spawnArea);   // eski tek alanlı kurulum
+        if (spawnAreas != null)
+            foreach (var a in spawnAreas) AddSpawnArea(a);
+    }
+
+    void AddSpawnArea(Collider2D area)
+    {
+        if (area == null || areas.Contains(area)) return;
+
+        Vector3 size = area.bounds.size;
+        float weight = Mathf.Max(0.0001f, size.x * size.y);
+
+        areas.Add(area);
+        areaWeights.Add(weight);
+        totalAreaWeight += weight;
+    }
+
+#if UNITY_EDITOR
+    // Eskiden tek bir 'spawnArea' vardı; sahnedeki atama kaybolmasın diye diziye taşınır.
+    void OnValidate()
+    {
+        if (spawnArea == null) return;
+
+        if (spawnAreas == null) spawnAreas = new Collider2D[0];
+        foreach (var a in spawnAreas)
+        {
+            if (a != spawnArea) continue;
+            spawnArea = null;   // zaten taşınmış
+            return;
+        }
+
+        var migrated = new List<Collider2D>(spawnAreas) { spawnArea };
+        spawnAreas = migrated.ToArray();
+        spawnArea = null;
+    }
+#endif
 
     // Konum uygun mu: oyuncuya çok yakın değil. (Haritada duvar yok, engel kontrolü gerekmiyor.)
     bool IsValid(Vector3 pos)

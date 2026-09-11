@@ -50,6 +50,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Oyun donukken (pause menüsü / upgrade paneli) girdi işlenmesin:
+        // karakter yerinde yön değiştirmesin. (PlayerSkills de aynı kontrolü yapar.)
+        if (Time.timeScale == 0f) return;
+
         moveInput = moveAction.action.ReadValue<Vector2>();
 
         if (moveInput.sqrMagnitude > 0.01f)

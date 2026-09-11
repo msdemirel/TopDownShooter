@@ -9,14 +9,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walls
   - Water
   - UI
   - Player
   - PlayerBullet
   - Enemy
   - EnemyBullet
-  - Walls
+  - 
   - 
   - 
   - 
@@ -41,6 +41,9 @@ TagManager:
   m_SortingLayers:
   - name: Floor&Background
     uniqueID: 3488308289
+    locked: 0
+  - name: Floor 2
+    uniqueID: 1261010335
     locked: 0
   - name: Default
     uniqueID: 0
