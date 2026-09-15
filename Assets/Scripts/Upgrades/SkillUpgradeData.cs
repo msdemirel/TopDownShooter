@@ -57,7 +57,8 @@ public class SkillUpgradeData : UpgradeData
 
     [Header("Efekt (opsiyonel)")]
     [Tooltip("Kullanınca oyuncunun üstünde beliren görsel. " +
-             "Shield'de süre boyunca oyuncuya yapışık durur, diğerlerinde 1 sn sonra silinir.")]
+             "Shield'de süre boyunca oyuncuya yapışık durur, diğerlerinde 1 sn sonra silinir. " +
+             "AreaBlast'te blastRadius'a göre otomatik ölçeklenir (görselin kenarı = hasar alanı).")]
     public GameObject effectPrefab;
 
     [Header("Burst mermisi")]

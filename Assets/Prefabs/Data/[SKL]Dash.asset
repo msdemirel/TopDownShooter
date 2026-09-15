@@ -28,6 +28,9 @@ MonoBehaviour:
     waveDamage: 15
     waveRadius: 4
     waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4
     dashSpeed: 21.6
     dashDuration: 0.18
@@ -39,6 +42,9 @@ MonoBehaviour:
     waveDamage: 15
     waveRadius: 4
     waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 3.2
     dashSpeed: 25.92
     dashDuration: 0.22
@@ -50,6 +56,9 @@ MonoBehaviour:
     waveDamage: 15
     waveRadius: 4
     waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 2.56
     dashSpeed: 31.1
     dashDuration: 0.26
@@ -61,6 +70,9 @@ MonoBehaviour:
     waveDamage: 15
     waveRadius: 4
     waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 2.05
     dashSpeed: 37.32
     dashDuration: 0.31
@@ -72,5 +84,10 @@ MonoBehaviour:
     waveDamage: 15
     waveRadius: 4
     waveExpandTime: 0.3
-  effectPrefab: {fileID: 2764703803572684987, guid: c3bdce17fb4008d4595e96f8ecdd357e, type: 3}
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
+  effectPrefab: {fileID: 0}
+  burstProjectile: {fileID: 0}
+  burstSpawnRadius: 0.6
   autoImprovePerLevel: 0.2

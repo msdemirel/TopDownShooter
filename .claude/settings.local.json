@@ -19,7 +19,12 @@
       "Read(//c/Users/msdem/.claude/projects/C--Users-msdem-Desktop-GitHub-TopDownShooter/memory//**)",
       "Read(//c/Users/msdem/.claude/projects/C--Users-msdem-Desktop-GitHub-TopDownShooter/memory/**)",
       "Bash(git status *)",
-      "Bash(ls \"/c/Users/msdem/.claude/projects/C--Users-msdem-Desktop-GitHub-TopDownShooter/\" 2>/dev/null; ls C:/Users/msdem/Desktop/GitHub/TopDownShooter)"
+      "Bash(ls \"/c/Users/msdem/.claude/projects/C--Users-msdem-Desktop-GitHub-TopDownShooter/\" 2>/dev/null; ls C:/Users/msdem/Desktop/GitHub/TopDownShooter)",
+      "Bash(tasklist //FI \"IMAGENAME eq Unity.exe\")",
+      "Bash(git diff *)",
+      "Bash(sed -i '2757s/^  m_Name:\\\\\\(\\\\r\\\\?\\\\\\)$/  m_Name: \\\\1/;7561s/^  m_Name:\\\\\\(\\\\r\\\\?\\\\\\)$/  m_Name: \\\\1/;33523s/^  m_Name:\\\\\\(\\\\r\\\\?\\\\\\)$/  m_Name: \\\\1/' C:/Users/msdem/Desktop/GitHub/TopDownShooter/Assets/Scenes/MainGame.unity)",
+      "Bash(git -C \"C:/Users/msdem/Desktop/GitHub/TopDownShooter\" diff --numstat -- Assets/Scenes/MainGame.unity)",
+      "Bash(git -C \"C:/Users/msdem/Desktop/GitHub/TopDownShooter\" diff -U0 -- Assets/Scenes/MainGame.unity)"
     ]
   }
 }

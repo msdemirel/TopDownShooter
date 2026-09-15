@@ -23,47 +23,113 @@ MonoBehaviour:
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.9
     dashSpeed: 18.36
     dashDuration: 0.15
     blastDamage: 20.4
-    blastRadius: 3.06
+    blastRadius: 3
     shieldDuration: 2.04
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.8
     dashSpeed: 18.73
     dashDuration: 0.15
     blastDamage: 20.81
     blastRadius: 3.12
     shieldDuration: 2.08
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.7
     dashSpeed: 19.1
     dashDuration: 0.15
     blastDamage: 21.23
     blastRadius: 3.18
     shieldDuration: 2.12
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.61
     dashSpeed: 19.48
     dashDuration: 0.15
     blastDamage: 21.65
     blastRadius: 3.24
     shieldDuration: 2.16
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.52
     dashSpeed: 19.87
     dashDuration: 0.15
     blastDamage: 22.08
     blastRadius: 3.3
     shieldDuration: 2.2
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.43
     dashSpeed: 20.27
     dashDuration: 0.15
     blastDamage: 22.52
     blastRadius: 3.37
     shieldDuration: 2.24
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   - cooldown: 4.34
     dashSpeed: 20.68
     dashDuration: 0.15
     blastDamage: 22.97
     blastRadius: 3.44
     shieldDuration: 2.28
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   effectPrefab: {fileID: 3373953178648681342, guid: 91d7dab832420f0449fab20d7683e896, type: 3}
+  burstProjectile: {fileID: 0}
+  burstSpawnRadius: 0.6
   autoImprovePerLevel: 0.02

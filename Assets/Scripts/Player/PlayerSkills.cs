@@ -144,7 +144,7 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillType.AreaBlast:
                 DoBlast(lv);
-                SpawnEffect(s, 1f);
+                FitEffectToRadius(SpawnEffect(s, 1f), lv.blastRadius);   // görsel = hasar alanı
                 break;
 
             case SkillType.Shield:
@@ -269,5 +269,26 @@ public class PlayerSkills : MonoBehaviour
                                     attach ? transform : null);
         if (!attach && lifetime > 0f) Destroy(fx, lifetime);
         return fx;
+    }
+
+    // Efekti, görselin yarı genişliği tam 'radius' olacak şekilde ölçekler: patlamanın
+    // kenarı = hasar alanının kenarı. Sprite'ın piksel boyutu, PPU'su ve prefab ölçeği
+    // önemsizleşir; yarıçap seviyeyle büyüdükçe görsel de aynı oranda büyür.
+    // (SpriteAnimation ilk kareyi OnEnable'da atar, yani Instantiate'ten hemen sonra hazırdır.)
+    void FitEffectToRadius(GameObject fx, float radius)
+    {
+        if (fx == null) return;
+
+        SpriteRenderer sr = fx.GetComponentInChildren<SpriteRenderer>();
+        if (sr == null || sr.sprite == null) return;
+
+        // Sprite'ın şu anki dünya yarı genişliği (büyük kenar esas: görsel alanı taşmasın)
+        Rect rect = sr.sprite.rect;
+        Vector3 ls = sr.transform.lossyScale;
+        float current = Mathf.Max(rect.width * Mathf.Abs(ls.x), rect.height * Mathf.Abs(ls.y))
+                        * 0.5f / sr.sprite.pixelsPerUnit;
+        if (current <= 0f) return;
+
+        fx.transform.localScale *= radius / current;
     }
 }

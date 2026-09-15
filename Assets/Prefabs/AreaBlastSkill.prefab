@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1023886099902734265}
   - component: {fileID: 1172128557866596779}
+  - component: {fileID: 8071744404480037826}
   m_Layer: 0
   m_Name: AreaBlastSkill
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.06761, y: 0.17049, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -909236647, guid: 2a3137048d8c9e24ebea00bcafebcdf1, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -89,5 +90,29 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8071744404480037826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373953178648681342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766e9c7b2937c154faac49830d8f5cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimation
+  frames:
+  - {fileID: -1295915685652976147, guid: b1118e29ced2f5842b0c3f7d65dc8601, type: 3}
+  - {fileID: -8530283034843954814, guid: 74ca762f373d6234fb5ee70ac8ec8ab2, type: 3}
+  - {fileID: 2498081199186010643, guid: fb2abf52adff27e42905af2d88c0c902, type: 3}
+  - {fileID: -277985350962536938, guid: 3331446b41e912e4d84b4b14abd7aa85, type: 3}
+  - {fileID: 9161378871877129069, guid: b031610c309978b4ca9a9037dfa9549e, type: 3}
+  - {fileID: 3473916147822237329, guid: e3556a355cb1dea4eb6ab44fef5f7f7d, type: 3}
+  - {fileID: 2833764507828421151, guid: d188a46d4cbcd984bb20505c754c6946, type: 3}
+  - {fileID: 1943904061930453470, guid: 87635b82bc7ce0d4cae730b54ad18ac0, type: 3}
+  fps: 12
+  loop: 0
+  destroyOnEnd: 1
