@@ -119,11 +119,28 @@ public class PlayerSkills : MonoBehaviour
     }
 
     // Slotun tuşunun ekranda gösterilecek adı ("Space", "E"...).
+    // Input System tuş adlarını klavye düzeninden alır; boşluk tuşu bu yüzden bazı
+    // dillerde farklı yazılıyor (TR'de "Boşluk" gibi). Space'i her düzende sabit
+    // tutuyoruz, diğer tuşlar Input System'in verdiği adla kalsın.
     public string GetKeyName(int slot)
     {
         if (slot < 0 || slot >= SlotCount || slotActions[slot] == null) return "";
-        return slotActions[slot].action.GetBindingDisplayString();
+
+        InputAction action = slotActions[slot].action;
+
+        var bindings = action.bindings;
+        for (int i = 0; i < bindings.Count; i++)
+        {
+            if (bindings[i].isComposite || bindings[i].isPartOfComposite) continue;
+            if (IsSpacePath(bindings[i].effectivePath)) return "Space";
+        }
+
+        return action.GetBindingDisplayString();
     }
+
+    // "<Keyboard>/space" gibi bir yol boşluk tuşunu mu gösteriyor?
+    static bool IsSpacePath(string path)
+        => !string.IsNullOrEmpty(path) && path.EndsWith("/space", StringComparison.OrdinalIgnoreCase);
 
     // ---- Skill etkileri ----
     void UseSkill(int slot)

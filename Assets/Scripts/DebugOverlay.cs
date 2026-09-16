@@ -17,7 +17,7 @@ public class DebugOverlay : MonoBehaviour
     [Tooltip("Ağır sayımları (mermi/pickup) kaç saniyede bir yenile — her kare yapmak pahalı olur.")]
     [SerializeField] float refreshInterval = 0.5f;
 
-    float fps;
+    float fps; 
     float minFps = float.MaxValue;
     float refreshTimer;
     int projectiles, pickups;
