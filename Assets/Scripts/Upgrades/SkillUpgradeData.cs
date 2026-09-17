@@ -58,8 +58,14 @@ public class SkillUpgradeData : UpgradeData
     [Header("Efekt (opsiyonel)")]
     [Tooltip("Kullanınca oyuncunun üstünde beliren görsel. " +
              "Shield'de süre boyunca oyuncuya yapışık durur, diğerlerinde 1 sn sonra silinir. " +
-             "AreaBlast'te blastRadius'a göre otomatik ölçeklenir (görselin kenarı = hasar alanı).")]
+             "AreaBlast'te blastRadius'a göre otomatik ölçeklenir (bkz. Effect Visual Scale).")]
     public GameObject effectPrefab;
+
+    [Tooltip("SADECE AreaBlast: görselin yarıçapı = blastRadius x bu değer. " +
+             "1 = görselin kenarı tam hasar sınırı, 1.15 = alev sınırın biraz dışına taşar. " +
+             "NOT: efekt prefab'ının transform scale'i hesapta sadeleşir (etkisizdir); " +
+             "efektin boyutunu blastRadius ve bu değerle ayarla.")]
+    [Range(0.2f, 2f)] public float effectVisualScale = 1f;
 
     [Header("Burst mermisi")]
     [Tooltip("Burst skillinde etrafa fırlatılacak mermi prefab'ı (Projectile + Rigidbody2D + Collider2D). " +

@@ -161,7 +161,7 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillType.AreaBlast:
                 DoBlast(lv);
-                FitEffectToRadius(SpawnEffect(s, 1f), lv.blastRadius);   // görsel = hasar alanı
+                FitEffectToRadius(SpawnEffect(s, 1f), lv.blastRadius, s.effectVisualScale);   // görsel = hasar alanı
                 break;
 
             case SkillType.Shield:
@@ -288,24 +288,25 @@ public class PlayerSkills : MonoBehaviour
         return fx;
     }
 
-    // Efekti, görselin yarı genişliği tam 'radius' olacak şekilde ölçekler: patlamanın
-    // kenarı = hasar alanının kenarı. Sprite'ın piksel boyutu, PPU'su ve prefab ölçeği
-    // önemsizleşir; yarıçap seviyeyle büyüdükçe görsel de aynı oranda büyür.
+    // Efekti, görselin yarı genişliği 'radius * visualScale' olacak şekilde ölçekler:
+    // patlamanın kenarı = hasar alanının kenarı. Sprite'ın piksel boyutu, PPU'su ve
+    // prefab ölçeği bölmede sadeleşir — yani PREFAB'IN TRANSFORM SCALE'İ ETKİSİZDİR,
+    // boyutu blastRadius ile SkillUpgradeData.effectVisualScale belirler.
     // (SpriteAnimation ilk kareyi OnEnable'da atar, yani Instantiate'ten hemen sonra hazırdır.)
-    void FitEffectToRadius(GameObject fx, float radius)
+    void FitEffectToRadius(GameObject fx, float radius, float visualScale)
     {
-        if (fx == null) return;
+        if (fx == null || radius <= 0f) return;
 
         SpriteRenderer sr = fx.GetComponentInChildren<SpriteRenderer>();
         if (sr == null || sr.sprite == null) return;
 
-        // Sprite'ın şu anki dünya yarı genişliği (büyük kenar esas: görsel alanı taşmasın)
-        Rect rect = sr.sprite.rect;
+        // sprite.bounds yerel birimdedir (dilim boyutu / PPU); lossyScale ile dünya boyutuna çevrilir.
+        // Büyük kenarı esas alıyoruz ki kare olmayan sprite'larda görsel alanı taşmasın.
+        Vector3 ext = sr.sprite.bounds.extents;
         Vector3 ls = sr.transform.lossyScale;
-        float current = Mathf.Max(rect.width * Mathf.Abs(ls.x), rect.height * Mathf.Abs(ls.y))
-                        * 0.5f / sr.sprite.pixelsPerUnit;
-        if (current <= 0f) return;
+        float current = Mathf.Max(ext.x * Mathf.Abs(ls.x), ext.y * Mathf.Abs(ls.y));
+        if (current <= 0.0001f) return;
 
-        fx.transform.localScale *= radius / current;
+        fx.transform.localScale *= radius * Mathf.Max(0.01f, visualScale) / current;
     }
 }
