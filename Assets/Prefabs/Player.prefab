@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   team: 0
-  maxHealth: 20
+  maxHealth: 50
   destroyOnDeath: 0
 --- !u!114 &7542578384350897692
 MonoBehaviour:
@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2e28d7199175f4459b510cefdfbe1a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  baseExpToLevel: 20
+  baseExpToLevel: 4
   expIncreasePerLevel: 3
 --- !u!114 &8369332770881848034
 MonoBehaviour:

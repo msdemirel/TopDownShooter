@@ -105,7 +105,12 @@ public abstract class EnemyBase : MonoBehaviour
         SetAnimSpeed(0f);
         TriggerDeath();
 
-        if (loot != null && ShouldDropLoot) loot.DropLoot();
+        if (loot != null && ShouldDropLoot)
+        {
+            // Eski asset'lerde alan yoksa 0 gelir; en az bir kez zar atılsın
+            int rolls = stats != null ? Mathf.Max(1, stats.lootRolls) : 1;
+            for (int i = 0; i < rolls; i++) loot.DropLoot();
+        }
 
         Destroy(gameObject, destroyDelay);
     }

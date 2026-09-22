@@ -15,8 +15,8 @@ MonoBehaviour:
   weaponName: Sword
   sprite: {fileID: -2188655523723985976, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
   weaponType: 1
-  damage: 1
-  fireRate: 2
+  damage: 10
+  fireRate: 1.5
   range: 2
   projectilePrefab: {fileID: 0}
   projectileSpeed: 12

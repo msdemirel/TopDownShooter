@@ -19,6 +19,8 @@ public class Projectile : MonoBehaviour
     [Tooltip("Bir şeye isabet edince o noktada beliren efekt (opsiyonel). Tek seferlik animasyon prefab'ı.")]
     [SerializeField] GameObject hitEffect;
 
+    bool spent;   // normal mermi isabet etti mi (Destroy kare sonunda çalışır; o ana kadar ikinci isabeti engeller)
+
     void Start()
     {
         Destroy(gameObject, lifetime);
@@ -26,16 +28,26 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (spent) return;
+
         // Hasar alabilen bir şeye çarptıysak
         if (other.TryGetComponent<Health>(out var hp))
         {
             if (hp.Team == team) return;  // aynı takım: içinden geç, yok olma
 
-            hp.TakeDamage(damage, isCrit);
-            SpawnHit();
-
+            // Normal mermi: hasardan ÖNCE kendini harca ve yok et. Böylece hasar olaylarını
+            // dinleyen bir script hata fırlatsa bile mermi düşmanın içinden geçip gitmez.
             // Pierce açıksa yok olma, yoluna devam et (her düşmana OnTriggerEnter bir kez tetiklenir)
-            if (!pierce) Destroy(gameObject);
+            if (!pierce)
+            {
+                spent = true;
+                if (TryGetComponent<Collider2D>(out var col)) col.enabled = false;
+                if (TryGetComponent<Rigidbody2D>(out var rb)) rb.linearVelocity = Vector2.zero;
+                Destroy(gameObject);
+            }
+
+            SpawnHit();
+            hp.TakeDamage(damage, isCrit);
         }
     }
 

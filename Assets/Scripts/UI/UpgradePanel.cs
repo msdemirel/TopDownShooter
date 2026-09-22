@@ -11,6 +11,9 @@ public class UpgradePanel : MonoBehaviour
     [Tooltip("Paneldeki seçenek kartları. Kaç tane varsa o kadar seçenek gösterilebilir.")]
     [SerializeField] UpgradeButton[] buttons;
 
+    [Tooltip("Paralı kartlarda fiyatın yanında gösterilecek coin ikonu (tüm kartlar bunu kullanır).")]
+    [SerializeField] Sprite coinSprite;
+
     Action<UpgradeChoice> onChosen;
 
     // Awake'e güvenmiyoruz: panel sahnede kapalı başlarsa Awake hiç çalışmaz.
@@ -28,7 +31,7 @@ public class UpgradePanel : MonoBehaviour
             if (i < choices.Count)
             {
                 buttons[i].gameObject.SetActive(true);
-                buttons[i].Setup(choices[i], money, Choose);
+                buttons[i].Setup(choices[i], money, coinSprite, Choose);
             }
             else
             {

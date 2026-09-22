@@ -15,29 +15,15 @@ MonoBehaviour:
   title: Health
   description: Increases max health by {0}
   icon: {fileID: 561316698340963439, guid: eec9b75638b877e5f98e365ae9c824d9, type: 3}
+  unlockWave: 1
+  lastWave: 0
   stat: 0
   tierAmounts:
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
-  - 6
-  - 9
-  - 13.5
-  - 20.25
-  - 30.38
-  - 45.57
-  - 68.35
-  - 102.52
-  - 153.78
-  - 230.67
-  - 346
-  - 519
-  - 778.5
-  - 1167.75
-  - 1751.62
-  - 2627.43
-  - 3941.14
-  - 5911.71
+  - 10
+  - 10
+  - 15
+  - 15
+  - 20
+  - 20
+  - 25
   autoImprovePerTier: 0.5

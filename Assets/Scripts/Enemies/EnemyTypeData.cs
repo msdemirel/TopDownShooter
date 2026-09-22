@@ -20,6 +20,11 @@ public class EnemyLevelStats
 
     [Header("Exploder'a özel")]
     public float explosionRadius = 1.2f;  // bu mesafeye girince patlar + hasar yarıçapı
+
+    [Header("Ödül")]
+    [Tooltip("Ölünce LootDropper'ın zarı kaç kez atılır. Güçlü seviyeler daha çok exp/coin versin diye " +
+             "artır (ör. Lv1-2 = 1, Lv3-4 = 2, Lv5+ = 3). 0 veya boş = 1.")]
+    public int lootRolls = 1;
 }
 
 // Bir enemy türünü tanımlar: prefab + seviye seviye istatistikler.

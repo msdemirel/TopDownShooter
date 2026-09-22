@@ -11,9 +11,14 @@ public class PlayerContext
     public readonly PlayerMovement movement;
     public readonly PlayerSkills skills;
     public readonly PlayerCollector collector;
+    public readonly WaveManager waves;
+
+    // Upgrade'lerin dalga kilidi bunu okur. Dalgalar başlamadan önce (0) de 1 sayılır.
+    public int CurrentWave => waves != null ? Mathf.Max(1, waves.CurrentWave) : 1;
 
     public PlayerContext(GameObject playerObject)
     {
+        waves = Object.FindFirstObjectByType<WaveManager>();
         player = playerObject;
         stats = playerObject.GetComponent<PlayerStats>();
         health = playerObject.GetComponent<Health>();

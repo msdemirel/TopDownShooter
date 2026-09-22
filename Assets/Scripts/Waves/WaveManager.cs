@@ -56,6 +56,10 @@ public class WaveManager : MonoBehaviour
              "Bir türün max leveline gelinince artık sadece sayı artar.")]
     [SerializeField] int wavesPerEnemyLevel = 4;
 
+    [Tooltip("Üretilen İLK dalganın düşman leveli. Elle yazılmış son dalganın leveline eşitle ki " +
+             "sonsuz moda geçince düşmanlar Level 1'e düşüp oyun birden kolaylaşmasın.")]
+    [SerializeField, Min(1)] int endlessStartLevel = 1;
+
     [Tooltip("Üretilen dalganın spawn planı kaç saniyeye yayılsın.")]
     [SerializeField] float targetWaveDuration = 25f;
 
@@ -266,7 +270,7 @@ public class WaveManager : MonoBehaviour
         plan.Clear();
 
         float budget = baseBudget + budgetPerWave * endlessIndex;
-        int targetLevel = 1 + endlessIndex / Mathf.Max(1, wavesPerEnemyLevel);
+        int targetLevel = endlessStartLevel + endlessIndex / Mathf.Max(1, wavesPerEnemyLevel);
 
         // Bu dalgada gelebilecek türleri topla (minWave kilidi açılmış olanlar)
         endlessCandidates.Clear();

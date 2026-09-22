@@ -15,73 +15,82 @@ MonoBehaviour:
   title: Shield
   description: An energy barrier absorbs all damage briefly
   icon: {fileID: 321266653871289858, guid: 9e9c66ffa611739e75646b5f5dbca3f0, type: 3}
+  unlockWave: 5
+  lastWave: 0
   skillType: 2
   levels:
-  - cooldown: 5
+  - cooldown: 12
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-  - cooldown: 4.75
-    dashSpeed: 18.9
-    dashDuration: 0.16
-    blastDamage: 21
-    blastRadius: 3.15
-    shieldDuration: 2.1
-  - cooldown: 4.51
-    dashSpeed: 19.84
-    dashDuration: 0.17
-    blastDamage: 22.05
-    blastRadius: 3.31
-    shieldDuration: 2.2
-  - cooldown: 4.28
-    dashSpeed: 20.83
-    dashDuration: 0.18
-    blastDamage: 23.15
-    blastRadius: 3.48
-    shieldDuration: 2.31
-  - cooldown: 4.07
-    dashSpeed: 21.87
-    dashDuration: 0.19
-    blastDamage: 24.31
-    blastRadius: 3.65
-    shieldDuration: 2.43
-  - cooldown: 3.87
-    dashSpeed: 22.96
-    dashDuration: 0.2
-    blastDamage: 25.53
-    blastRadius: 3.83
-    shieldDuration: 2.55
-  - cooldown: 3.68
-    dashSpeed: 24.11
-    dashDuration: 0.21
-    blastDamage: 26.81
-    blastRadius: 4.02
-    shieldDuration: 2.68
-  - cooldown: 3.5
-    dashSpeed: 25.32
-    dashDuration: 0.22
-    blastDamage: 28.15
-    blastRadius: 4.22
-    shieldDuration: 2.81
-  - cooldown: 3.32
-    dashSpeed: 26.59
-    dashDuration: 0.23
-    blastDamage: 29.56
-    blastRadius: 4.43
-    shieldDuration: 2.95
-  - cooldown: 3.15
-    dashSpeed: 27.92
-    dashDuration: 0.24
-    blastDamage: 31.04
-    blastRadius: 4.65
-    shieldDuration: 3.1
-  - cooldown: 2.99
-    dashSpeed: 29.32
-    dashDuration: 0.25
-    blastDamage: 32.59
-    blastRadius: 4.88
-    shieldDuration: 3.25
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
+  - cooldown: 11
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 2.3
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
+  - cooldown: 10
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 2.6
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
+  - cooldown: 9
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 3
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
+  - cooldown: 8
+    dashSpeed: 18
+    dashDuration: 0.15
+    blastDamage: 20
+    blastRadius: 3
+    shieldDuration: 3.5
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
+    burstCount: 6
+    burstDamage: 12
+    burstSpeed: 8
   effectPrefab: {fileID: 1162615853720069444, guid: 10b205132e55b584ba860fe0b9d789e2, type: 3}
+  effectVisualScale: 1
+  burstProjectile: {fileID: 0}
+  burstSpawnRadius: 0.6
   autoImprovePerLevel: 0.05

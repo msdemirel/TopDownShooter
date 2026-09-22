@@ -12,48 +12,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6109a99ee08b9b4e89af0f7007c6a4e, type: 3}
   m_Name: FlyEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTypeData
-  typeName: Enemy
+  typeName: Fly
   prefab: {fileID: 5358042647815167265, guid: 59f3919497c20df4d8605dc1cc2abc9a, type: 3}
   levels:
-  - maxHealth: 1
-    moveSpeed: 1
-    attackDamage: 1
-    attackRange: 1
+  - maxHealth: 15
+    moveSpeed: 1.5
+    attackDamage: 4
+    attackRange: 1.5
     attackCooldown: 1
     projectileSpeed: 8
     explosionRadius: 1
-  - maxHealth: 2
-    moveSpeed: 1
-    attackDamage: 2
-    attackRange: 1.5
-    attackCooldown: 1
-    projectileSpeed: 8
-    explosionRadius: 1.2
-  - maxHealth: 3
-    moveSpeed: 2
-    attackDamage: 3
-    attackRange: 1.5
-    attackCooldown: 1
-    projectileSpeed: 8
-    explosionRadius: 1.2
-  - maxHealth: 5
-    moveSpeed: 2
+    lootRolls: 1
+  - maxHealth: 25
+    moveSpeed: 1.7
     attackDamage: 5
     attackRange: 1.5
     attackCooldown: 1
     projectileSpeed: 8
-    explosionRadius: 1.2
-  - maxHealth: 7
+    explosionRadius: 1
+    lootRolls: 1
+  - maxHealth: 40
+    moveSpeed: 1.9
+    attackDamage: 6
+    attackRange: 1.5
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1.1
+    lootRolls: 2
+  - maxHealth: 60
     moveSpeed: 2
-    attackDamage: 5
+    attackDamage: 8
+    attackRange: 1.5
+    attackCooldown: 1
+    projectileSpeed: 8
+    explosionRadius: 1.1
+    lootRolls: 2
+  - maxHealth: 90
+    moveSpeed: 2.1
+    attackDamage: 10
     attackRange: 1.5
     attackCooldown: 1
     projectileSpeed: 8
     explosionRadius: 1.2
-  - maxHealth: 10
-    moveSpeed: 2
-    attackDamage: 5
+    lootRolls: 3
+  - maxHealth: 130
+    moveSpeed: 2.2
+    attackDamage: 12
     attackRange: 1.5
     attackCooldown: 1
     projectileSpeed: 8
     explosionRadius: 1.2
+    lootRolls: 3

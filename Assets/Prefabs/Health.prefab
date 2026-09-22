@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6818, y: 0.6818, z: 0.6818}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 338458810, guid: c0fb18d3bd7479e4fa0435fdd2fce131, type: 3}
+  m_Sprite: {fileID: 3206908004088787904, guid: 4068d5523f4ca6d4e824d04efafe4e4d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,8 +128,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0016110837, y: 0}
-  m_Radius: 0.1456953
+  m_Offset: {x: 0.003118813, y: -0.0045240223}
+  m_Radius: 0.28986147
 --- !u!114 &7705768519979670304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickup
   type: 2
-  amount: 1
+  amount: 5
   playerTag: Player
 --- !u!114 &2355313042174509405
 MonoBehaviour:

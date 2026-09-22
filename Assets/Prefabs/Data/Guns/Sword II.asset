@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a791f9860a08d648ab3e65a369145e6, type: 3}
+  m_Name: Sword II
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Sword II
+  sprite: {fileID: -2188655523723985976, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  weaponType: 1
+  damage: 18
+  fireRate: 1.6
+  range: 2.2
+  projectilePrefab: {fileID: 0}
+  projectileSpeed: 12
+  meleeArc: 120
+  lungeDistance: 2
+  swingTime: 0.45
+  projectileCount: 1
+  spreadAngle: 0
+  critChance: 0.05
+  critMultiplier: 2
+  inaccuracyAngle: 5

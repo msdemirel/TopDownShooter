@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a791f9860a08d648ab3e65a369145e6, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponName: Weapon
+  weaponName: Pistol
   sprite: {fileID: -3578902578861880536, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
   weaponType: 0
-  damage: 5
-  fireRate: 8
+  damage: 12
+  fireRate: 2
   range: 5
   projectilePrefab: {fileID: 6604449588755319442, guid: aa5c6c72eebf4cc448e89b10021ac013, type: 3}
   projectileSpeed: 12

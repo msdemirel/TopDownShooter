@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: '[W_UP] Sword'
   m_EditorClassIdentifier: Assembly-CSharp::WeaponUpgradeData
   title: Buy +1 Sword
-  description: Adds 1 more sword to empty slot
+  description: Adds 1 more sword to an empty slot
   icon: {fileID: 810011636930299403, guid: 3989ddd978fa1f5ab9f4771be9129f2d, type: 3}
+  unlockWave: 1
+  lastWave: 8
   weapon: {fileID: 11400000, guid: c0f3062b495396347a1f8e6f996b6142, type: 2}
-  cost: 3
+  cost: 5

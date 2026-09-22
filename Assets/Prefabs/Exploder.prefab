@@ -198,19 +198,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootDropper
   drops:
-  - pickupPrefab: {fileID: 3709485075238305286, guid: b9b7d3ebb199eaa4fae616491c6aaa10, type: 3}
-    dropChance: 0
+  - pickupPrefab: {fileID: 34416263852694475, guid: 3cba8cb1424ab3847a4af5e557479638, type: 3}
+    dropChance: 50
     minCount: 1
     maxCount: 1
-  - pickupPrefab: {fileID: 34416263852694475, guid: 3cba8cb1424ab3847a4af5e557479638, type: 3}
-    dropChance: 25.06777
-    minCount: 1
-    maxCount: 2
   - pickupPrefab: {fileID: 3672976162837707703, guid: a2814ca6af7faf446b66258790fdbaab, type: 3}
-    dropChance: 24.932228
+    dropChance: 25
     minCount: 1
-    maxCount: 2
-  nothingChance: 50
+    maxCount: 1
+  - pickupPrefab: {fileID: 3709485075238305286, guid: b9b7d3ebb199eaa4fae616491c6aaa10, type: 3}
+    dropChance: 3
+    minCount: 1
+    maxCount: 1
+  nothingChance: 22
   scatterRadius: 0.3
 --- !u!114 &8104075222577953710
 MonoBehaviour:

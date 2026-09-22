@@ -14,9 +14,9 @@ public class WeaponUpgradeData : UpgradeData
 
     public override int GetCost(int tier) => cost;
 
-    // Kademe sınırı yok: kaç kez alındığına değil, boş slot olup olmadığına bakar.
+    // Kademe sınırı yok: kaç kez alındığına değil, dalga kilidine ve boş slot olup olmadığına bakar.
     public override bool CanOffer(PlayerContext ctx, int tier)
-        => weapon != null && ctx.weapons != null && ctx.weapons.HasFreeSlot;
+        => IsUnlocked(ctx) && weapon != null && ctx.weapons != null && ctx.weapons.HasFreeSlot;
 
     // Başlık numaralanmasın ("Shotgun 3" olmasın) — her seferinde aynı silah.
     public override string GetTitle(int tier) => title;

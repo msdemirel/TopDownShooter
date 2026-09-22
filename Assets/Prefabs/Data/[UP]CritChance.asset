@@ -13,38 +13,15 @@ MonoBehaviour:
   m_Name: '[UP]CritChance'
   m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
   title: Crit Chance
-  description: 
+  description: More critical hits.
   icon: {fileID: 252879600164950588, guid: 63de9229f45c77eeae55217ab26e3983, type: 3}
+  unlockWave: 3
+  lastWave: 0
   stat: 6
   tierAmounts:
-  - 0.5
-  - 0.37
-  - 0.43
-  - 0.27
-  - 0.15
-  - 0.21
-  - 0.03
-  - 0.005
-  - 0.005
-  - 0.005
-  - 0.01
-  - 0.02
   - 0.03
   - 0.04
+  - 0.05
+  - 0.05
   - 0.06
-  - 0.09
-  - 0.14
-  - 0.21
-  - 0.32
-  - 0.48
-  - 0.72
-  - 1.08
-  - 1.62
-  - 2.43
-  - 3.64
-  - 5.46
-  - 8.19
-  - 12.28
-  - 18.42
-  - 27.63
   autoImprovePerTier: 0.5

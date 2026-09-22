@@ -14,18 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
   randomOrder: 1
   entries:
-  - type: {fileID: 11400000, guid: 8b32a9b752e749842afab3cf87af0c72, type: 2}
-    level: 1
-    count: 20
-    spawnInterval: 0.5
-    startDelay: 0
   - type: {fileID: 11400000, guid: f38ac64c30cd58d4b81e17331b4b79a8, type: 2}
     level: 1
-    count: 20
-    spawnInterval: 0.5
-    startDelay: 0
-  - type: {fileID: 11400000, guid: 49a94bc184472e3449ab819c2833bf97, type: 2}
-    level: 1
-    count: 20
-    spawnInterval: 0.5
+    count: 12
+    spawnInterval: 1.5
     startDelay: 0

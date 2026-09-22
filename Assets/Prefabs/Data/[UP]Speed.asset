@@ -15,40 +15,13 @@ MonoBehaviour:
   title: Movement Speed
   description: Increase Movement Speed by {0}
   icon: {fileID: 1090713597792580856, guid: 8336e2d13f702cae66425cf30c71866a, type: 3}
+  unlockWave: 1
+  lastWave: 0
   stat: 1
   tierAmounts:
-  - 1
-  - 1.14
-  - 1.29
-  - 1.46
-  - 1.66
-  - 1.88
-  - 2.13
-  - 2.42
-  - 2.75
-  - 3.12
-  - 3.54
-  - 4.02
-  - 4.56
-  - 5.18
-  - 5.88
-  - 6.67
-  - 7.57
-  - 8.59
-  - 9.75
-  - 11.07
-  - 12.56
-  - 14.26
-  - 16.19
-  - 18.38
-  - 20.86
-  - 23.68
-  - 26.88
-  - 30.51
-  - 34.63
-  - 39.31
-  - 44.62
-  - 50.64
-  - 57.48
-  - 65.24
+  - 0.3
+  - 0.3
+  - 0.4
+  - 0.4
+  - 0.5
   autoImprovePerTier: 0.135
