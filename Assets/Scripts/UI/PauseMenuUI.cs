@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -5,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 // Oyun içi duraklatma menüsü. ESC (ya da gamepad'de Start) ile açılır, oyunu dondurur.
 //
-// Kurulum:
+// Kurulum: MainGame sahnesi açıkken Menü > TopDownShooter > UI > Pause Menüsünü Kur
+// (ana menüyle aynı stilde paneli + Options'ı kurar ve her şeyi bağlar). Elle kurulum:
 //   1) Canvas altına KAPALI (inactive) bir "PausePanel" objesi koy:
 //      Resume / Options / Restart / Main Menu / Quit butonları.
 //   2) Options için: MainMenu sahnesindeki "OptionsPanel" objesini kopyalayıp bu sahnenin
@@ -54,6 +56,14 @@ public class PauseMenuUI : MonoBehaviour
     [Tooltip("Options açılınca seçili gelecek eleman.")]
     [SerializeField] GameObject optionsFirstSelected;
 
+    [Header("Bu oyunun istatistikleri (opsiyonel)")]
+    [Tooltip("Menü açılınca RunStats'tan doldurulur. Boşsa sahnede aranır.")]
+    [SerializeField] RunStats runStats;
+    [SerializeField] TMP_Text timeText;
+    [SerializeField] TMP_Text waveText;
+    [SerializeField] TMP_Text killsText;
+    [SerializeField] TMP_Text levelText;
+
     bool paused;
 
     // Başka sistemler (ör. skill girdisi) merak ederse
@@ -76,6 +86,8 @@ public class PauseMenuUI : MonoBehaviour
 
         if (pausePanel == null)
             Debug.LogWarning("[PauseMenuUI] Pause Panel atanmamış.", this);
+
+        if (runStats == null) runStats = FindAnyObjectByType<RunStats>();
     }
 
     void OnEnable()
@@ -128,7 +140,23 @@ public class PauseMenuUI : MonoBehaviour
         Time.timeScale = 0f;   // UI zamandan etkilenmez, butonlar çalışmaya devam eder
 
         if (pausePanel != null) pausePanel.SetActive(true);
+        RefreshStats();
         Select(firstSelected);
+    }
+
+    // Oyun donuk olduğu için değerler menü açıkken değişmez; açılışta bir kez yazmak yeter.
+    void RefreshStats()
+    {
+        if (runStats == null) return;
+
+        if (timeText != null)
+        {
+            int s = Mathf.FloorToInt(runStats.TimeSurvived);
+            timeText.text = $"{s / 60:00}:{s % 60:00}";
+        }
+        if (waveText != null) waveText.text = runStats.WaveReached.ToString();
+        if (killsText != null) killsText.text = runStats.Kills.ToString();
+        if (levelText != null) levelText.text = runStats.Level.ToString();
     }
 
     public void Resume()

@@ -41,6 +41,14 @@ public abstract class EnemyBase : MonoBehaviour
 
     public bool IsDead { get; private set; }
 
+    // Oyuncu bir düşmanı öldürünce tetiklenir (kendini patlatan exploder SAYILMAZ).
+    // RunStats öldürme sayısını buradan tutar.
+    public static event System.Action<EnemyBase> AnyKilled;
+
+    // Domain Reload kapalıyken önceki Play oturumunun aboneleri kalmasın (Health kalıbı).
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics() => AnyKilled = null;
+
     // Yavaşlatma (Frost Nova): süre bitene kadar hız bu çarpanla çarpılır.
     float slowMultiplier = 1f;
     float slowUntil;
@@ -109,6 +117,9 @@ public abstract class EnemyBase : MonoBehaviour
 
         SetAnimSpeed(0f);
         TriggerDeath();
+
+        // Loot hakkı = oyuncu öldürdü (exploder kendini patlattıysa ikisi de yok)
+        if (ShouldDropLoot) AnyKilled?.Invoke(this);
 
         if (loot != null && ShouldDropLoot)
         {

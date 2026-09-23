@@ -6,8 +6,12 @@ using UnityEngine.UI;
 // Options paneli: temel ses ve görüntü ayarları. Değerleri GameSettings'e yazar,
 // GameSettings de PlayerPrefs'e kaydedip anında uygular.
 //
-// Kurulum: Bu scripti Options paneline ekle ve aşağıdaki alanlardan İSTEDİKLERİNİ ata —
+// Kurulum: Ana menüde Menü > TopDownShooter > UI > Ana Menüyü Kur her şeyi otomatik bağlar.
+// Elle kurulum: Bu scripti Options paneline ekle ve aşağıdaki alanlardan İSTEDİKLERİNİ ata —
 // atanmayanlar sessizce atlanır, hepsi opsiyonel.
+//
+// ÖNEMLİ: Script, açılıp kapanan PANELİN KENDİSİNDE olmalı (Canvas'ta değil): değerleri
+// OnEnable'da yeniler, OnDisable'da diske yazar.
 //
 // NOT: Listener'lar koddan bağlanır. Inspector'dan ayrıca OnValueChanged bağlarsan
 // ayar iki kez işlenir; bağlama.
@@ -37,6 +41,10 @@ public class OptionsUI : MonoBehaviour
     [Tooltip("Ekranın desteklediği çözünürlükler otomatik doldurulur.")]
     [SerializeField] TMP_Dropdown resolutionDropdown;
 
+    [Header("Butonlar")]
+    [Tooltip("Varsayılana Dön butonu (opsiyonel). Listener koddan bağlanır.")]
+    [SerializeField] Button resetButton;
+
     [Header("Biçim")]
     [Tooltip("Slider yazısı. {0} = 0-100 arası değer.")]
     [SerializeField] string volumeFormat = "{0}%";
@@ -56,6 +64,7 @@ public class OptionsUI : MonoBehaviour
         if (vsyncToggle        != null) vsyncToggle.onValueChanged.AddListener(GameSettings.SetVSync);
         if (qualityDropdown    != null) qualityDropdown.onValueChanged.AddListener(GameSettings.SetQualityLevel);
         if (resolutionDropdown != null) resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
+        if (resetButton        != null) resetButton.onClick.AddListener(ResetToDefaults);
     }
 
     // Panel her açıldığında kayıtlı değerleri UI'a bas.
