@@ -288,9 +288,16 @@ MonoBehaviour:
   - {fileID: -6981241635365808458, guid: f2426329019051245b41954e37201803, type: 3}
   - {fileID: -5249188722736290099, guid: f2426329019051245b41954e37201803, type: 3}
   - {fileID: 5071981554408649819, guid: f2426329019051245b41954e37201803, type: 3}
+  - {fileID: 7617957475012158110, guid: f2426329019051245b41954e37201803, type: 3}
+  extraSlotActionFormat: Skill{0}
   pulseWaveColor: {r: 0.4, g: 0.85, b: 1, a: 0.9}
   pulseWaveThickness: 0.12
   pulseWaveSortingOrder: 50
+  healColor: {r: 0.45, g: 1, b: 0.5, a: 0.9}
+  frostColor: {r: 0.65, g: 0.95, b: 1, a: 0.95}
+  overdriveColor: {r: 1, g: 0.55, b: 0.25, a: 0.9}
+  lightningColor: {r: 1, g: 0.95, b: 0.45, a: 1}
+  lightningThickness: 0.08
 --- !u!1 &5877893260729471450
 GameObject:
   m_ObjectHideFlags: 0

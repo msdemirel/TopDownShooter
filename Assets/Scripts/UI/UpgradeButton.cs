@@ -28,18 +28,38 @@ public class UpgradeButton : MonoBehaviour
     [Tooltip("Para yetmediğinde fiyat yazısının rengi.")]
     [SerializeField] Color cantAffordColor = new Color(1f, 0.4f, 0.4f);
 
+    [Header("Skill Swap")]
+    [Tooltip("Slotlar doluyken yeni skill kartında açıklamanın altına eklenen not.")]
+    [SerializeField] string replacesNote = "Replaces a skill";
+    [SerializeField] Color replacesNoteColor = new Color(1f, 0.8f, 0.46f);   // sarı (#FFCD75)
+    [Tooltip("Opsiyonel: ikonun köşesindeki swap rozeti. Boşsa UpgradePanel'deki Swap Sprite ile " +
+             "ikonun sağ üst köşesine otomatik oluşturulur.")]
+    [SerializeField] Image swapBadge;
+    [Tooltip("Rozetin boyutu, kart ikonunun boyutuna oranla.")]
+    [Range(0.2f, 0.8f)] [SerializeField] float swapBadgeSize = 0.45f;
+
     UpgradeChoice choice;
     Action<UpgradeChoice> onClick;
 
     // Panel her açıldığında UpgradeManager -> UpgradePanel bunu çağırır.
     // money: oyuncunun mevcut parası (fiyat gösterimi ve alınabilirlik için).
-    public void Setup(UpgradeChoice newChoice, int money, Sprite coinSprite, Action<UpgradeChoice> callback)
+    public void Setup(UpgradeChoice newChoice, int money, Sprite coinSprite, Sprite swapSprite,
+                      Action<UpgradeChoice> callback)
     {
         choice = newChoice;
         onClick = callback;
 
         if (titleText != null) titleText.text = choice.data.GetTitle(choice.tier);
-        if (descriptionText != null) descriptionText.text = choice.data.GetDescription(choice.tier);
+        if (descriptionText != null)
+        {
+            string desc = choice.data.GetDescription(choice.tier);
+            if (choice.replacesSkill && !string.IsNullOrEmpty(replacesNote))
+            {
+                string note = $"<color=#{ColorUtility.ToHtmlStringRGB(replacesNoteColor)}>{replacesNote}</color>";
+                desc = string.IsNullOrEmpty(desc) ? note : desc + "\n" + note;
+            }
+            descriptionText.text = desc;
+        }
 
         if (icon != null)
         {
@@ -63,6 +83,7 @@ public class UpgradeButton : MonoBehaviour
         }
 
         UpdateCoinIcon(cost > 0, coinSprite);
+        UpdateSwapBadge(choice.replacesSkill, swapSprite);
 
         if (button == null) button = GetComponent<Button>();
         if (button != null)
@@ -108,6 +129,33 @@ public class UpgradeButton : MonoBehaviour
         rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(size, size);
         rt.localPosition = new Vector3(b.max.x + coinIconGap + size * 0.5f, b.center.y, 0f);
+    }
+
+    // Slotlar doluyken yeni skill kartında ikonun sağ üst köşesine swap rozeti koyar.
+    void UpdateSwapBadge(bool show, Sprite swapSprite)
+    {
+        // Elle atanmış rozet yoksa ve sprite verildiyse bir kez oluştur (kart ikonunun child'ı)
+        if (swapBadge == null && swapSprite != null && icon != null)
+        {
+            var go = new GameObject("SwapBadge", typeof(RectTransform), typeof(Image));
+            go.transform.SetParent(icon.transform, false);
+            swapBadge = go.GetComponent<Image>();
+            swapBadge.preserveAspect = true;
+            swapBadge.raycastTarget = false;
+
+            // Köşeye oturt, biraz dışarı taşsın (rozet gibi dursun)
+            RectTransform rt = swapBadge.rectTransform;
+            rt.anchorMin = rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.7f, 0.7f);
+            rt.anchoredPosition = Vector2.zero;
+            Rect r = icon.rectTransform.rect;
+            float size = Mathf.Min(r.width, r.height) * swapBadgeSize;
+            rt.sizeDelta = new Vector2(size, size);
+        }
+        if (swapBadge == null) return;
+
+        if (swapSprite != null) swapBadge.sprite = swapSprite;
+        swapBadge.gameObject.SetActive(show && swapBadge.sprite != null);
     }
 
     // Bir grafiğin raycast hedefini kapatır (tıklamayı Button'a geçirsin, engellemesin).

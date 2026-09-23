@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2c4dee749614ad409bffcbf209dac3d, type: 3}
-  m_Name: '[SKL] PulseWave'
+  m_Name: '[SKL]SecondWind'
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
-  title: Pulse Wave
-  description: 
-  icon: {fileID: 542485652895485070, guid: e1a861b02e35304860e2ac5dc30beaec, type: 3}
-  unlockWave: 1
+  title: Second Wind
+  description: Instantly restore health.
+  icon: {fileID: 232063332440080036, guid: e75e0f126f1a4cb896f070d54d916716, type: 3}
+  unlockWave: 2
   lastWave: 0
-  skillType: 3
+  skillType: 5
   levels:
-  - cooldown: 9
+  - cooldown: 14
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
     waveCount: 3
-    waveInterval: 1.19
+    waveInterval: 0.35
     waveDamage: 15
     waveRadius: 4
-    waveExpandTime: 3.03
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
@@ -44,21 +44,21 @@ MonoBehaviour:
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 8.5
+  - cooldown: 13
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
     waveCount: 3
-    waveInterval: 1.19
-    waveDamage: 20
-    waveRadius: 4.3
-    waveExpandTime: 3.03
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
-    healAmount: 10
+    healAmount: 13
     frostDamage: 8
     frostRadius: 3
     slowPercent: 0.5
@@ -69,21 +69,21 @@ MonoBehaviour:
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 8
+  - cooldown: 12
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-    waveCount: 4
-    waveInterval: 1.19
-    waveDamage: 26
-    waveRadius: 4.6
-    waveExpandTime: 3.03
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
-    healAmount: 10
+    healAmount: 16
     frostDamage: 8
     frostRadius: 3
     slowPercent: 0.5
@@ -94,21 +94,21 @@ MonoBehaviour:
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 7.5
+  - cooldown: 11
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-    waveCount: 4
-    waveInterval: 1.19
-    waveDamage: 33
-    waveRadius: 5
-    waveExpandTime: 3.03
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
-    healAmount: 10
+    healAmount: 20
     frostDamage: 8
     frostRadius: 3
     slowPercent: 0.5
@@ -119,21 +119,21 @@ MonoBehaviour:
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 7
+  - cooldown: 10
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-    waveCount: 5
-    waveInterval: 1.19
-    waveDamage: 42
-    waveRadius: 5.5
-    waveExpandTime: 3.03
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
-    healAmount: 10
+    healAmount: 25
     frostDamage: 8
     frostRadius: 3
     slowPercent: 0.5

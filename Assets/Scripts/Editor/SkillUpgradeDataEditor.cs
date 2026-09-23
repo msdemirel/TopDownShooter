@@ -84,6 +84,29 @@ public class SkillUpgradeDataEditor : Editor
                     Draw(lv, "burstDamage", "Mermi Başına Hasar (can puanı)");
                     Draw(lv, "burstSpeed", "Mermi Hızı (birim/sn)");
                     break;
+
+                case SkillType.Heal:
+                    Draw(lv, "healAmount", "Yenilenen Can (can puanı)");
+                    break;
+
+                case SkillType.FrostNova:
+                    Draw(lv, "frostDamage", "Hasar (can puanı)");
+                    Draw(lv, "frostRadius", "Yarıçap (dünya birimi)");
+                    Draw(lv, "slowPercent", "Yavaşlatma (0.5 = %50)");
+                    Draw(lv, "slowDuration", "Yavaşlatma Süresi (sn)");
+                    break;
+
+                case SkillType.Overdrive:
+                    Draw(lv, "overdriveDuration", "Süre (sn)");
+                    Draw(lv, "overdriveDamageBonus", "Hasar Bonusu (0.3 = +%30)");
+                    Draw(lv, "overdriveFireRateBonus", "Atış Hızı Bonusu (0.3 = +%30)");
+                    break;
+
+                case SkillType.ChainLightning:
+                    Draw(lv, "chainDamage", "Sekme Başına Hasar (can puanı)");
+                    Draw(lv, "chainCount", "Vurulan Düşman (adet)");
+                    Draw(lv, "chainRange", "Sekme Mesafesi (dünya birimi)");
+                    break;
             }
 
             EditorGUILayout.EndVertical();
@@ -117,6 +140,17 @@ public class SkillUpgradeDataEditor : Editor
         // Burst: hasar ve hız büyür; mermi sayısı (int) elle ayarlanır
         Scale(prev, cur, "burstDamage", 1f + f);
         Scale(prev, cur, "burstSpeed", 1f + f);
+        Scale(prev, cur, "healAmount", 1f + f);
+        // FrostNova: yavaşlatma oranı (0-0.9) elle ayarlanır
+        Scale(prev, cur, "frostDamage", 1f + f);
+        Scale(prev, cur, "frostRadius", 1f + f);
+        Scale(prev, cur, "slowDuration", 1f + f);
+        Scale(prev, cur, "overdriveDuration", 1f + f);
+        Scale(prev, cur, "overdriveDamageBonus", 1f + f);
+        Scale(prev, cur, "overdriveFireRateBonus", 1f + f);
+        // ChainLightning: sekme sayısı (int) elle ayarlanır
+        Scale(prev, cur, "chainDamage", 1f + f);
+        Scale(prev, cur, "chainRange", 1f + f);
     }
 
     static void Scale(SerializedProperty from, SerializedProperty to, string field, float factor)

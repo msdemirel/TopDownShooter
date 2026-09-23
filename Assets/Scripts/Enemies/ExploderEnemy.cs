@@ -28,7 +28,7 @@ public class ExploderEnemy : EnemyBase
         if (!HasTarget || exploded) { rb.linearVelocity = Vector2.zero; SetAnimSpeed(0f); return; }
 
         // Oyuncuyu kovala
-        rb.linearVelocity = GetMoveVector() * stats.moveSpeed;
+        rb.linearVelocity = GetMoveVector() * MoveSpeed;
         SetAnimSpeed(rb.linearVelocity.magnitude);  // idle/run geçişi
 
         // Erken fitil: triggerDistance > 0 ise oyuncu o mesafeye girince patla.

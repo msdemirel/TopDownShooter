@@ -6,6 +6,7 @@ public struct UpgradeChoice
 {
     public UpgradeData data;
     public int tier;
+    public bool replacesSkill;   // slotlar dolu: seçilirse bir skill'in yerine geçer (kartta not + ikon)
 }
 
 // Tüm upgrade'lerin ortak temeli.

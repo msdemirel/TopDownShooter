@@ -7,10 +7,17 @@ using UnityEngine;
 // KADEME TAKİBİ: Her upgrade'in kaç kez alındığı buradaki sözlükte tutulur
 // (asset'te DEĞİL — asset'e yazılsaydı ilerleme Play bitince de kalırdı).
 // Bir upgrade her seçilişinde bir sonraki kademesi teklif edilir.
+//
+// SKILL SWAP: Slotlar doluyken yeni bir skill seçilirse panel gizlenir ve SkillHUD
+// oyuncuya hangi skill'i değiştireceğini sorar. Değiştirilen skill'in ilerlemesi
+// sıfırlanır (ileride yeniden 1. seviyeden teklif edilebilir). Vazgeçerse aynı
+// seçenekler tekrar gösterilir.
 public class UpgradeManager : MonoBehaviour
 {
     [Header("Referanslar")]
     [SerializeField] UpgradePanel panel;
+    [Tooltip("Slotlar doluyken skill değiştirme ekranı. Boşsa sahnede aranır.")]
+    [SerializeField] SkillHUD skillHud;
 
     [Tooltip("Teklif edilebilecek tüm upgrade'ler. Panel bunlar arasından rastgele seçer.")]
     [SerializeField] List<UpgradeData> pool = new List<UpgradeData>();
@@ -63,6 +70,8 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
+        if (skillHud == null) skillHud = FindAnyObjectByType<SkillHUD>();
+
         stats.OnLevelUp += HandleLevelUp;
         panel.Hide();
     }
@@ -114,18 +123,67 @@ public class UpgradeManager : MonoBehaviour
         // Panel zaten kapandıysa (çift tıklama) ikinci kez uygulama
         if (!panelOpen) return;
 
+        // Slotlar dolu ve yeni skill seçildi: önce hangi skill'in gideceğini sor
+        if (NeedsSwap(chosen))
+        {
+            panel.Hide();
+            skillHud.BeginSwap((SkillUpgradeData)chosen.data,
+                               slot => FinishSwap(chosen, slot),
+                               ReshowPanel);
+            return;
+        }
+
         if (chosen.data != null)
         {
-            // Parası varsa öde; yetmezse seçimi işleme (normalde buton pasif olduğu için buraya gelinmez)
-            int cost = chosen.data.GetCost(chosen.tier);
-            if (cost > 0 && (stats == null || !stats.TrySpendMoney(cost)))
-                return;
+            if (!TryPay(chosen)) return;
 
             chosen.data.Apply(ctx, chosen.tier);
             timesTaken[chosen.data] = chosen.tier + 1;   // bir sonraki kademeye ilerle
             OnUpgradeApplied?.Invoke(chosen.data, chosen.tier);
         }
 
+        CloseAndContinue();
+    }
+
+    bool NeedsSwap(UpgradeChoice c) => NeedsSwap(c.data, c.tier);
+
+    bool NeedsSwap(UpgradeData data, int tier)
+        => data is SkillUpgradeData && tier == 0
+           && ctx.skills != null && !ctx.skills.HasFreeSlot
+           && skillHud != null;
+
+    // Parası varsa öde; yetmezse seçimi işleme (normalde buton pasif olduğu için buraya gelinmez)
+    bool TryPay(UpgradeChoice c)
+    {
+        int cost = c.data.GetCost(c.tier);
+        return cost <= 0 || (stats != null && stats.TrySpendMoney(cost));
+    }
+
+    void FinishSwap(UpgradeChoice chosen, int slot)
+    {
+        if (!panelOpen) return;
+        if (!TryPay(chosen)) { ReshowPanel(); return; }
+
+        var skill = (SkillUpgradeData)chosen.data;
+        SkillUpgradeData old = ctx.skills.GetSkill(slot);
+
+        ctx.skills.ReplaceSkill(slot, skill);
+        if (old != null) timesTaken.Remove(old);   // eski skill ileride baştan teklif edilebilir
+        timesTaken[skill] = 1;
+        OnUpgradeApplied?.Invoke(skill, 0);
+
+        CloseAndContinue();
+    }
+
+    // Swap'tan vazgeçildi: aynı seçenekleri tekrar göster (oyun donuk kalır).
+    void ReshowPanel()
+    {
+        if (!panelOpen) return;
+        panel.Show(choices, stats != null ? stats.Money : 0, OnChosen);
+    }
+
+    void CloseAndContinue()
+    {
         panelOpen = false;
         pendingLevelUps--;
         panel.Hide();
@@ -149,7 +207,7 @@ public class UpgradeManager : MonoBehaviour
             timesTaken.TryGetValue(u, out int tier);   // hiç alınmadıysa 0
             if (!u.CanOffer(ctx, tier)) continue;
 
-            var choice = new UpgradeChoice { data = u, tier = tier };
+            var choice = new UpgradeChoice { data = u, tier = tier, replacesSkill = NeedsSwap(u, tier) };
             if (u.GetCost(tier) > 0) paidCandidates.Add(choice);
             else freeCandidates.Add(choice);
         }

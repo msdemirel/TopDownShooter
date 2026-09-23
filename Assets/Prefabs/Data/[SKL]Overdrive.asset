@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2c4dee749614ad409bffcbf209dac3d, type: 3}
-  m_Name: '[SKL] PulseWave'
+  m_Name: '[SKL]Overdrive'
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
-  title: Pulse Wave
-  description: 
-  icon: {fileID: 542485652895485070, guid: e1a861b02e35304860e2ac5dc30beaec, type: 3}
+  title: Overdrive
+  description: Temporarily boosts weapon damage and fire rate.
+  icon: {fileID: 4136736798376599375, guid: 7bbc3024711944a4bccabaca97492e7a, type: 3}
   unlockWave: 1
   lastWave: 0
-  skillType: 3
+  skillType: 7
   levels:
-  - cooldown: 9
+  - cooldown: 15
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
     waveCount: 3
-    waveInterval: 1.19
+    waveInterval: 0.35
     waveDamage: 15
     waveRadius: 4
-    waveExpandTime: 3.03
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
@@ -44,17 +44,17 @@ MonoBehaviour:
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 8.5
+  - cooldown: 14
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
     waveCount: 3
-    waveInterval: 1.19
-    waveDamage: 20
-    waveRadius: 4.3
-    waveExpandTime: 3.03
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
@@ -63,23 +63,23 @@ MonoBehaviour:
     frostRadius: 3
     slowPercent: 0.5
     slowDuration: 2.5
-    overdriveDuration: 4
-    overdriveDamageBonus: 0.3
-    overdriveFireRateBonus: 0.3
+    overdriveDuration: 4.5
+    overdriveDamageBonus: 0.35
+    overdriveFireRateBonus: 0.35
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 8
+  - cooldown: 13
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-    waveCount: 4
-    waveInterval: 1.19
-    waveDamage: 26
-    waveRadius: 4.6
-    waveExpandTime: 3.03
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
@@ -88,23 +88,23 @@ MonoBehaviour:
     frostRadius: 3
     slowPercent: 0.5
     slowDuration: 2.5
-    overdriveDuration: 4
-    overdriveDamageBonus: 0.3
-    overdriveFireRateBonus: 0.3
+    overdriveDuration: 5
+    overdriveDamageBonus: 0.4
+    overdriveFireRateBonus: 0.4
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 7.5
+  - cooldown: 12
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-    waveCount: 4
-    waveInterval: 1.19
-    waveDamage: 33
-    waveRadius: 5
-    waveExpandTime: 3.03
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
@@ -113,23 +113,23 @@ MonoBehaviour:
     frostRadius: 3
     slowPercent: 0.5
     slowDuration: 2.5
-    overdriveDuration: 4
-    overdriveDamageBonus: 0.3
-    overdriveFireRateBonus: 0.3
+    overdriveDuration: 5.5
+    overdriveDamageBonus: 0.45
+    overdriveFireRateBonus: 0.45
     chainDamage: 15
     chainCount: 3
     chainRange: 4
-  - cooldown: 7
+  - cooldown: 11
     dashSpeed: 18
     dashDuration: 0.15
     blastDamage: 20
     blastRadius: 3
     shieldDuration: 2
-    waveCount: 5
-    waveInterval: 1.19
-    waveDamage: 42
-    waveRadius: 5.5
-    waveExpandTime: 3.03
+    waveCount: 3
+    waveInterval: 0.35
+    waveDamage: 15
+    waveRadius: 4
+    waveExpandTime: 0.3
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
@@ -138,9 +138,9 @@ MonoBehaviour:
     frostRadius: 3
     slowPercent: 0.5
     slowDuration: 2.5
-    overdriveDuration: 4
-    overdriveDamageBonus: 0.3
-    overdriveFireRateBonus: 0.3
+    overdriveDuration: 6
+    overdriveDamageBonus: 0.5
+    overdriveFireRateBonus: 0.5
     chainDamage: 15
     chainCount: 3
     chainRange: 4

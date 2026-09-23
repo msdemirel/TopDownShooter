@@ -41,6 +41,11 @@ public abstract class EnemyBase : MonoBehaviour
 
     public bool IsDead { get; private set; }
 
+    // Yavaşlatma (Frost Nova): süre bitene kadar hız bu çarpanla çarpılır.
+    float slowMultiplier = 1f;
+    float slowUntil;
+    bool IsSlowed => Time.time < slowUntil;
+
     // Separation için paylaşılan tampon: her karede yeni dizi ayırmamak için.
     // 16'dan fazla komşu varsa ilk 16'sı dikkate alınır (ayrılma için fazlasıyla yeterli).
     static readonly Collider2D[] sepBuffer = new Collider2D[16];
@@ -113,6 +118,28 @@ public abstract class EnemyBase : MonoBehaviour
         }
 
         Destroy(gameObject, destroyDelay);
+    }
+
+    // ---- Yavaşlatma ----
+    // percent: 0.5 = %50 yavaş. Üst üste binerse GÜÇLÜ olan kazanır, süre tazelenir.
+    public void ApplySlow(float percent, float duration)
+    {
+        if (IsDead || duration <= 0f) return;
+
+        float mult = 1f - Mathf.Clamp(percent, 0f, 0.9f);
+        slowMultiplier = IsSlowed ? Mathf.Min(slowMultiplier, mult) : mult;
+        slowUntil = Mathf.Max(slowUntil, Time.time + duration);
+    }
+
+    // Türevler stats.moveSpeed yerine bunu kullanır (yavaşlatma dahil).
+    protected float MoveSpeed => stats.moveSpeed * (IsSlowed ? slowMultiplier : 1f);
+
+    // Yavaşlayan düşmanın animasyonu da yavaşlasın: görsel ipucu.
+    // (Renk değiştirmiyoruz; HitFlash sprite rengini kendi yönetiyor.)
+    void Update()
+    {
+        if (animator != null)
+            animator.speed = !IsDead && IsSlowed ? slowMultiplier : 1f;
     }
 
     // ---- Hareket ----

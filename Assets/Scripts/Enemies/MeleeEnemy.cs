@@ -24,7 +24,7 @@ public class MeleeEnemy : EnemyBase
         else
         {
             // Oyuncuyu kovala
-            rb.linearVelocity = GetMoveVector() * stats.moveSpeed;
+            rb.linearVelocity = GetMoveVector() * MoveSpeed;
         }
 
         SetAnimSpeed(rb.linearVelocity.magnitude);  // idle/run geçişi

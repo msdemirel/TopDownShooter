@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Crit Chance
   description: More critical hits.
   icon: {fileID: 252879600164950588, guid: 63de9229f45c77eeae55217ab26e3983, type: 3}
-  unlockWave: 3
+  unlockWave: 1
   lastWave: 0
   stat: 6
   tierAmounts:

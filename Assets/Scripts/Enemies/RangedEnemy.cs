@@ -29,7 +29,7 @@ public class RangedEnemy : EnemyBase
         else
         {
             // Oyuncuyu kovala
-            rb.linearVelocity = GetMoveVector() * stats.moveSpeed;
+            rb.linearVelocity = GetMoveVector() * MoveSpeed;
         }
 
         SetAnimSpeed(rb.linearVelocity.magnitude);  // idle/run geçişi
@@ -46,7 +46,9 @@ public class RangedEnemy : EnemyBase
             : Vector2.right;
         Transform fp = firePoint != null ? firePoint : transform;
 
-        GameObject go = Instantiate(projectilePrefab, fp.position, Quaternion.identity);
+        // Sprite gittiği yöne baksın (sağa bakan sprite varsayılır, Weapon.cs ile aynı)
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        GameObject go = Instantiate(projectilePrefab, fp.position, Quaternion.Euler(0f, 0f, angle));
 
         if (go.TryGetComponent<Rigidbody2D>(out var prb))
             prb.linearVelocity = dir * stats.projectileSpeed;

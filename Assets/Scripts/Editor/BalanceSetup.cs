@@ -134,6 +134,10 @@ public static class BalanceSetup
         var shield = Load<SkillUpgradeData>(Data + "[SKL]Shield.asset");
         var pulse = Load<SkillUpgradeData>(Data + "[SKL] PulseWave.asset");
         var burst = Load<SkillUpgradeData>(Data + "[SKL] FireBurst.asset");
+        var heal = Load<SkillUpgradeData>(Data + "[SKL]SecondWind.asset");
+        var frost = Load<SkillUpgradeData>(Data + "[SKL]FrostNova.asset");
+        var overdrive = Load<SkillUpgradeData>(Data + "[SKL]Overdrive.asset");
+        var chain = Load<SkillUpgradeData>(Data + "[SKL]ChainLightning.asset");
 
         SetSkill(dash, unlock: 1, lv => {
             lv.cooldown = Step(5f, 4.5f, 4f, 3.5f, 3f);
@@ -166,6 +170,29 @@ public static class BalanceSetup
             lv.burstDamage = Step(12f, 15f, 19f, 24f, 30f);
             lv.burstSpeed = Step(8f, 8.5f, 9f, 9.5f, 10f);
         });
+        SetSkill(heal, unlock: 2, lv => {
+            lv.cooldown = Step(14f, 13f, 12f, 11f, 10f);
+            lv.healAmount = Step(10f, 13f, 16f, 20f, 25f);   // oyuncu 50 can
+        });
+        SetSkill(frost, unlock: 4, lv => {
+            lv.cooldown = Step(9f, 8.5f, 8f, 7.5f, 7f);
+            lv.frostDamage = Step(8f, 11f, 15f, 20f, 26f);
+            lv.frostRadius = Step(3f, 3.2f, 3.4f, 3.7f, 4f);
+            lv.slowPercent = Step(0.4f, 0.45f, 0.5f, 0.55f, 0.6f);
+            lv.slowDuration = Step(2.5f, 2.75f, 3f, 3.25f, 3.5f);
+        });
+        SetSkill(overdrive, unlock: 6, lv => {
+            lv.cooldown = Step(15f, 14f, 13f, 12f, 11f);
+            lv.overdriveDuration = Step(4f, 4.5f, 5f, 5.5f, 6f);
+            lv.overdriveDamageBonus = Step(0.3f, 0.35f, 0.4f, 0.45f, 0.5f);
+            lv.overdriveFireRateBonus = Step(0.3f, 0.35f, 0.4f, 0.45f, 0.5f);
+        });
+        SetSkill(chain, unlock: 8, lv => {
+            lv.cooldown = Step(7f, 6.5f, 6f, 5.5f, 5f);
+            lv.chainCount = (int)Step(3, 4, 4, 5, 6);
+            lv.chainDamage = Step(15f, 19f, 24f, 30f, 38f);
+            lv.chainRange = Step(4f, 4.2f, 4.4f, 4.7f, 5f);
+        });
 
         // ---- 9) Dalgalar (1-10 elle yazılmış, kolaydan zora) ----
         //   W(aralık sn, giriş...)  G(tür, level, adet)
@@ -191,6 +218,7 @@ public static class BalanceSetup
             upSword, upSword2, upPistol,
             upHealth, upSpeed, upDamage, upFireRate, upCrit, upMagnet,
             dash, blast, shield, pulse, burst,
+            heal, frost, overdrive, chain,
         };
         bool sceneOk = ApplyScene(waveAssets, fly, exploder, boss, pool);
 

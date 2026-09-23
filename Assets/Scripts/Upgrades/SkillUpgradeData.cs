@@ -7,6 +7,11 @@ public enum SkillType
     Shield,     // süreli dokunulmazlık
     PulseWave,  // oyuncu merkezli, aralıklı N adet dışa büyüyen halka (her halka değince hasar)
     Burst,      // karakterin etrafındaki N noktadan dışa mermi fırlatır (fire spell gibi)
+    // Yeniler SONA eklenir: asset'ler enum'u sayı olarak saklar, araya eklemek eskileri bozar.
+    Heal,           // anında can yeniler
+    FrostNova,      // etraftaki düşmanlara hasar + süreli yavaşlatma
+    Overdrive,      // süreli hasar ve atış hızı bonusu
+    ChainLightning, // en yakın düşmandan başlayıp zincirleme sekiyor
 }
 
 // Bir skill seviyesinin sayıları. Yalnızca skillType'a ait alanlar kullanılır.
@@ -38,6 +43,25 @@ public class SkillLevelStats
     public int burstCount = 6;           // etrafta kaç noktadan atılacak
     public float burstDamage = 12f;      // mermi başına hasar
     public float burstSpeed = 8f;        // mermi hızı
+
+    [Header("Can Yenileme (Heal)")]
+    public float healAmount = 10f;
+
+    [Header("Buz Dalgası (FrostNova)")]
+    public float frostDamage = 8f;
+    public float frostRadius = 3f;
+    [Range(0f, 0.9f)] public float slowPercent = 0.5f;   // 0.5 = düşman %50 yavaşlar
+    public float slowDuration = 2.5f;
+
+    [Header("Overdrive (süreli güç)")]
+    public float overdriveDuration = 4f;
+    public float overdriveDamageBonus = 0.3f;     // 0.3 = +%30 hasar
+    public float overdriveFireRateBonus = 0.3f;   // 0.3 = +%30 atış hızı
+
+    [Header("Zincir Şimşek (ChainLightning)")]
+    public float chainDamage = 15f;      // her sekmede verilen hasar
+    public int chainCount = 3;           // toplam kaç düşman vurulur
+    public float chainRange = 4f;        // ilk hedef ve sekmeler için maks mesafe
 }
 
 // Oyuncuya bir AKTİF yetenek kazandırır ve KADEMELİ geliştirir (EnemyTypeData.levels kalıbı):
@@ -89,11 +113,13 @@ public class SkillUpgradeData : UpgradeData
         return levels[Mathf.Clamp(level, 0, levels.Length - 1)];
     }
 
-    // tier 0 = skill'i almak (boş slot şart); tier 1+ = geliştirmek (slot şartı yok).
+    // tier 0 = skill'i almak: slot boşsa direkt yerleşir, doluysa oyuncu bir skill'i
+    // değiştirir (swap, bkz. UpgradeManager). tier 1+ = geliştirmek: skill slotta olmalı.
     public override bool CanOffer(PlayerContext ctx, int tier)
         => base.CanOffer(ctx, tier)
            && ctx.skills != null
-           && (tier > 0 || ctx.skills.HasFreeSlot);
+           && ctx.skills.SlotCount > 0
+           && (tier == 0 ? !ctx.skills.HasSkill(this) : ctx.skills.HasSkill(this));
 
     public override void Apply(PlayerContext ctx, int tier)
     {
@@ -140,6 +166,20 @@ public class SkillUpgradeData : UpgradeData
             case SkillType.Burst:
                 lines.Add(Green($"{cur.burstCount}x Shots  Damage: {Num(cur.burstDamage)}"));
                 break;
+            case SkillType.Heal:
+                lines.Add(Green($"Heal: {Num(cur.healAmount)} HP"));
+                break;
+            case SkillType.FrostNova:
+                lines.Add(Green($"Damage: {Num(cur.frostDamage)}  Radius: {Num(cur.frostRadius)}"));
+                lines.Add(Green($"Slow: {Pct(cur.slowPercent)}  for {Num(cur.slowDuration)}s"));
+                break;
+            case SkillType.Overdrive:
+                lines.Add(Green($"+{Pct(cur.overdriveDamageBonus)} Damage  +{Pct(cur.overdriveFireRateBonus)} Fire Rate"));
+                lines.Add(Green($"Duration: {Num(cur.overdriveDuration)}s"));
+                break;
+            case SkillType.ChainLightning:
+                lines.Add(Green($"{cur.chainCount}x Chains  Damage: {Num(cur.chainDamage)}"));
+                break;
         }
         return string.Join("\n", lines);
     }
@@ -175,9 +215,31 @@ public class SkillUpgradeData : UpgradeData
                 AddDiff(lines, prev.burstSpeed, cur.burstSpeed, "Speed");
                 AddDiff(lines, prev.burstCount, cur.burstCount, "Shots");
                 break;
+            case SkillType.Heal:
+                AddDiff(lines, prev.healAmount, cur.healAmount, "Heal");
+                break;
+            case SkillType.FrostNova:
+                AddDiff(lines, prev.frostDamage, cur.frostDamage, "Damage");
+                AddDiff(lines, prev.frostRadius, cur.frostRadius, "Radius");
+                AddDiff(lines, prev.slowPercent * 100f, cur.slowPercent * 100f, "Slow", "%");
+                AddDiff(lines, prev.slowDuration, cur.slowDuration, "Slow Duration", "s");
+                break;
+            case SkillType.Overdrive:
+                AddDiff(lines, prev.overdriveDuration, cur.overdriveDuration, "Duration", "s");
+                AddDiff(lines, prev.overdriveDamageBonus * 100f, cur.overdriveDamageBonus * 100f, "Damage", "%");
+                AddDiff(lines, prev.overdriveFireRateBonus * 100f, cur.overdriveFireRateBonus * 100f, "Fire Rate", "%");
+                break;
+            case SkillType.ChainLightning:
+                AddDiff(lines, prev.chainDamage, cur.chainDamage, "Damage");
+                AddDiff(lines, prev.chainCount, cur.chainCount, "Chains");
+                AddDiff(lines, prev.chainRange, cur.chainRange, "Range");
+                break;
         }
         return string.Join("\n", lines);
     }
+
+    // 0.3 -> "30%"
+    static string Pct(float v) => $"{Num(v * 100f)}%";
 
     // İki seviye arasındaki farkı "+4 Hasar" / "-1 sn Cooldown" biçiminde ekler.
     // İyileşme yeşil, kötüleşme kırmızı (cooldown'da azalmak iyidir).
