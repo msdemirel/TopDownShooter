@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Second Wind
   description: Instantly restore health.
   icon: {fileID: 232063332440080036, guid: e75e0f126f1a4cb896f070d54d916716, type: 3}
-  unlockWave: 2
+  unlockWave: 4
   lastWave: 0
   skillType: 5
   levels:

@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Dash
   description: Blink across short distances at light speed.
   icon: {fileID: 1050860382680927372, guid: d138a3c57a69b3cceca4c37a92e34389, type: 3}
-  unlockWave: 1
+  unlockWave: 4
   lastWave: 0
   skillType: 0
   levels:
@@ -33,6 +33,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 4.5
     dashSpeed: 19
     dashDuration: 0.16
@@ -47,6 +58,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 4
     dashSpeed: 20
     dashDuration: 0.17
@@ -61,6 +83,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 3.5
     dashSpeed: 21
     dashDuration: 0.18
@@ -75,6 +108,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 3
     dashSpeed: 22
     dashDuration: 0.2
@@ -89,6 +133,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   effectPrefab: {fileID: 0}
   effectVisualScale: 1
   burstProjectile: {fileID: 0}

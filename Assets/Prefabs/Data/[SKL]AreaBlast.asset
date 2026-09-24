@@ -15,7 +15,7 @@ MonoBehaviour:
   title: 'Area Blast '
   description: Discharge energy into everything around you.
   icon: {fileID: 863656961846390562, guid: e6dee4c91c8af1f81b526cdcd89a55b6, type: 3}
-  unlockWave: 3
+  unlockWave: 1
   lastWave: 0
   skillType: 1
   levels:
@@ -33,6 +33,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 7.5
     dashSpeed: 18
     dashDuration: 0.15
@@ -47,6 +58,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 7
     dashSpeed: 18
     dashDuration: 0.15
@@ -61,6 +83,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 6.5
     dashSpeed: 18
     dashDuration: 0.15
@@ -75,6 +108,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   - cooldown: 6
     dashSpeed: 18
     dashDuration: 0.15
@@ -89,6 +133,17 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
+    healAmount: 10
+    frostDamage: 8
+    frostRadius: 3
+    slowPercent: 0.5
+    slowDuration: 2.5
+    overdriveDuration: 4
+    overdriveDamageBonus: 0.3
+    overdriveFireRateBonus: 0.3
+    chainDamage: 15
+    chainCount: 3
+    chainRange: 4
   effectPrefab: {fileID: 3373953178648681342, guid: 91d7dab832420f0449fab20d7683e896, type: 3}
   effectVisualScale: 1
   burstProjectile: {fileID: 0}

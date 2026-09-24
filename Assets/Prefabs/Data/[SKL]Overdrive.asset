@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Overdrive
   description: Temporarily boosts weapon damage and fire rate.
   icon: {fileID: 4136736798376599375, guid: 7bbc3024711944a4bccabaca97492e7a, type: 3}
-  unlockWave: 1
+  unlockWave: 4
   lastWave: 0
   skillType: 7
   levels:

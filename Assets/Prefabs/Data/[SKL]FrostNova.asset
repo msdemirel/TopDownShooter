@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Frost Nova
   description: Blast of ice that damages and slows nearby enemies.
   icon: {fileID: 694862765110423782, guid: 693a81f3af9e434ba8b6d10864c9c6a3, type: 3}
-  unlockWave: 1
+  unlockWave: 4
   lastWave: 0
   skillType: 6
   levels:

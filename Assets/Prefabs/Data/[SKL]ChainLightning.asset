@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Chain Lightning
   description: Lightning strikes the nearest enemy and jumps between foes.
   icon: {fileID: 3156872970766493790, guid: 8296e4c034964ef1a18204905f0eadfc, type: 3}
-  unlockWave: 1
+  unlockWave: 4
   lastWave: 0
   skillType: 8
   levels:

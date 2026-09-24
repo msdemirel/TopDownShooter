@@ -34,6 +34,10 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] Color overdriveColor = new Color(1f, 0.55f, 0.25f, 0.9f);
     [SerializeField] Color lightningColor = new Color(1f, 0.95f, 0.45f, 1f);
     [SerializeField] Color shieldColor = new Color(0.35f, 0.75f, 1f, 1f);
+
+    [Header("Area Blast")]
+    [Tooltip("Patlama cephesinin merkezden blastRadius'a ulaşma süresi (sn). Kısa = sert patlama.")]
+    [SerializeField] float blastExpandTime = 0.3f;
     [Tooltip("Şimşek çizgisinin kalınlığı (dünya birimi).")]
     [SerializeField] float lightningThickness = 0.08f;
 
@@ -237,8 +241,10 @@ public class PlayerSkills : MonoBehaviour
                 break;
 
             case SkillType.AreaBlast:
-                DoBlast(lv);
-                FitEffectToRadius(SpawnEffect(s, 1f), lv.blastRadius, s.effectVisualScale);   // görsel = hasar alanı
+                // Dışa büyüyen ateş patlaması: cephe düşmana değince hasar verir (görsel kenar = hasar kenarı).
+                // effectPrefab (Fire Ball animasyonu) merkezde büyüyüp söner.
+                BlastWave.Spawn(transform.position, lv.blastRadius, blastExpandTime, lv.blastDamage,
+                                s.effectPrefab, s.effectVisualScale);
                 break;
 
             case SkillType.Shield:
@@ -277,7 +283,7 @@ public class PlayerSkills : MonoBehaviour
     }
 
     // Yarıçaptaki düşmanlara hasar + yavaşlatma. Önce yavaşlat, sonra vur:
-    // hasar düşmanı öldürürse listeden silinir (sondan başa dönme sebebi, bkz. DoBlast).
+    // hasar düşmanı öldürürse listeden silinir (sondan başa dönme sebebi, bkz. BlastWave.ApplyDamage).
     void DoFrostNova(SkillLevelStats lv)
     {
         float radiusSqr = lv.frostRadius * lv.frostRadius;
@@ -414,26 +420,6 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-    // Yarıçap içindeki tüm düşmanlara hasar. Sondan başa dönüyoruz çünkü ölen
-    // düşman kendini EnemyRegistry listesinden siler (öne doğru dönseydik atlama olurdu).
-    void DoBlast(SkillLevelStats lv)
-    {
-        float radiusSqr = lv.blastRadius * lv.blastRadius;
-        var alive = EnemyRegistry.Alive;
-
-        for (int i = alive.Count - 1; i >= 0; i--)
-        {
-            EnemyBase e = alive[i];
-            if (e == null || e.IsDead) continue;
-
-            float sqr = ((Vector2)e.transform.position - (Vector2)transform.position).sqrMagnitude;
-            if (sqr > radiusSqr) continue;
-
-            if (e.TryGetComponent<Health>(out var h))
-                h.TakeDamage(lv.blastDamage);
-        }
-    }
-
     IEnumerator ShieldRoutine(SkillUpgradeData s, SkillLevelStats lv)
     {
         // Sayaçla yönetiyoruz: iki kalkan üst üste binerse ilki biterken
@@ -477,27 +463,5 @@ public class PlayerSkills : MonoBehaviour
                                     attach ? transform : null);
         if (!attach && lifetime > 0f) Destroy(fx, lifetime);
         return fx;
-    }
-
-    // Efekti, görselin yarı genişliği 'radius * visualScale' olacak şekilde ölçekler:
-    // patlamanın kenarı = hasar alanının kenarı. Sprite'ın piksel boyutu, PPU'su ve
-    // prefab ölçeği bölmede sadeleşir — yani PREFAB'IN TRANSFORM SCALE'İ ETKİSİZDİR,
-    // boyutu blastRadius ile SkillUpgradeData.effectVisualScale belirler.
-    // (SpriteAnimation ilk kareyi OnEnable'da atar, yani Instantiate'ten hemen sonra hazırdır.)
-    void FitEffectToRadius(GameObject fx, float radius, float visualScale)
-    {
-        if (fx == null || radius <= 0f) return;
-
-        SpriteRenderer sr = fx.GetComponentInChildren<SpriteRenderer>();
-        if (sr == null || sr.sprite == null) return;
-
-        // sprite.bounds yerel birimdedir (dilim boyutu / PPU); lossyScale ile dünya boyutuna çevrilir.
-        // Büyük kenarı esas alıyoruz ki kare olmayan sprite'larda görsel alanı taşmasın.
-        Vector3 ext = sr.sprite.bounds.extents;
-        Vector3 ls = sr.transform.lossyScale;
-        float current = Mathf.Max(ext.x * Mathf.Abs(ls.x), ext.y * Mathf.Abs(ls.y));
-        if (current <= 0.0001f) return;
-
-        fx.transform.localScale *= radius * Mathf.Max(0.01f, visualScale) / current;
     }
 }
