@@ -12,38 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6109a99ee08b9b4e89af0f7007c6a4e, type: 3}
   m_Name: Ranged_Enemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTypeData
-  typeName: Enemy
+  typeName: Ranged
   prefab: {fileID: 3608226027964548099, guid: da92c34fade44e5e8be9578c33a36ab4, type: 3}
   levels:
-  - maxHealth: 18
-    moveSpeed: 2
-    attackDamage: 5
-    attackRange: 5
-    attackCooldown: 1
-    projectileSpeed: 8
+  - maxHealth: 12
+    moveSpeed: 2.0
+    attackDamage: 4
+    attackRange: 5.0
+    attackCooldown: 1.4
+    projectileSpeed: 7.0
     explosionRadius: 1.2
     lootRolls: 1
-  - maxHealth: 18
-    moveSpeed: 2
+  - maxHealth: 20
+    moveSpeed: 2.1
     attackDamage: 5
-    attackRange: 5
-    attackCooldown: 1
-    projectileSpeed: 8
+    attackRange: 5.5
+    attackCooldown: 1.3
+    projectileSpeed: 7.5
     explosionRadius: 1.2
     lootRolls: 1
-  - maxHealth: 18
-    moveSpeed: 2
-    attackDamage: 5
-    attackRange: 5
-    attackCooldown: 1
-    projectileSpeed: 8
+  - maxHealth: 32
+    moveSpeed: 2.2
+    attackDamage: 7
+    attackRange: 6.0
+    attackCooldown: 1.2
+    projectileSpeed: 8.0
     explosionRadius: 1.2
-    lootRolls: 1
-  - maxHealth: 18
-    moveSpeed: 2
-    attackDamage: 5
-    attackRange: 5
-    attackCooldown: 1
-    projectileSpeed: 8
+    lootRolls: 2
+  - maxHealth: 48
+    moveSpeed: 2.3
+    attackDamage: 9
+    attackRange: 6.5
+    attackCooldown: 1.1
+    projectileSpeed: 8.5
     explosionRadius: 1.2
-    lootRolls: 1
+    lootRolls: 2

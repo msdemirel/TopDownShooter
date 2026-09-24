@@ -28,12 +28,18 @@ public class Health : MonoBehaviour, IDamageable
     public event Action<Health> OnHealthChanged;
     public event Action<Health> OnDeath;
 
+    // Invulnerable iken gelen hasar engellenince (kalkan görseli vuruşa tepki versin diye)
+    public event Action<Health, float> OnDamageBlocked;
+
     // Sahnedeki HERHANGİ bir Health hasar alınca tetiklenir (kim, ne kadar, kritik mi).
     // Hasar yazıları / vuruş flaşı tek yerden bunu dinler — enemy prefab'larına script gerekmez.
     public static event Action<Health, float, bool> AnyDamaged;
 
     // Sahnedeki HERHANGİ bir Health ölünce tetiklenir (ölüm partikülleri dinler).
     public static event Action<Health> AnyDeath;
+
+    // Sahnedeki HERHANGİ bir Health iyileşince (gerçekten eklenen miktar). İyileşme yazısı dinler.
+    public static event Action<Health, float> AnyHealed;
 
     // Play Mode'a her girişte statik event'leri temizle.
     // (Domain Reload kapalıyken abonelikler önceki oturumdan kalır -> hayalet dinleyiciler.)
@@ -42,6 +48,7 @@ public class Health : MonoBehaviour, IDamageable
     {
         AnyDamaged = null;
         AnyDeath = null;
+        AnyHealed = null;
     }
 
     void Awake()
@@ -66,7 +73,8 @@ public class Health : MonoBehaviour, IDamageable
     // hasar hesabı çağırandan çarpılmış olarak gelir.
     public void TakeDamage(float amount, bool isCrit)
     {
-        if (dead || Invulnerable || amount <= 0f) return;
+        if (dead || amount <= 0f) return;
+        if (Invulnerable) { OnDamageBlocked?.Invoke(this, amount); return; }
 
         current = Mathf.Max(0f, current - amount);
         OnHealthChanged?.Invoke(this);
@@ -91,8 +99,10 @@ public class Health : MonoBehaviour, IDamageable
     {
         if (dead || amount <= 0f) return;
 
+        float before = current;
         current = Mathf.Min(maxHealth, current + amount);
         OnHealthChanged?.Invoke(this);
+        if (current > before) AnyHealed?.Invoke(this, current - before);
     }
 
     void Die()

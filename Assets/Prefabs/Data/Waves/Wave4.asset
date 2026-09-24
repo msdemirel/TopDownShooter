@@ -24,3 +24,18 @@ MonoBehaviour:
     count: 8
     spawnInterval: 0.9
     startDelay: 0
+  - type: {fileID: 11400000, guid: 362d06cabd1d48c3805e919559a5317a, type: 2}
+    level: 1
+    count: 2
+    spawnInterval: 1
+    startDelay: 0
+  - type: {fileID: 11400000, guid: 5f7fd38e4e2d4ef5a506f44050695503, type: 2}
+    level: 1
+    count: 5
+    spawnInterval: 1
+    startDelay: 0
+  - type: {fileID: 11400000, guid: 08fcabcd85c248b5bfd3e4cb316c7d11, type: 2}
+    level: 1
+    count: 3
+    spawnInterval: 1
+    startDelay: 0

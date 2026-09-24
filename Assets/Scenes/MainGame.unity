@@ -53940,7 +53940,7 @@ PrefabInstance:
       objectReference: {fileID: 1774607316}
     - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: endlessEnemies.Array.size
-      value: 3
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: endlessEnemies.Array.data[0].cost
@@ -53968,12 +53968,12 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 49a94bc184472e3449ab819c2833bf97, type: 2}
     - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: endlessEnemies.Array.data[3].cost
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: endlessEnemies.Array.data[3].type
       value: 
-      objectReference: {fileID: 11400000, guid: f38ac64c30cd58d4b81e17331b4b79a8, type: 2}
+      objectReference: {fileID: 11400000, guid: 362d06cabd1d48c3805e919559a5317a, type: 2}
     - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: endlessEnemies.Array.data[0].minWave
       value: 1
@@ -53989,6 +53989,90 @@ PrefabInstance:
     - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: endlessEnemies.Array.data[3].minWave
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[4].type
+      value: 
+      objectReference: {fileID: 11400000, guid: 9e907edeadf91755787afa9240983dd3, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[4].cost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[4].minWave
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[5].type
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f7fd38e4e2d4ef5a506f44050695503, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[5].cost
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[5].minWave
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[6].type
+      value: 
+      objectReference: {fileID: 11400000, guid: d29947ca448a4ac7864f991412eddecc, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[6].cost
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[6].minWave
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[7].type
+      value: 
+      objectReference: {fileID: 11400000, guid: 08fcabcd85c248b5bfd3e4cb316c7d11, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[7].cost
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[7].minWave
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[8].type
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f0cf85604fc4748ac73cf8d9797f06e, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[8].cost
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[8].minWave
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[9].type
+      value: 
+      objectReference: {fileID: 11400000, guid: ccf699fab20b4124871985919b4af58c, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[9].cost
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[9].minWave
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[10].type
+      value: 
+      objectReference: {fileID: 11400000, guid: 3d30305e3ba94b14bc247d200d5517b8, type: 2}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[10].cost
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232292965871146743, guid: 75eace86155559d45b138d439716a76d, type: 3}
+      propertyPath: endlessEnemies.Array.data[10].minWave
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6441316478878860419, guid: 75eace86155559d45b138d439716a76d, type: 3}
       propertyPath: m_Name

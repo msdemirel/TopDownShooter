@@ -12,11 +12,16 @@ public class DamageNumberSpawner : MonoBehaviour
     [SerializeField] bool showEnemyDamage = true;
     [Tooltip("Oyuncunun aldığı hasar da yazsın mı (kırmızı).")]
     [SerializeField] bool showPlayerDamage = false;
+    [Tooltip("İyileşince yeşil '+N' yazsın mı (Second Wind, can pickup'ı...).")]
+    [SerializeField] bool showHealing = true;
 
     [Header("Görünüm")]
     [SerializeField] Color normalColor = Color.white;
     [SerializeField] Color critColor = new Color(1f, 0.6f, 0.1f);   // turuncu
     [SerializeField] Color playerDamageColor = new Color(1f, 0.25f, 0.25f);
+    [SerializeField] Color healColor = new Color(0.45f, 1f, 0.5f);
+    [Tooltip("İyileşme yazısının boyut çarpanı.")]
+    [SerializeField] float healScale = 1.25f;
     [Tooltip("Kritik yazının boyut çarpanı (normal = 1).")]
     [SerializeField] float critScale = 1.4f;
     [Tooltip("Kritik vuruşta sayı yerine gösterilecek metin.")]
@@ -28,8 +33,17 @@ public class DamageNumberSpawner : MonoBehaviour
     [Tooltip("Üst üste binmesin diye eklenen rastgele kaydırma yarıçapı.")]
     [SerializeField] float randomOffset = 0.25f;
 
-    void OnEnable() { Health.AnyDamaged += HandleDamaged; }
-    void OnDisable() { Health.AnyDamaged -= HandleDamaged; }
+    void OnEnable() { Health.AnyDamaged += HandleDamaged; Health.AnyHealed += HandleHealed; }
+    void OnDisable() { Health.AnyDamaged -= HandleDamaged; Health.AnyHealed -= HandleHealed; }
+
+    void HandleHealed(Health target, float amount)
+    {
+        if (!showHealing || prefab == null || target == null) return;
+
+        Vector3 pos = target.transform.position + Vector3.up * (spawnHeight + 0.2f);
+        DamageNumber dn = Instantiate(prefab, pos, Quaternion.identity);
+        dn.Init("+" + Mathf.Max(1, Mathf.RoundToInt(amount)), healColor, healScale);
+    }
 
     void HandleDamaged(Health target, float amount, bool isCrit)
     {

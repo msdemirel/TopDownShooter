@@ -33,6 +33,7 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] Color frostColor = new Color(0.65f, 0.95f, 1f, 0.95f);
     [SerializeField] Color overdriveColor = new Color(1f, 0.55f, 0.25f, 0.9f);
     [SerializeField] Color lightningColor = new Color(1f, 0.95f, 0.45f, 1f);
+    [SerializeField] Color shieldColor = new Color(0.35f, 0.75f, 1f, 1f);
     [Tooltip("Şimşek çizgisinin kalınlığı (dünya birimi).")]
     [SerializeField] float lightningThickness = 0.08f;
 
@@ -255,13 +256,13 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillType.Heal:
                 if (health != null) health.Heal(lv.healAmount);
-                SpawnRing(1.2f, 0.3f, healColor);
+                SkillVfx.Heal(transform, healColor);
                 SpawnEffect(s, 1f);
                 break;
 
             case SkillType.FrostNova:
                 DoFrostNova(lv);
-                SpawnRing(lv.frostRadius, 0.25f, frostColor);   // görsel = etki alanı
+                SkillVfx.FrostNova(transform.position, lv.frostRadius, frostColor);   // görsel = etki alanı
                 SpawnEffect(s, 1f);
                 break;
 
@@ -274,11 +275,6 @@ public class PlayerSkills : MonoBehaviour
                 break;
         }
     }
-
-    // Sadece görsel halka (hasar 0): heal / frost / overdrive geri bildirimi için.
-    void SpawnRing(float radius, float expandTime, Color color)
-        => ShockwaveRing.Spawn(transform.position, radius, expandTime, 0f,
-                               color, pulseWaveThickness, pulseWaveSortingOrder);
 
     // Yarıçaptaki düşmanlara hasar + yavaşlatma. Önce yavaşlat, sonra vur:
     // hasar düşmanı öldürürse listeden silinir (sondan başa dönme sebebi, bkz. DoBlast).
@@ -312,11 +308,12 @@ public class PlayerSkills : MonoBehaviour
         weapons.AddDamageMultiplier(dmg);
         weapons.AddFireRateMultiplier(rate);
 
-        SpawnRing(1.2f, 0.3f, overdriveColor);
-        GameObject fx = SpawnEffect(s, 0f, attach: true);   // süre boyunca üstünde dursun
+        var aura = OverdriveAura.Attach(gameObject, lv.overdriveDuration, overdriveColor);
+        GameObject fx = SpawnEffect(s, 0f, attach: true);   // opsiyonel ek prefab
 
         yield return new WaitForSeconds(lv.overdriveDuration);   // timeScale'e uyar: panelde durur
 
+        if (aura != null) aura.Stop();
         if (fx != null) Destroy(fx);
         weapons.AddDamageMultiplier(-dmg);
         weapons.AddFireRateMultiplier(-rate);
@@ -444,10 +441,12 @@ public class PlayerSkills : MonoBehaviour
         shieldCount++;
         if (health != null) health.Invulnerable = true;
 
-        GameObject fx = SpawnEffect(s, 0f, attach: true);   // süre boyunca üstünde dursun
+        var bubble = ShieldBubble.Attach(gameObject, lv.shieldDuration, shieldColor);
+        GameObject fx = SpawnEffect(s, 0f, attach: true);   // opsiyonel ek prefab
 
         yield return new WaitForSeconds(lv.shieldDuration); // timeScale'e uyar: panelde durur
 
+        if (bubble != null) bubble.Stop();
         if (fx != null) Destroy(fx);
 
         shieldCount--;

@@ -65,6 +65,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.freezeRotation = true;  // prefab'ta Freeze Rotation Z unutulsa bile çarpışmalar sprite'ı döndürmesin
         health = GetComponent<Health>();
         sr = GetComponentInChildren<SpriteRenderer>();
         if (loot == null) loot = GetComponent<LootDropper>();
@@ -140,6 +141,7 @@ public abstract class EnemyBase : MonoBehaviour
         float mult = 1f - Mathf.Clamp(percent, 0f, 0.9f);
         slowMultiplier = IsSlowed ? Mathf.Min(slowMultiplier, mult) : mult;
         slowUntil = Mathf.Max(slowUntil, Time.time + duration);
+        SlowVisual.Refresh(this, duration);   // ayak altı buz + kar (renk tint'i yok, bkz. SlowVisual)
     }
 
     // Türevler stats.moveSpeed yerine bunu kullanır (yavaşlatma dahil).

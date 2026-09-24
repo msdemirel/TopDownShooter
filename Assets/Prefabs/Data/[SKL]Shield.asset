@@ -89,7 +89,7 @@ MonoBehaviour:
     burstCount: 6
     burstDamage: 12
     burstSpeed: 8
-  effectPrefab: {fileID: 1162615853720069444, guid: 10b205132e55b584ba860fe0b9d789e2, type: 3}
+  effectPrefab: {fileID: 0}
   effectVisualScale: 1
   burstProjectile: {fileID: 0}
   burstSpawnRadius: 0.6

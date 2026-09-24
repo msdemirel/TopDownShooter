@@ -19,6 +19,8 @@ public class ShockwaveRing : MonoBehaviour
     float age;
     Color baseColor;
     LineRenderer line;
+    SpriteRenderer band;   // kenarın arkasında sönen yumuşak iz
+    SpriteRenderer fill;   // halkanın içini hafifçe boyayan dolgu
 
     readonly HashSet<EnemyBase> hitEnemies = new HashSet<EnemyBase>();
 
@@ -45,6 +47,21 @@ public class ShockwaveRing : MonoBehaviour
         lr.startColor = lr.endColor = color;
         lr.sortingOrder = sortingOrder;
         r.line = lr;
+
+        r.band = r.MakeLayer(VfxSprites.Ring, sortingOrder - 1);
+        r.fill = r.MakeLayer(VfxSprites.Disc, SkillVfx.GroundOrder);
+        SkillVfx.PulseEmit(position, r.maxRadius, r.expandTime, color);
+    }
+
+    SpriteRenderer MakeLayer(Sprite sprite, int order)
+    {
+        var go = new GameObject("Layer");
+        go.transform.SetParent(transform, false);
+        var sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = sprite;
+        sr.sortingOrder = order;
+        sr.material = VfxSprite.VfxMaterial;
+        return sr;
     }
 
     void Update()
@@ -60,6 +77,12 @@ public class ShockwaveRing : MonoBehaviour
         Color c = baseColor;
         c.a = baseColor.a * (1f - t);
         line.startColor = line.endColor = c;
+
+        // Sprite katmanları: çap = 2 * yarıçap (VfxSprites ölçek kuralı)
+        band.transform.localScale = Vector3.one * (radius * 2f);
+        band.color = SkillVfx.A(SkillVfx.Light(baseColor, 0.2f), baseColor.a * Mathf.Sqrt(1f - t));
+        fill.transform.localScale = Vector3.one * (radius * 2f);
+        fill.color = SkillVfx.A(baseColor, 0.12f * (1f - t));
 
         if (age >= expandTime) Destroy(gameObject);
     }
@@ -87,6 +110,7 @@ public class ShockwaveRing : MonoBehaviour
             float d = ((Vector2)e.transform.position - c).magnitude;
             if (d <= radius)
             {
+                if (damage > 0f) SkillVfx.PulseHit(e.transform.position, baseColor);
                 if (e.TryGetComponent<Health>(out var h)) h.TakeDamage(damage);
                 hitEnemies.Add(e);   // bu halka bu düşmanı bir daha vurmasın
             }

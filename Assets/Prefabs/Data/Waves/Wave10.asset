@@ -29,3 +29,23 @@ MonoBehaviour:
     count: 1
     spawnInterval: 0.6
     startDelay: 0
+  - type: {fileID: 11400000, guid: 362d06cabd1d48c3805e919559a5317a, type: 2}
+    level: 3
+    count: 4
+    spawnInterval: 1
+    startDelay: 0
+  - type: {fileID: 11400000, guid: 5f7fd38e4e2d4ef5a506f44050695503, type: 2}
+    level: 4
+    count: 8
+    spawnInterval: 1
+    startDelay: 0
+  - type: {fileID: 11400000, guid: 08fcabcd85c248b5bfd3e4cb316c7d11, type: 2}
+    level: 3
+    count: 6
+    spawnInterval: 1
+    startDelay: 0
+  - type: {fileID: 11400000, guid: 6f0cf85604fc4748ac73cf8d9797f06e, type: 2}
+    level: 3
+    count: 4
+    spawnInterval: 1
+    startDelay: 0
