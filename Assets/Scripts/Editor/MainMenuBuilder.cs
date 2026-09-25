@@ -88,9 +88,8 @@ public static class MainMenuBuilder
         var titleRt = Empty("Title", main, new Vector2(-430f, 250f), new Vector2(900f, 300f));
         var glow = Img("Glow", titleRt, LoadSprite(Glow), new Color(Cyan.r, Cyan.g, Cyan.b, 0.4f));
         Place(glow.rectTransform, new Vector2(0f, 10f), new Vector2(1150f, 560f));
-        string[] words = PlayerSettings.productName.ToUpperInvariant().Split(' ');
-        string line1 = words.Length > 2 ? string.Join(" ", words, 0, words.Length - 1) : words[0];
-        string line2 = words.Length > 1 ? words[words.Length - 1] : "";
+        // Logo: "OHMFALL" iki satıra bölünür (OHM cyan, FALL altın)
+        const string line1 = "OHM", line2 = "FALL";
         ShadowText("Line1", titleRt, line1, 118f, Cyan, new Vector2(0f, 62f));
         ShadowText("Line2", titleRt, line2, 150f, Gold, new Vector2(0f, -62f));
         var tagline = Text("Tagline", main, "SURVIVE THE ENDLESS WAVES", 28f, new Color(1f, 1f, 1f, 0.75f),
