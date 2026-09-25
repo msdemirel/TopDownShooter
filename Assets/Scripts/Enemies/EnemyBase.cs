@@ -101,8 +101,17 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (target == null) TargetPlayer();   // SetTarget ile başka hedef verilmediyse oyuncu
+    }
+
+    // Oyuncu yerine başka bir hedefe saldırsın (ReactorDefense: reaktör baskını).
+    // Hedefte Health olmalı; hedef yok olursa düşman oyuncuya döner.
+    public void SetTarget(Transform t) => target = t;
+
+    public void TargetPlayer()
+    {
         var p = GameObject.FindGameObjectWithTag("Player");
-        if (p != null) target = p.transform;
+        target = p != null ? p.transform : null;
     }
 
     // Ölünce loot düşsün mü? Türevler ezebilir.
@@ -156,6 +165,9 @@ public abstract class EnemyBase : MonoBehaviour
     // (Renk değiştirmiyoruz; HitFlash sprite rengini kendi yönetiyor.)
     void Update()
     {
+        // Verilen hedef yok olduysa (reaktör baskını bitti) oyuncuya dön
+        if (target == null && !IsDead && Time.frameCount % 30 == 0) TargetPlayer();
+
         if (animator != null)
             animator.speed = !IsDead && IsSlowed ? slowMultiplier : 1f;
     }

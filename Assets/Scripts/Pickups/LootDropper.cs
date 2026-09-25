@@ -21,6 +21,12 @@ public class LootDropper : MonoBehaviour
 
     [SerializeField] float scatterRadius = 0.3f;  // pickup biraz dağılsın
 
+    // Bu düşmanın düşürebildiği pickup prefab'ları (ReactorDefense ödülü buradan seçer)
+    public IEnumerable<GameObject> PickupPrefabs
+    {
+        get { foreach (var d in drops) if (d.pickupPrefab != null) yield return d.pickupPrefab; }
+    }
+
     // EnemyBase ölüm anında çağırır. Yüzdelere göre tek bir sonuç seçer.
     public void DropLoot()
     {

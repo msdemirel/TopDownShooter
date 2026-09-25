@@ -64,6 +64,9 @@ public class Health : MonoBehaviour, IDamageable
     // EnemyBase, death animasyonunu oynatmak için yok etmeyi kendisi yönetir.
     public void SetDestroyOnDeath(bool value) => destroyOnDeath = value;
 
+    // Kodla kurulan Health'ler için (ReactorDefense: reaktör oyuncu tarafında sayılır)
+    public void SetTeam(Team value) => team = value;
+
     // Spawner enemy'yi seviye verisiyle başlatırken çağırır.
     public void SetMaxHealth(float max, bool fill = true)
     {

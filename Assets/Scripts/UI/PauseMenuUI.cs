@@ -110,6 +110,8 @@ public class PauseMenuUI : MonoBehaviour
 
     void Update()
     {
+        if (TutorialPanel.BlocksInput) return;   // tutorial açıkken / kapandığı karede ESC ona ait
+
         // Gamepad B: açık bir şey varsa ESC gibi geri gider (oyun akarken bir şey yapmaz)
         bool back = InputMode.BackPressed && (paused || OptionsOpen || ConfirmOpen);
         if (!PausePressed() && !back) return;

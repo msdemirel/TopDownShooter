@@ -96,6 +96,7 @@ public class MainMenuUI : MonoBehaviour
         if (versionText != null) versionText.text = "v" + Application.version;
 
         RefreshRecords();
+        BuildHowToPlayButton();
         SwitchPanels(showMain: true, instant: true);
 
         // Açılış: siyahtan aç
@@ -106,7 +107,7 @@ public class MainMenuUI : MonoBehaviour
     {
         // (Proje yeni Input System kullanıyor — eski Input.GetKeyDown burada exception atar.)
         var kb = Keyboard.current;
-        if (!starting)
+        if (!starting && !TutorialPanel.BlocksInput)
         {
             bool esc = (kb != null && kb.escapeKey.wasPressedThisFrame) || InputMode.BackPressed;
             bool enter = (kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
@@ -347,6 +348,28 @@ public class MainMenuUI : MonoBehaviour
         var t = go.GetComponentInChildren<TMP_Text>();
         if (t != null) Loc.Bind(t, label);
         return go;
+    }
+
+    // Rekor kartının altında "HOW TO PLAY": Options butonunun kopyası, TutorialPanel'i açar
+    void BuildHowToPlayButton()
+    {
+        if (mainPanel == null) return;
+        var template = mainPanel.transform.Find("OptionsButton");
+        var card = mainPanel.transform.Find("RecordsCard") as RectTransform;
+        if (template == null || card == null || mainPanel.transform.Find("HowToPlayButton") != null) return;
+
+        var go = Instantiate(template.gameObject, mainPanel.transform);
+        go.name = "HowToPlayButton";
+        var rt = (RectTransform)go.transform;
+        rt.anchoredPosition = new Vector2(card.anchoredPosition.x, card.anchoredPosition.y - card.sizeDelta.y * 0.5f - rt.sizeDelta.y * 0.5f - 24f);
+        var btn = go.GetComponent<Button>();
+        btn.onClick = new Button.ButtonClickedEvent();   // kopyalanan kalıcı (Options) bağlantısını sil
+        btn.onClick.AddListener(() => TutorialPanel.Show(false, () => Select(go)));
+        var label = go.transform.Find("Label");
+        if (label != null && label.TryGetComponent<TMP_Text>(out var t)) Loc.Bind(t, "HOW TO PLAY");
+        var icon = go.transform.Find("Icon");
+        var sprites = Resources.LoadAll<Sprite>("Tutorial/Icons/exp");
+        if (icon != null && sprites.Length > 0 && icon.TryGetComponent<Image>(out var img)) img.sprite = sprites[0];
     }
 
     // ---- Yardımcılar ----

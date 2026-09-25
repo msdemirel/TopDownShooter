@@ -18,6 +18,8 @@ public class Pickup : MonoBehaviour
     [SerializeField] PickupType type = PickupType.Exp;
     [SerializeField] float amount = 1f;
 
+    public PickupType Type => type;
+
     [Header("Player tag")]
     [SerializeField] string playerTag = "Player";
 

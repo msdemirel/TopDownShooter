@@ -32,6 +32,9 @@ public class PickupMagnet : MonoBehaviour
         speed = startSpeed;
     }
 
+    // Menzil beklemeden çekimi başlat (FloorGrid mıknatıs bonusu)
+    public void Attract() => attracted = true;
+
     void Update()
     {
         if (player == null) return;

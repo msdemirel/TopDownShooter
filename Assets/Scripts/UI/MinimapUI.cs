@@ -68,6 +68,34 @@ public class MinimapUI : MonoBehaviour
     float playerAngle;
     readonly List<Image> enemyDots = new List<Image>();
 
+    // ---- Ek işaretler (reaktörler vb.) ----
+    // Başka sistemler kendi işaretlerini ekler, her karede pos/color/visible'ı günceller.
+    // Menzil dışındaki işaret her zaman kenara yapışır (yönü gösterir). Düşman noktalarının üstünde çizilir.
+    public class Marker
+    {
+        public Vector3 pos;
+        public Sprite sprite;
+        public Color color = Color.white;
+        public float size = 16f;
+        public bool visible = true;
+        public float pulse;   // > 0: bu hızla büyüyüp küçülür (dikkat çekmesi gerekenler)
+    }
+
+    static readonly List<Marker> markers = new List<Marker>();
+    readonly List<Image> markerImages = new List<Image>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics() => markers.Clear();
+
+    public static Marker AddMarker(Vector3 pos, Sprite sprite, Color color, float size)
+    {
+        var m = new Marker { pos = pos, sprite = sprite, color = color, size = size };
+        markers.Add(m);
+        return m;
+    }
+
+    public static void RemoveMarker(Marker m) => markers.Remove(m);
+
     void Awake()
     {
         var rt = (RectTransform)transform;
@@ -203,6 +231,41 @@ public class MinimapUI : MonoBehaviour
         // Bu karede kullanılmayan noktaları gizle (yok etme; havuzda kalsın)
         for (int i = used; i < enemyDots.Count; i++)
             if (enemyDots[i].gameObject.activeSelf) enemyDots[i].gameObject.SetActive(false);
+
+        DrawMarkers(center, scale, mapRadius);
+    }
+
+    void DrawMarkers(Vector2 center, float scale, float mapRadius)
+    {
+        int used = 0;
+        for (int i = 0; i < markers.Count; i++)
+        {
+            var m = markers[i];
+            if (!m.visible) continue;
+
+            float size = m.size * (m.pulse > 0f ? 1f + 0.25f * (0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * m.pulse)) : 1f);
+            Vector2 pos = ((Vector2)m.pos - center) * scale;
+            float edge = mapRadius - size * 0.5f;
+            if (pos.magnitude > edge) pos = pos.normalized * edge;   // menzil dışı: kenarda, yönünü gösterir
+
+            if (used >= markerImages.Count)
+            {
+                var img = CreateImage("Marker", content, Color.white);
+                img.preserveAspect = true;
+                markerImages.Add(img);
+            }
+            var im = markerImages[used++];
+            if (!im.gameObject.activeSelf) im.gameObject.SetActive(true);
+            im.sprite = m.sprite != null ? m.sprite : RuntimeSprite.Circle;
+            im.color = m.color;
+            im.rectTransform.sizeDelta = new Vector2(size, size);
+            im.rectTransform.anchoredPosition = pos;
+        }
+        for (int i = used; i < markerImages.Count; i++)
+            if (markerImages[i].gameObject.activeSelf) markerImages[i].gameObject.SetActive(false);
+
+        // Yeni işaret/düşman noktaları sona eklenir: oyuncu noktası hep en üstte kalsın
+        if (playerMarker != null && playerMarker.GetSiblingIndex() != content.childCount - 1) playerMarker.SetAsLastSibling();
     }
 
     // Oyuncu işaretini son hareket yönüne yumuşakça çevirir (durunca son yönde kalır).

@@ -15,7 +15,14 @@ public class TutorialHints : MonoBehaviour
 {
     const string KeyPrefix = "tutorial_seen_";
     public static readonly string[] AllIds =
-        { "move", "exp", "levelup", "coins", "skill", "merge", "pause", "boss", "core" };
+        { "move", "exp", "levelup", "coins", "skill", "merge", "pause", "boss", "core", "grid", "reactor", "quest" };
+
+    // Başka sistemlerin tetiklediği ipuçları (ör. ReactorDefense): sahnedeki örneğin sırasına ekler
+    public static void Request(string id, string text, float maxTime = 9f)
+    {
+        var h = FindAnyObjectByType<TutorialHints>();
+        if (h != null) h.Enqueue(id, text, null, maxTime);
+    }
 
     // Bir ipucu: metin + (opsiyonel) ne zaman kapanacağı + en uzun süre
     class Hint
@@ -176,6 +183,9 @@ public class TutorialHints : MonoBehaviour
         if (waves != null && waves.CurrentWave >= 2)
             Enqueue("pause", Loc.F("<b>{0}</b> pauses. <color=#73EFF7>SAVE & QUIT</color> lets you continue this run later.",
                                    InputMode.Key("ESC", "START")));
+
+        if (FloorGrid.AnyCharged)
+            Enqueue("grid", Loc.T("Kills <color=#73EFF7>charge</color> the floor. Fill a 2x2 block to <color=#73EFF7>OVERLOAD</color> it for a bonus!"), null, 9f);
 
         if (!bossSeen && !Seen("boss"))
         {

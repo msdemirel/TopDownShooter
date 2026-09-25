@@ -398,6 +398,40 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    // ---- Başka sistemler için (ReactorDefense) ----
+    // Dalga planına dahil olmayan ek düşman: sonsuz havuzdan bu dalgada gelebilecek rastgele bir tür,
+    // dalganın zorluğuna uygun seviyede, verilen noktada. Havuz boşsa null.
+    public EnemyBase SpawnExtra(Vector3 pos)
+    {
+        if (!HasEndlessPool) return null;
+        endlessCandidates.Clear();
+        foreach (var e in endlessEnemies)
+            if (e != null && e.type != null && e.type.prefab != null && CurrentWave >= e.minWave) endlessCandidates.Add(e);
+        if (endlessCandidates.Count == 0) return null;
+
+        // Elle yazılmış dalgalarda seviye 1'den endlessStartLevel'e doğru artar, sonra sonsuz moddaki gibi
+        int authored = waves != null ? waves.Length : 0;
+        int targetLevel = CurrentWave <= authored
+            ? Mathf.Max(1, Mathf.RoundToInt(Mathf.Lerp(1f, endlessStartLevel, (CurrentWave - 1f) / Mathf.Max(1, authored))))
+            : endlessStartLevel + (CurrentWave - 1 - authored) / Mathf.Max(1, wavesPerEnemyLevel);
+
+        var pick = endlessCandidates[UnityEngine.Random.Range(0, endlessCandidates.Count)];
+        GameObject go = Instantiate(pick.type.prefab, pos, Quaternion.identity);
+        if (!go.TryGetComponent<EnemyBase>(out var enemy)) return null;
+        enemy.Init(pick.type.GetLevel(LevelFor(pick, targetLevel)));
+        return enemy;
+    }
+
+    // Havuzdaki düşman türleri (ör. loot prefab'larını bulmak için)
+    public IEnumerable<EnemyTypeData> EnemyTypes
+    {
+        get
+        {
+            if (endlessEnemies != null)
+                foreach (var e in endlessEnemies) if (e != null && e.type != null) yield return e.type;
+        }
+    }
+
     // ---- Düşman doğurma ----
     void SpawnEnemy(EnemyTypeData type, int level)
     {
