@@ -1,0 +1,239 @@
+en	fr	de	tr	zh	it	fi
+# Dil tablosu. Anahtar = ilk sütundaki İngilizce metin. {0} yer tutucuları ve <color> gibi etiketler her çeviride aynen kalmalı. Satır sonu için \n yaz.
+# --- Ana menü ---
+PLAY	JOUER	SPIELEN	OYNA	开始游戏	GIOCA	PELAA
+OPTIONS	OPTIONS	OPTIONEN	AYARLAR	设置	OPZIONI	ASETUKSET
+QUIT	QUITTER	BEENDEN	ÇIKIŞ	退出	ESCI	LOPETA
+UPGRADES	AMÉLIORATIONS	UPGRADES	GELİŞTİRMELER	强化	POTENZIAMENTI	PÄIVITYKSET
+BACK	RETOUR	ZURÜCK	GERİ	返回	INDIETRO	TAKAISIN
+PRESS ENTER TO PLAY	APPUIE SUR ENTRÉE POUR JOUER	DRÜCKE ENTER ZUM SPIELEN	OYNAMAK İÇİN ENTER'A BAS	按回车键开始	PREMI INVIO PER GIOCARE	PAINA ENTER PELATAKSESI
+SURVIVE THE ENDLESS WAVES	SURVIS AUX VAGUES SANS FIN	ÜBERLEBE DIE ENDLOSEN WELLEN	BİTMEYEN DALGALARA DAYAN	在无尽的敌潮中存活	SOPRAVVIVI ALLE ONDATE INFINITE	SELVIYDY LOPUTTOMISTA AALLOISTA
+BEST RECORDS	MEILLEURS RECORDS	BESTLEISTUNGEN	EN İYİ REKORLAR	最佳纪录	RECORD MIGLIORI	PARHAAT ENNÄTYKSET
+BEST WAVE	MEILLEURE VAGUE	BESTE WELLE	EN İYİ DALGA	最高波次	ONDATA MIGLIORE	PARAS AALTO
+BEST TIME	MEILLEUR TEMPS	BESTZEIT	EN İYİ SÜRE	最长时间	TEMPO MIGLIORE	PARAS AIKA
+MOST KILLS	PLUS D'ÉLIMINATIONS	MEISTE KILLS	EN ÇOK ÖLDÜRME	最多击杀	PIÙ UCCISIONI	ENITEN TAPPOJA
+HIGHEST LEVEL	NIVEAU MAX	HÖCHSTES LEVEL	EN YÜKSEK SEVİYE	最高等级	LIVELLO MASSIMO	KORKEIN TASO
+RUNS PLAYED	PARTIES JOUÉES	GESPIELTE RUNS	OYNANAN OYUN	游戏局数	PARTITE GIOCATE	PELATUT KIERROKSET
+NO RUNS YET\n<size=60%><color=#94B0C2>PLAY TO SET YOUR FIRST RECORD</color></size>	AUCUNE PARTIE\n<size=60%><color=#94B0C2>JOUE POUR ÉTABLIR TON PREMIER RECORD</color></size>	NOCH KEINE RUNS\n<size=60%><color=#94B0C2>SPIELE FÜR DEINEN ERSTEN REKORD</color></size>	HENÜZ OYUN YOK\n<size=60%><color=#94B0C2>İLK REKORUNU KIRMAK İÇİN OYNA</color></size>	暂无记录\n<size=60%><color=#94B0C2>开始游戏，创造你的第一个纪录</color></size>	NESSUNA PARTITA\n<size=60%><color=#94B0C2>GIOCA PER IL TUO PRIMO RECORD</color></size>	EI VIELÄ PELEJÄ\n<size=60%><color=#94B0C2>PELAA JA TEE ENSIMMÄINEN ENNÄTYKSESI</color></size>
+TIP	ASTUCE	TIPP	İPUCU	提示	SUGGERIMENTO	VINKKI
+RUN IN PROGRESS	PARTIE EN COURS	RUN LÄUFT NOCH	DEVAM EDEN OYUN	有进行中的游戏	PARTITA IN CORSO	KESKEN OLEVA PELI
+CONTINUE	CONTINUER	FORTSETZEN	DEVAM ET	继续	CONTINUA	JATKA
+NEW RUN	NOUVELLE PARTIE	NEUER RUN	YENİ OYUN	新游戏	NUOVA PARTITA	UUSI PELI
+<color=#94B0C2>Starting a new run ends the saved one (its Core is still awarded).</color>	<color=#94B0C2>Une nouvelle partie met fin à celle sauvegardée (son Core est quand même accordé).</color>	<color=#94B0C2>Ein neuer Run beendet den gespeicherten (sein Core wird trotzdem gutgeschrieben).</color>	<color=#94B0C2>Yeni oyun kayıtlı oyunu bitirir (kazandığı Core yine verilir).</color>	<color=#94B0C2>开始新游戏将结束已保存的游戏（其 Core 仍会发放）。</color>	<color=#94B0C2>Una nuova partita chiude quella salvata (il suo Core viene comunque assegnato).</color>	<color=#94B0C2>Uusi peli päättää tallennetun (sen Core annetaan silti).</color>
+# --- Karakter / zorluk seçimi ---
+SELECT CHARACTER	CHOISIS TON PERSONNAGE	WÄHLE DEINEN CHARAKTER	KARAKTER SEÇ	选择角色	SCEGLI IL PERSONAGGIO	VALITSE HAHMO
+SELECT DIFFICULTY	CHOISIS LA DIFFICULTÉ	WÄHLE DIE SCHWIERIGKEIT	ZORLUK SEÇ	选择难度	SCEGLI LA DIFFICOLTÀ	VALITSE VAIKEUS
+<color=#73EFF7>< ></color> CHOOSE     <color=#73EFF7>ENTER</color> NEXT     <color=#73EFF7>ESC</color> BACK	<color=#73EFF7>< ></color> CHOISIR     <color=#73EFF7>ENTRÉE</color> SUIVANT     <color=#73EFF7>ÉCHAP</color> RETOUR	<color=#73EFF7>< ></color> WÄHLEN     <color=#73EFF7>ENTER</color> WEITER     <color=#73EFF7>ESC</color> ZURÜCK	<color=#73EFF7>< ></color> SEÇ     <color=#73EFF7>ENTER</color> İLERİ     <color=#73EFF7>ESC</color> GERİ	<color=#73EFF7>< ></color> 选择     <color=#73EFF7>回车</color> 下一步     <color=#73EFF7>ESC</color> 返回	<color=#73EFF7>< ></color> SCEGLI     <color=#73EFF7>INVIO</color> AVANTI     <color=#73EFF7>ESC</color> INDIETRO	<color=#73EFF7>< ></color> VALITSE     <color=#73EFF7>ENTER</color> SEURAAVA     <color=#73EFF7>ESC</color> TAKAISIN
+<color=#73EFF7>< ></color> CHOOSE     <color=#73EFF7>ENTER</color> START     <color=#73EFF7>ESC</color> BACK	<color=#73EFF7>< ></color> CHOISIR     <color=#73EFF7>ENTRÉE</color> COMMENCER     <color=#73EFF7>ÉCHAP</color> RETOUR	<color=#73EFF7>< ></color> WÄHLEN     <color=#73EFF7>ENTER</color> START     <color=#73EFF7>ESC</color> ZURÜCK	<color=#73EFF7>< ></color> SEÇ     <color=#73EFF7>ENTER</color> BAŞLA     <color=#73EFF7>ESC</color> GERİ	<color=#73EFF7>< ></color> 选择     <color=#73EFF7>回车</color> 开始     <color=#73EFF7>ESC</color> 返回	<color=#73EFF7>< ></color> SCEGLI     <color=#73EFF7>INVIO</color> INIZIA     <color=#73EFF7>ESC</color> INDIETRO	<color=#73EFF7>< ></color> VALITSE     <color=#73EFF7>ENTER</color> ALOITA     <color=#73EFF7>ESC</color> TAKAISIN
+STARTS WITH	COMMENCE AVEC	STARTET MIT	BAŞLANGIÇ	初始武器	INIZIA CON	ALOITTAA
+LOCKED	VERROUILLÉ	GESPERRT	KİLİTLİ	未解锁	BLOCCATO	LUKITTU
+Balanced, no modifiers	Équilibré, sans modificateurs	Ausgewogen, keine Modifikatoren	Dengeli, değiştirici yok	均衡，无加成	Bilanciato, nessun modificatore	Tasapainoinen, ei muutoksia
+Max Health	Santé max	Max. Leben	Maks. Can	生命上限	Salute max	Maks. terveys
+Move Speed	Vitesse	Laufgeschw.	Hareket Hızı	移动速度	Velocità	Liikenopeus
+Crit Chance	Chance de critique	Krit-Chance	Kritik Şansı	暴击率	Prob. critico	Kriittinen mahd.
+Pickup Range	Portée de ramassage	Sammelradius	Toplama Menzili	拾取范围	Raggio raccolta	Keräyssäde
+NORMAL	NORMAL	NORMAL	NORMAL	普通	NORMALE	NORMAALI
+HARD	DIFFICILE	SCHWER	ZOR	困难	DIFFICILE	VAIKEA
+NIGHTMARE	CAUCHEMAR	ALBTRAUM	KABUS	噩梦	INCUBO	PAINAJAINEN
+The standard challenge.	Le défi standard.	Die normale Herausforderung.	Standart zorluk.	标准挑战。	La sfida standard.	Tavallinen haaste.
+Tougher, faster enemies. Better rewards.	Ennemis plus coriaces et rapides. Meilleures récompenses.	Zähere, schnellere Gegner. Bessere Belohnungen.	Daha güçlü, daha hızlı düşmanlar. Daha iyi ödüller.	敌人更强更快，奖励更丰厚。	Nemici più duri e veloci. Ricompense migliori.	Kestävämmät, nopeammat viholliset. Paremmat palkinnot.
+Only for the bravest. Huge rewards.	Réservé aux plus braves. Énormes récompenses.	Nur für die Mutigsten. Riesige Belohnungen.	Sadece en cesurlar için. Dev ödüller.	只为最勇敢的人。巨额奖励。	Solo per i più coraggiosi. Ricompense enormi.	Vain rohkeimmille. Valtavat palkinnot.
+Enemy health	Santé ennemie	Gegnerleben	Düşman canı	敌人生命	Salute nemici	Vihollisten terveys
+Enemy damage	Dégâts ennemis	Gegnerschaden	Düşman hasarı	敌人伤害	Danno nemici	Vihollisten vahinko
+Enemy speed	Vitesse ennemie	Gegnertempo	Düşman hızı	敌人速度	Velocità nemici	Vihollisten nopeus
+CORE	CORE	CORE	CORE	CORE	CORE	CORE
+BEST WAVE {0}	MEILLEURE VAGUE {0}	BESTE WELLE {0}	EN İYİ DALGA {0}	最高波次 {0}	ONDATA MIGLIORE {0}	PARAS AALTO {0}
+NOT PLAYED YET	PAS ENCORE JOUÉ	NOCH NICHT GESPIELT	HENÜZ OYNANMADI	尚未游玩	NON ANCORA GIOCATO	EI VIELÄ PELATTU
+Reach wave {0} on {1}	Atteins la vague {0} en {1}	Erreiche Welle {0} auf {1}	{1} zorlukta {0}. dalgaya ulaş	在{1}难度下到达第 {0} 波	Raggiungi l'ondata {0} in {1}	Saavuta aalto {0} tasolla {1}
+# --- Karakter açıklamaları ---
+A steady all-rounder.	Un polyvalent fiable.	Ein solider Allrounder.	Dengeli ve sağlam bir savaşçı.	稳健的全能型角色。	Un tuttofare affidabile.	Vakaa monitoimija.
+Fast and nimble, but fragile.	Rapide et agile, mais fragile.	Schnell und wendig, aber zerbrechlich.	Hızlı ve çevik ama kırılgan.	迅捷灵活，但很脆弱。	Veloce e agile, ma fragile.	Nopea ja ketterä, mutta hauras.
+Heavy armor, heavy hits, slow feet.	Armure lourde, coups lourds, pas lents.	Schwere Rüstung, harte Treffer, langsame Füße.	Ağır zırh, ağır darbeler, yavaş adımlar.	重甲、重击、步伐缓慢。	Armatura pesante, colpi pesanti, passo lento.	Raskas panssari, raskaat iskut, hitaat jalat.
+Lives for the perfect shot.	Vit pour le tir parfait.	Lebt für den perfekten Schuss.	Mükemmel atış için yaşar.	为完美一击而生。	Vive per il colpo perfetto.	Elää täydellistä laukausta varten.
+# --- Meta mağaza ---
+UPGRADE	AMÉLIORATION	UPGRADE	GELİŞTİRME	强化	POTENZIAMENTO	PÄIVITYS
+UNLOCKS	DÉBLOCAGES	FREISCHALTUNGEN	KİLİT AÇMA	解锁	SBLOCCHI	AVATTAVAT
+UNLOCKED	DÉBLOQUÉ	FREIGESCHALTET	AÇILDI	已解锁	SBLOCCATO	AVATTU
+MAX	MAX	MAX	MAKS	满级	MAX	MAKS
+MAXED	MAX	MAXIMAL	MAKS	已满级	AL MASSIMO	MAKSIMI
+NEXT	SUIVANT	NÄCHSTE	SONRAKİ	下一级	PROSSIMO	SEURAAVA
+NOW	ACTUEL	JETZT	ŞU AN	当前	ORA	NYT
+WEAPON	ARME	WAFFE	SİLAH	武器	ARMA	ASE
+SKILL	COMPÉTENCE	SKILL	YETENEK	技能	ABILITÀ	TAITO
+Nothing to unlock.	Rien à débloquer.	Nichts freizuschalten.	Açılacak bir şey yok.	没有可解锁的内容。	Niente da sbloccare.	Ei mitään avattavaa.
+Run TopDownShooter > Meta > Setup first.	Lance d'abord TopDownShooter > Meta > Setup.	Führe zuerst TopDownShooter > Meta > Setup aus.	Önce TopDownShooter > Meta > Setup çalıştır.	请先运行 TopDownShooter > Meta > Setup。	Esegui prima TopDownShooter > Meta > Setup.	Suorita ensin TopDownShooter > Meta > Setup.
+More max health every run.	Plus de santé max à chaque partie.	Mehr max. Leben in jedem Run.	Her oyunda daha fazla maks. can.	每局获得更多生命上限。	Più salute massima in ogni partita.	Enemmän maksimiterveyttä joka pelissä.
+All weapons hit harder.	Toutes les armes frappent plus fort.	Alle Waffen treffen härter.	Tüm silahlar daha sert vurur.	所有武器伤害更高。	Tutte le armi colpiscono più forte.	Kaikki aseet iskevät kovemmin.
+Move faster.	Déplace-toi plus vite.	Bewege dich schneller.	Daha hızlı hareket et.	移动更快。	Muoviti più velocemente.	Liiku nopeammin.
+Pick up loot from farther away.	Ramasse le butin de plus loin.	Sammle Beute aus größerer Entfernung.	Ganimeti daha uzaktan topla.	从更远处拾取战利品。	Raccogli il bottino da più lontano.	Kerää saalista kauempaa.
+Gain more experience.	Gagne plus d'expérience.	Erhalte mehr Erfahrung.	Daha fazla tecrübe kazan.	获得更多经验。	Ottieni più esperienza.	Saat enemmän kokemusta.
+Start each run with extra coins.	Commence chaque partie avec des pièces en plus.	Starte jeden Run mit extra Münzen.	Her oyuna fazladan altınla başla.	每局开始时获得额外金币。	Inizia ogni partita con monete extra.	Aloita jokainen peli lisäkolikoilla.
+Free card rerolls every run.	Relances de cartes gratuites à chaque partie.	Kostenlose Karten-Rerolls in jedem Run.	Her oyunda ücretsiz kart yenileme.	每局可免费刷新卡牌。	Rilanci di carte gratuiti in ogni partita.	Ilmaisia korttien uudelleenarvontoja joka pelissä.
+Revive once with half health.	Ressuscite une fois avec la moitié de ta santé.	Einmal mit halbem Leben wiederbeleben.	Bir kez yarım canla diril.	以一半生命复活一次。	Rinasci una volta con metà salute.	Herää kerran henkiin puolella terveydellä.
+Reach wave {0}	Atteins la vague {0}	Erreiche Welle {0}	{0}. dalgaya ulaş	到达第 {0} 波	Raggiungi l'ondata {0}	Saavuta aalto {0}
+Kill {0} enemies in total	Élimine {0} ennemis au total	Besiege insgesamt {0} Gegner	Toplam {0} düşman öldür	累计击杀 {0} 名敌人	Uccidi {0} nemici in totale	Tapa yhteensä {0} vihollista
+Land {0} critical hits	Inflige {0} coups critiques	Lande {0} kritische Treffer	{0} kritik vuruş yap	打出 {0} 次暴击	Metti a segno {0} colpi critici	Tee {0} kriittistä osumaa
+Play {0} runs	Joue {0} parties	Spiele {0} Runs	{0} oyun oyna	进行 {0} 局游戏	Gioca {0} partite	Pelaa {0} peliä
+Defeat the Big Boss	Vaincs le Big Boss	Besiege den Big Boss	Big Boss'u yen	击败 Big Boss	Sconfiggi il Big Boss	Voita Big Boss
+Defeat {0} bosses	Vaincs {0} boss	Besiege {0} Bosse	{0} boss yen	击败 {0} 个首领	Sconfiggi {0} boss	Voita {0} pomoa
+Survive {0} minutes in one run	Survis {0} minutes en une partie	Überlebe {0} Minuten in einem Run	Tek oyunda {0} dakika hayatta kal	单局存活 {0} 分钟	Sopravvivi {0} minuti in una partita	Selviydy {0} minuuttia yhdessä pelissä
+Kill {0} enemies in one run	Élimine {0} ennemis en une partie	Besiege {0} Gegner in einem Run	Tek oyunda {0} düşman öldür	单局击杀 {0} 名敌人	Uccidi {0} nemici in una partita	Tapa {0} vihollista yhdessä pelissä
+Reach level {0} in one run	Atteins le niveau {0} en une partie	Erreiche Level {0} in einem Run	Tek oyunda {0}. seviyeye ulaş	单局达到 {0} 级	Raggiungi il livello {0} in una partita	Saavuta taso {0} yhdessä pelissä
+Earn {0} Core in total	Gagne {0} Core au total	Verdiene insgesamt {0} Core	Toplam {0} Core kazan	累计获得 {0} Core	Guadagna {0} Core in totale	Ansaitse yhteensä {0} Corea
+# --- Ayarlar ---
+AUDIO	AUDIO	AUDIO	SES	音频	AUDIO	ÄÄNI
+DISPLAY	AFFICHAGE	ANZEIGE	GÖRÜNTÜ	显示	SCHERMO	NÄYTTÖ
+MASTER	GÉNÉRAL	GESAMT	ANA SES	主音量	GENERALE	PÄÄ
+MUSIC	MUSIQUE	MUSIK	MÜZİK	音乐	MUSICA	MUSIIKKI
+SFX	EFFETS	EFFEKTE	EFEKT	音效	EFFETTI	TEHOSTEET
+QUALITY	QUALITÉ	QUALITÄT	KALİTE	画质	QUALITÀ	LAATU
+RESOLUTION	RÉSOLUTION	AUFLÖSUNG	ÇÖZÜNÜRLÜK	分辨率	RISOLUZIONE	RESOLUUTIO
+FULLSCREEN	PLEIN ÉCRAN	VOLLBILD	TAM EKRAN	全屏	SCHERMO INTERO	KOKO NÄYTTÖ
+VSYNC	VSYNC	VSYNC	VSYNC	垂直同步	VSYNC	VSYNC
+RESET	RÉINITIALISER	ZURÜCKSETZEN	SIFIRLA	重置	RIPRISTINA	NOLLAA
+Very Low	Très bas	Sehr niedrig	Çok Düşük	极低	Molto bassa	Erittäin matala
+Low	Bas	Niedrig	Düşük	低	Bassa	Matala
+Medium	Moyen	Mittel	Orta	中	Media	Keskitaso
+High	Élevé	Hoch	Yüksek	高	Alta	Korkea
+Very High	Très élevé	Sehr hoch	Çok Yüksek	极高	Molto alta	Erittäin korkea
+Ultra	Ultra	Ultra	Ultra	超高	Ultra	Ultra
+# --- Duraklatma ---
+PAUSED	PAUSE	PAUSE	DURAKLATILDI	已暂停	PAUSA	TAUKO
+RESUME	REPRENDRE	WEITER	DEVAM	继续游戏	RIPRENDI	JATKA
+RESTART	RECOMMENCER	NEUSTART	YENİDEN BAŞLA	重新开始	RICOMINCIA	ALOITA ALUSTA
+SAVE & QUIT	SAUVER & QUITTER	SPEICHERN & ENDE	KAYDET & ÇIK	保存并退出	SALVA & ESCI	TALLENNA & LOPETA
+MAIN MENU	MENU PRINCIPAL	HAUPTMENÜ	ANA MENÜ	主菜单	MENU PRINCIPALE	PÄÄVALIKKO
+CANCEL	ANNULER	ABBRECHEN	İPTAL	取消	ANNULLA	PERUUTA
+RETURN TO MENU?	RETOUR AU MENU ?	ZURÜCK ZUM MENÜ?	MENÜYE DÖN?	返回主菜单？	TORNARE AL MENU?	PALAA VALIKKOON?
+QUIT WITHOUT SAVING?	QUITTER SANS SAUVER ?	OHNE SPEICHERN BEENDEN?	KAYDETMEDEN ÇIK?	不保存直接退出？	USCIRE SENZA SALVARE?	LOPETA TALLENTAMATTA?
+This run will NOT be saved and can't be continued.\n<color=#FFCD75>Earned Core is still awarded.</color>	Cette partie ne sera PAS sauvegardée et ne pourra pas être reprise.\n<color=#FFCD75>Le Core gagné est quand même accordé.</color>	Dieser Run wird NICHT gespeichert und kann nicht fortgesetzt werden.\n<color=#FFCD75>Verdientes Core wird trotzdem gutgeschrieben.</color>	Bu oyun KAYDEDİLMEYECEK ve devam ettirilemeyecek.\n<color=#FFCD75>Kazanılan Core yine de verilir.</color>	本局游戏不会保存，也无法继续。\n<color=#FFCD75>已获得的 Core 仍会发放。</color>	Questa partita NON verrà salvata e non potrà essere ripresa.\n<color=#FFCD75>Il Core guadagnato viene comunque assegnato.</color>	Tätä peliä EI tallenneta, eikä sitä voi jatkaa.\n<color=#FFCD75>Ansaittu Core annetaan silti.</color>
+ESC TO RESUME	ÉCHAP POUR REPRENDRE	ESC ZUM FORTSETZEN	DEVAM İÇİN ESC	按 ESC 继续	ESC PER RIPRENDERE	ESC JATKAA
+B TO RESUME	B POUR REPRENDRE	B ZUM FORTSETZEN	DEVAM İÇİN B	按 B 继续	B PER RIPRENDERE	B JATKAA
+# --- Oyun içi HUD ---
+Wave {0}	Vague {0}	Welle {0}	Dalga {0}	第 {0} 波	Ondata {0}	Aalto {0}
+LvL: {0}	Niv : {0}	Lvl: {0}	Sv: {0}	等级: {0}	Liv: {0}	Taso: {0}
+WAVE {0}	VAGUE {0}	WELLE {0}	DALGA {0}	第 {0} 波	ONDATA {0}	AALTO {0}
+LV {0}	NIV {0}	LVL {0}	SV {0}	等级 {0}	LIV {0}	TASO {0}
+WEAPONS	ARMES	WAFFEN	SİLAHLAR	武器	ARMI	ASEET
+BOSS INCOMING!	BOSS EN APPROCHE !	BOSS IM ANMARSCH!	BOSS GELİYOR!	首领来袭！	ARRIVA IL BOSS!	POMO SAAPUU!
+SECOND CHANCE!	SECONDE CHANCE !	ZWEITE CHANCE!	İKİNCİ ŞANS!	第二次机会！	SECONDA POSSIBILITÀ!	TOINEN MAHDOLLISUUS!
+RUN RESUMED - WAVE {0}	PARTIE REPRISE - VAGUE {0}	RUN FORTGESETZT - WELLE {0}	OYUN DEVAM EDİYOR - DALGA {0}	游戏已继续 - 第 {0} 波	PARTITA RIPRESA - ONDATA {0}	PELI JATKUU - AALTO {0}
+SYNERGY: {0}!	SYNERGIE : {0} !	SYNERGIE: {0}!	SİNERJİ: {0}!	协同：{0}！	SINERGIA: {0}!	SYNERGIA: {0}!
+{0} merged -> Tier {1}!	{0} fusionné -> Rang {1} !	{0} verschmolzen -> Stufe {1}!	{0} birleşti -> Seviye {1}!	{0} 已合成 -> {1} 阶！	{0} fusa -> Livello {1}!	{0} yhdistetty -> Taso {1}!
+Slots full! Replace a skill with <color=#FFCD75>{0}</color>	Emplacements pleins ! Remplace une compétence par <color=#FFCD75>{0}</color>	Plätze voll! Ersetze einen Skill durch <color=#FFCD75>{0}</color>	Yuvalar dolu! Bir yeteneği <color=#FFCD75>{0}</color> ile değiştir	栏位已满！用 <color=#FFCD75>{0}</color> 替换一个技能	Slot pieni! Sostituisci un'abilità con <color=#FFCD75>{0}</color>	Paikat täynnä! Korvaa taito taidolla <color=#FFCD75>{0}</color>
+Weapon slots full! Replace a weapon with <color=#FFCD75>{0}</color>	Emplacements d'arme pleins ! Remplace une arme par <color=#FFCD75>{0}</color>	Waffenplätze voll! Ersetze eine Waffe durch <color=#FFCD75>{0}</color>	Silah yuvaları dolu! Bir silahı <color=#FFCD75>{0}</color> ile değiştir	武器栏已满！用 <color=#FFCD75>{0}</color> 替换一把武器	Slot armi pieni! Sostituisci un'arma con <color=#FFCD75>{0}</color>	Asepaikat täynnä! Korvaa ase aseella <color=#FFCD75>{0}</color>
+Click a skill below or press its key.  Its level will be lost.	Clique sur une compétence ci-dessous ou appuie sur sa touche.  Son niveau sera perdu.	Klicke unten auf einen Skill oder drücke seine Taste.  Sein Level geht verloren.	Aşağıdan bir yeteneğe tıkla ya da tuşuna bas.  Seviyesi kaybolur.	点击下方技能或按对应按键。  其等级将会丢失。	Clicca un'abilità qui sotto o premi il suo tasto.  Il suo livello andrà perso.	Napsauta taitoa alla tai paina sen näppäintä.  Sen taso menetetään.
+Choose a skill with the D-pad and press A.  Its level will be lost.	Choisis une compétence avec la croix et appuie sur A.  Son niveau sera perdu.	Wähle mit dem Steuerkreuz einen Skill und drücke A.  Sein Level geht verloren.	Yön tuşlarıyla bir yetenek seç ve A'ya bas.  Seviyesi kaybolur.	用十字键选择技能并按 A。  其等级将会丢失。	Scegli un'abilità con la croce direzionale e premi A.  Il suo livello andrà perso.	Valitse taito ristiohjaimella ja paina A.  Sen taso menetetään.
+Click a weapon below-right or press its number (1-{0}).	Clique sur une arme en bas à droite ou appuie sur son numéro (1-{0}).	Klicke rechts unten auf eine Waffe oder drücke ihre Nummer (1-{0}).	Sağ alttan bir silaha tıkla ya da numarasına bas (1-{0}).	点击右下方的武器或按其编号 (1-{0})。	Clicca un'arma in basso a destra o premi il suo numero (1-{0}).	Napsauta asetta oikealla alhaalla tai paina sen numeroa (1-{0}).
+Choose a weapon below-right with the D-pad and press A.  B to cancel.	Choisis une arme en bas à droite avec la croix et appuie sur A.  B pour annuler.	Wähle rechts unten mit dem Steuerkreuz eine Waffe und drücke A.  B zum Abbrechen.	Sağ alttan yön tuşlarıyla bir silah seç ve A'ya bas.  İptal için B.	用十字键选择右下方的武器并按 A。  按 B 取消。	Scegli un'arma in basso a destra con la croce e premi A.  B per annullare.	Valitse ase oikealta alhaalta ristiohjaimella ja paina A.  B peruuttaa.
+Cancel (Esc)	Annuler (Échap)	Abbrechen (Esc)	İptal (Esc)	取消 (Esc)	Annulla (Esc)	Peruuta (Esc)
+# --- Level atlama paneli / kartlar ---
+REROLL	RELANCER	NEU WÜRFELN	YENİLE	刷新	RILANCIA	ARVO UUDET
+REROLL <size=70%><color=#94B0C2>(R)</color></size>	RELANCER <size=70%><color=#94B0C2>(R)</color></size>	NEU WÜRFELN <size=70%><color=#94B0C2>(R)</color></size>	YENİLE <size=70%><color=#94B0C2>(R)</color></size>	刷新 <size=70%><color=#94B0C2>(R)</color></size>	RILANCIA <size=70%><color=#94B0C2>(R)</color></size>	ARVO UUDET <size=70%><color=#94B0C2>(R)</color></size>
+FREE	GRATUIT	GRATIS	ÜCRETSİZ	免费	GRATIS	ILMAINEN
+Replaces a skill	Remplace une compétence	Ersetzt einen Skill	Bir yeteneğin yerine geçer	替换一个技能	Sostituisce un'abilità	Korvaa taidon
+Replaces a weapon	Remplace une arme	Ersetzt eine Waffe	Bir silahın yerine geçer	替换一把武器	Sostituisce un'arma	Korvaa aseen
+{0} acquired!	{0} obtenu !	{0} erhalten!	{0} kazanıldı!	获得 {0}！	{0} ottenuto!	{0} hankittu!
+SYNERGY: {0}	SYNERGIE : {0}	SYNERGIE: {0}	SİNERJİ: {0}	协同：{0}	SINERGIA: {0}	SYNERGIA: {0}
+MERGE: {0} -> Tier {1} (x{2} damage)	FUSION : {0} -> Rang {1} (x{2} dégâts)	VERSCHMELZEN: {0} -> Stufe {1} (x{2} Schaden)	BİRLEŞTİR: {0} -> Seviye {1} (x{2} hasar)	合成：{0} -> {1} 阶（x{2} 伤害）	FUSIONE: {0} -> Livello {1} (x{2} danno)	YHDISTÄ: {0} -> Taso {1} (x{2} vahinko)
+Damage: {0}  Attacks: {1}/s	Dégâts : {0}  Attaques : {1}/s	Schaden: {0}  Angriffe: {1}/s	Hasar: {0}  Saldırı: {1}/sn	伤害：{0}  攻速：{1}/秒	Danno: {0}  Attacchi: {1}/s	Vahinko: {0}  Iskut: {1}/s
+Range: {0}	Portée : {0}	Reichweite: {0}	Menzil: {0}	范围：{0}	Portata: {0}	Kantama: {0}
+Cooldown: {0}s	Recharge : {0}s	Abklingzeit: {0}s	Bekleme: {0}sn	冷却：{0}秒	Ricarica: {0}s	Latausaika: {0}s
+Speed: {0}  Duration: {1}s	Vitesse : {0}  Durée : {1}s	Tempo: {0}  Dauer: {1}s	Hız: {0}  Süre: {1}sn	速度：{0}  持续：{1}秒	Velocità: {0}  Durata: {1}s	Nopeus: {0}  Kesto: {1}s
+Damage: {0}  Radius: {1}	Dégâts : {0}  Rayon : {1}	Schaden: {0}  Radius: {1}	Hasar: {0}  Yarıçap: {1}	伤害：{0}  半径：{1}	Danno: {0}  Raggio: {1}	Vahinko: {0}  Säde: {1}
+Duration: {0}s	Durée : {0}s	Dauer: {0}s	Süre: {0}sn	持续：{0}秒	Durata: {0}s	Kesto: {0}s
+{0}x Waves  Damage: {1}  Radius: {2}	{0}x Ondes  Dégâts : {1}  Rayon : {2}	{0}x Wellen  Schaden: {1}  Radius: {2}	{0}x Dalga  Hasar: {1}  Yarıçap: {2}	{0}x 波  伤害：{1}  半径：{2}	{0}x Onde  Danno: {1}  Raggio: {2}	{0}x Aallot  Vahinko: {1}  Säde: {2}
+{0}x Shots  Damage: {1}	{0}x Tirs  Dégâts : {1}	{0}x Schüsse  Schaden: {1}	{0}x Atış  Hasar: {1}	{0}x 发射  伤害：{1}	{0}x Colpi  Danno: {1}	{0}x Laukaukset  Vahinko: {1}
+Heal: {0} HP	Soin : {0} PV	Heilung: {0} LP	İyileşme: {0} Can	治疗：{0} 生命	Cura: {0} PS	Parannus: {0} HP
+Slow: {0}  for {1}s	Ralenti : {0}  pendant {1}s	Verlangsamung: {0}  für {1}s	Yavaşlatma: {0}  {1}sn boyunca	减速：{0}  持续 {1}秒	Rallentamento: {0}  per {1}s	Hidastus: {0}  {1}s ajan
++{0} Damage  +{1} Fire Rate	+{0} Dégâts  +{1} Cadence	+{0} Schaden  +{1} Feuerrate	+{0} Hasar  +{1} Atış Hızı	+{0} 伤害  +{1} 射速	+{0} Danno  +{1} Cadenza	+{0} Vahinko  +{1} Tulinopeus
+{0}x Chains  Damage: {1}	{0}x Chaînes  Dégâts : {1}	{0}x Ketten  Schaden: {1}	{0}x Zincir  Hasar: {1}	{0}x 连锁  伤害：{1}	{0}x Catene  Danno: {1}	{0}x Ketjut  Vahinko: {1}
+Cooldown	Recharge	Abklingzeit	Bekleme	冷却	Ricarica	Latausaika
+Speed	Vitesse	Tempo	Hız	速度	Velocità	Nopeus
+Duration	Durée	Dauer	Süre	持续	Durata	Kesto
+Damage	Dégâts	Schaden	Hasar	伤害	Danno	Vahinko
+Radius	Rayon	Radius	Yarıçap	半径	Raggio	Säde
+Waves	Ondes	Wellen	Dalga	波数	Onde	Aallot
+Shots	Tirs	Schüsse	Atış	发射数	Colpi	Laukaukset
+Heal	Soin	Heilung	İyileşme	治疗	Cura	Parannus
+Slow	Ralenti	Verlangsamung	Yavaşlatma	减速	Rallentamento	Hidastus
+Slow Duration	Durée du ralenti	Verlangsamungsdauer	Yavaşlatma Süresi	减速时长	Durata rallentamento	Hidastuksen kesto
+Fire Rate	Cadence	Feuerrate	Atış Hızı	射速	Cadenza	Tulinopeus
+Chains	Chaînes	Ketten	Zincir	连锁	Catene	Ketjut
+Range	Portée	Reichweite	Menzil	范围	Portata	Kantama
++{0} Max Health	+{0} Santé max	+{0} Max. Leben	+{0} Maks. Can	+{0} 生命上限	+{0} Salute max	+{0} Maks. terveys
++{0} Speed	+{0} Vitesse	+{0} Tempo	+{0} Hız	+{0} 速度	+{0} Velocità	+{0} Nopeus
++{0}% Damage	+{0}% Dégâts	+{0}% Schaden	+%{0} Hasar	+{0}% 伤害	+{0}% Danno	+{0}% Vahinko
++{0}% Fire Rate	+{0}% Cadence	+{0}% Feuerrate	+%{0} Atış Hızı	+{0}% 射速	+{0}% Cadenza	+{0}% Tulinopeus
++{0} Health	+{0} Santé	+{0} Leben	+{0} Can	+{0} 生命	+{0} Salute	+{0} Terveys
++{0} Pickup Range	+{0} Portée de ramassage	+{0} Sammelradius	+{0} Toplama Menzili	+{0} 拾取范围	+{0} Raggio raccolta	+{0} Keräyssäde
++{0}% Crit Chance	+{0}% Chance de critique	+{0}% Krit-Chance	+%{0} Kritik Şansı	+{0}% 暴击率	+{0}% Prob. critico	+{0}% Kriittinen mahd.
+# --- Skill açıklamaları ---
+Blink across short distances at light speed.	Téléporte-toi sur de courtes distances à la vitesse de la lumière.	Teleportiere dich blitzschnell über kurze Distanzen.	Kısa mesafeleri ışık hızında geç.	以光速瞬移一小段距离。	Teletrasportati per brevi distanze alla velocità della luce.	Siirry lyhyitä matkoja valonnopeudella.
+Unleash a fiery explosion that burns everything around you.	Déclenche une explosion ardente qui brûle tout autour de toi.	Entfessle eine feurige Explosion, die alles um dich herum verbrennt.	Etrafındaki her şeyi yakan alevli bir patlama başlat.	释放炽热爆炸，焚烧你周围的一切。	Scatena un'esplosione infuocata che brucia tutto intorno a te.	Laukaise tulinen räjähdys, joka polttaa kaiken ympäriltäsi.
+An energy barrier blocks all damage for a short time.	Une barrière d'énergie bloque tous les dégâts pendant un court instant.	Eine Energiebarriere blockt kurzzeitig jeden Schaden.	Bir enerji bariyeri kısa süre tüm hasarı engeller.	能量屏障在短时间内抵挡所有伤害。	Una barriera di energia blocca tutti i danni per breve tempo.	Energiamuuri torjuu kaiken vahingon hetken ajan.
+Send out shockwaves that hit every enemy they touch.	Envoie des ondes de choc qui frappent chaque ennemi touché.	Sende Schockwellen aus, die jeden berührten Gegner treffen.	Dokunduğu her düşmanı vuran şok dalgaları gönder.	发出冲击波，击中所有触及的敌人。	Emetti onde d'urto che colpiscono ogni nemico che toccano.	Lähetä shokkiaaltoja, jotka osuvat jokaiseen koskettamaansa viholliseen.
+Hurl fireballs in every direction around you.	Lance des boules de feu dans toutes les directions.	Schleudere Feuerbälle in alle Richtungen.	Etrafına her yöne ateş topları fırlat.	向四面八方投掷火球。	Scaglia palle di fuoco in ogni direzione intorno a te.	Heitä tulipalloja joka suuntaan ympärillesi.
+Instantly restore health.	Restaure instantanément de la santé.	Stelle sofort Leben wieder her.	Anında can yenile.	立即恢复生命。	Ripristina subito la salute.	Palauta terveyttä välittömästi.
+Blast of ice that damages and slows nearby enemies.	Une rafale de glace qui blesse et ralentit les ennemis proches.	Ein Eisstoß, der nahe Gegner verletzt und verlangsamt.	Yakındaki düşmanlara hasar veren ve onları yavaşlatan buz patlaması.	冰霜爆发，伤害并减速附近的敌人。	Un'esplosione di ghiaccio che danneggia e rallenta i nemici vicini.	Jääpurkaus, joka vahingoittaa ja hidastaa lähellä olevia vihollisia.
+Temporarily boosts weapon damage and fire rate.	Augmente temporairement les dégâts et la cadence des armes.	Erhöht kurzzeitig Waffenschaden und Feuerrate.	Silah hasarını ve atış hızını geçici olarak artırır.	暂时提升武器伤害和射速。	Aumenta temporaneamente danno e cadenza delle armi.	Lisää hetkellisesti aseiden vahinkoa ja tulinopeutta.
+Lightning strikes the nearest enemy and jumps between foes.	La foudre frappe l'ennemi le plus proche et rebondit entre les adversaires.	Ein Blitz trifft den nächsten Gegner und springt zwischen Feinden über.	Yıldırım en yakın düşmana çarpar ve düşmanlar arasında sıçrar.	闪电击中最近的敌人并在敌人间跳跃。	Un fulmine colpisce il nemico più vicino e salta tra i nemici.	Salama iskee lähimpään viholliseen ja hyppii vihollisesta toiseen.
+# --- Stat upgrade açıklamaları ---
+Raise your maximum health.	Augmente ta santé maximale.	Erhöhe dein maximales Leben.	Maksimum canını artır.	提升你的生命上限。	Aumenta la tua salute massima.	Nosta maksimiterveyttäsi.
+Move faster across the arena.	Déplace-toi plus vite dans l'arène.	Bewege dich schneller durch die Arena.	Arenada daha hızlı hareket et.	在竞技场中移动得更快。	Muoviti più velocemente nell'arena.	Liiku nopeammin areenalla.
+All weapons deal more damage.	Toutes les armes infligent plus de dégâts.	Alle Waffen verursachen mehr Schaden.	Tüm silahlar daha fazla hasar verir.	所有武器造成更多伤害。	Tutte le armi infliggono più danni.	Kaikki aseet tekevät enemmän vahinkoa.
+All weapons attack faster.	Toutes les armes attaquent plus vite.	Alle Waffen greifen schneller an.	Tüm silahlar daha hızlı saldırır.	所有武器攻击更快。	Tutte le armi attaccano più velocemente.	Kaikki aseet hyökkäävät nopeammin.
+Pulls loot from farther away.	Attire le butin de plus loin.	Zieht Beute aus größerer Entfernung an.	Ganimeti daha uzaktan çeker.	从更远处吸取战利品。	Attira il bottino da più lontano.	Vetää saalista kauempaa.
+More critical hits.	Plus de coups critiques.	Mehr kritische Treffer.	Daha fazla kritik vuruş.	更多暴击。	Più colpi critici.	Enemmän kriittisiä osumia.
+Adds 1 more sword to an empty slot.	Ajoute une épée de plus dans un emplacement vide.	Fügt einem leeren Platz ein weiteres Schwert hinzu.	Boş bir yuvaya 1 kılıç daha ekler.	在空栏位中再添加 1 把剑。	Aggiunge 1 spada in uno slot vuoto.	Lisää yhden miekan tyhjään paikkaan.
+# --- Silah açıklamaları ---
+Shoots enemies from a distance.	Tire sur les ennemis à distance.	Beschießt Gegner aus der Ferne.	Düşmanları uzaktan vurur.	远距离射击敌人。	Spara ai nemici da lontano.	Ampuu vihollisia kaukaa.
+Blasts a wide cone of pellets up close.	Projette un large cône de plombs à bout portant.	Feuert aus nächster Nähe einen breiten Schrotkegel.	Yakın mesafeye geniş bir saçma konisi atar.	近距离喷射大范围扇形弹丸。	Spara un ampio cono di pallini a distanza ravvicinata.	Ampuu leveän haulikartion lähietäisyydeltä.
+Sprays a fast stream of light bullets.	Crache un flot rapide de balles légères.	Versprüht einen schnellen Strom leichter Kugeln.	Hızlı bir hafif mermi akışı püskürtür.	快速喷射轻型子弹。	Spruzza un rapido flusso di proiettili leggeri.	Suihkuttaa nopean virran kevyitä luoteja.
+Steady, accurate automatic fire.	Tir automatique stable et précis.	Gleichmäßiges, präzises Dauerfeuer.	İstikrarlı, isabetli otomatik atış.	稳定精准的自动射击。	Fuoco automatico stabile e preciso.	Tasaista, tarkkaa automaattitulta.
+Long-range shots that pierce through enemies.	Tirs à longue portée qui transpercent les ennemis.	Weitreichende Schüsse, die Gegner durchbohren.	Düşmanları delip geçen uzun menzilli atışlar.	远程射击，可穿透敌人。	Colpi a lunga gittata che trapassano i nemici.	Pitkän kantaman laukauksia, jotka lävistävät viholliset.
+Slow, heavy shots with a high crit chance.	Tirs lents et lourds avec une forte chance de critique.	Langsame, schwere Schüsse mit hoher Krit-Chance.	Yüksek kritik şanslı, yavaş ve ağır atışlar.	缓慢而沉重的射击，暴击率高。	Colpi lenti e pesanti con alta probabilità di critico.	Hitaita, raskaita laukauksia suurella kriittisellä mahdollisuudella.
+Shreds everything in front of it.	Déchiquette tout ce qui se trouve devant.	Zerfetzt alles, was vor ihr ist.	Önündeki her şeyi parçalar.	撕碎前方的一切。	Fa a pezzi tutto ciò che ha davanti.	Repii kaiken edessään.
+Wide, heavy swings that hit everything nearby.	Des coups larges et lourds qui frappent tout alentour.	Weite, schwere Schwünge, die alles in der Nähe treffen.	Yakındaki her şeye çarpan geniş, ağır savuruşlar.	大范围重击，命中附近一切。	Fendenti ampi e pesanti che colpiscono tutto nei dintorni.	Leveitä, raskaita lyöntejä, jotka osuvat kaikkeen lähellä.
+Lightning-fast cuts in a narrow arc.	Des entailles fulgurantes dans un arc étroit.	Blitzschnelle Schnitte in einem engen Bogen.	Dar bir yayda şimşek hızında kesikler.	在狭窄弧线内闪电般斩击。	Tagli fulminei in un arco stretto.	Salamannopeita viiltoja kapeassa kaaressa.
+An energy blade that cleaves wide.	Une lame d'énergie qui tranche large.	Eine Energieklinge mit weitem Hieb.	Geniş bir alanı biçen enerji kılıcı.	能量之刃，大范围劈砍。	Una lama di energia che fende ad ampio raggio.	Energiaterä, joka viiltää laajalti.
+A heavier blade for tougher waves.	Une lame plus lourde pour les vagues plus dures.	Eine schwerere Klinge für härtere Wellen.	Zorlu dalgalar için daha ağır bir kılıç.	更沉重的刀刃，应对更艰难的敌潮。	Una lama più pesante per ondate più dure.	Raskaampi terä kovempiin aaltoihin.
+# --- Sinerji açıklamaları ---
+Area Blast deals +75% damage to slowed enemies.	Area Blast inflige +75 % de dégâts aux ennemis ralentis.	Area Blast verursacht +75 % Schaden an verlangsamten Gegnern.	Area Blast yavaşlamış düşmanlara +%75 hasar verir.	Area Blast 对减速的敌人造成 +75% 伤害。	Area Blast infligge +75% di danno ai nemici rallentati.	Area Blast tekee +75 % vahinkoa hidastettuihin vihollisiin.
+Chain Lightning deals double damage to slowed enemies.	Chain Lightning inflige le double de dégâts aux ennemis ralentis.	Chain Lightning verursacht doppelten Schaden an verlangsamten Gegnern.	Chain Lightning yavaşlamış düşmanlara iki kat hasar verir.	Chain Lightning 对减速的敌人造成双倍伤害。	Chain Lightning infligge danno doppio ai nemici rallentati.	Chain Lightning tekee tuplavahinkoa hidastettuihin vihollisiin.
+Dash cooldown is halved during Overdrive.	La recharge de Dash est divisée par deux pendant Overdrive.	Die Abklingzeit von Dash ist während Overdrive halbiert.	Overdrive sırasında Dash bekleme süresi yarıya iner.	Overdrive 期间 Dash 冷却时间减半。	Durante Overdrive la ricarica di Dash è dimezzata.	Dashin latausaika puolittuu Overdriven aikana.
+Dashing releases a burst of fireballs where you land.	Un Dash libère une salve de boules de feu à l'arrivée.	Ein Dash setzt am Landepunkt eine Feuerballsalve frei.	Dash attığında indiğin yerde ateş topları patlar.	冲刺落点会释放一圈火球。	Lo scatto rilascia una raffica di palle di fuoco dove atterri.	Syöksy vapauttaa tulipallopurkauksen laskeutumispaikassa.
+During Overdrive, Chain Lightning jumps to 2 more enemies.	Pendant Overdrive, Chain Lightning touche 2 ennemis de plus.	Während Overdrive springt Chain Lightning auf 2 weitere Gegner über.	Overdrive sırasında Chain Lightning 2 düşmana daha sıçrar.	Overdrive 期间，Chain Lightning 额外跳跃 2 名敌人。	Durante Overdrive, Chain Lightning salta su altri 2 nemici.	Overdriven aikana Chain Lightning hyppää 2 viholliseen lisää.
+Pulse Wave rings slow the enemies they hit.	Les anneaux de Pulse Wave ralentissent les ennemis touchés.	Die Ringe von Pulse Wave verlangsamen getroffene Gegner.	Pulse Wave halkaları çarptığı düşmanları yavaşlatır.	Pulse Wave 的光环会减速被击中的敌人。	Gli anelli di Pulse Wave rallentano i nemici colpiti.	Pulse Waven renkaat hidastavat vihollisia, joihin ne osuvat.
+Second Wind also shields you for 1.5s.	Second Wind te protège aussi pendant 1,5 s.	Second Wind schützt dich zusätzlich 1,5 s lang.	Second Wind seni ayrıca 1,5sn korur.	Second Wind 还会为你提供 1.5 秒护盾。	Second Wind ti protegge anche per 1,5s.	Second Wind suojaa sinua myös 1,5 s ajan.
+When Shield ends, it releases a pulse wave.	Quand Shield se termine, il libère une onde de choc.	Wenn Shield endet, setzt es eine Druckwelle frei.	Shield bittiğinde bir şok dalgası yayar.	Shield 结束时会释放一道脉冲波。	Quando Shield termina, rilascia un'onda d'urto.	Kun Shield päättyy, se vapauttaa sykeaallon.
+# --- Oyun sonu ---
+GAME OVER	PARTIE TERMINÉE	GAME OVER	OYUN BİTTİ	游戏结束	GAME OVER	PELI OHI
+WAVE REACHED	VAGUE ATTEINTE	ERREICHTE WELLE	ULAŞILAN DALGA	到达波次	ONDATA RAGGIUNTA	SAAVUTETTU AALTO
+TIME SURVIVED	TEMPS DE SURVIE	ÜBERLEBENSZEIT	HAYATTA KALMA SÜRESİ	存活时间	TEMPO SOPRAVVISSUTO	SELVIYTYMISAIKA
+ENEMIES KILLED	ENNEMIS ÉLIMINÉS	BESIEGTE GEGNER	ÖLDÜRÜLEN DÜŞMAN	击杀敌人	NEMICI UCCISI	TAPETUT VIHOLLISET
+DAMAGE DEALT	DÉGÂTS INFLIGÉS	VERURSACHTER SCHADEN	VERİLEN HASAR	造成伤害	DANNO INFLITTO	TEHTY VAHINKO
+COINS COLLECTED	PIÈCES RAMASSÉES	GESAMMELTE MÜNZEN	TOPLANAN ALTIN	收集金币	MONETE RACCOLTE	KERÄTYT KOLIKOT
+LEVEL	NIVEAU	LEVEL	SEVİYE	等级	LIVELLO	TASO
+NEW RECORD!	NOUVEAU RECORD !	NEUER REKORD!	YENİ REKOR!	新纪录！	NUOVO RECORD!	UUSI ENNÄTYS!
+NEW!	NOUVEAU !	NEU!	YENİ!	新！	NUOVO!	UUSI!
+CORE EARNED	CORE GAGNÉ	CORE VERDIENT	KAZANILAN CORE	获得 CORE	CORE GUADAGNATO	ANSAITTU CORE
+RUN #{0}	PARTIE N°{0}	RUN #{0}	OYUN #{0}	第 {0} 局	PARTITA #{0}	PELI #{0}
+WAVES	VAGUES	WELLEN	DALGA	波次	ONDATE	AALLOT
+KILLS	ÉLIM.	KILLS	ÖLDÜRME	击杀	UCCISIONI	TAPOT
+BOSS	BOSS	BOSS	BOSS	首领	BOSS	POMO
+TOTAL {0}	TOTAL {0}	GESAMT {0}	TOPLAM {0}	总计 {0}	TOTALE {0}	YHTEENSÄ {0}
+BEST {0}	MEILLEUR {0}	BESTWERT {0}	EN İYİ {0}	最佳 {0}	MIGLIORE {0}	PARAS {0}
+NEW UNLOCK:	NOUVEAU DÉBLOCAGE :	NEU FREIGESCHALTET:	YENİ KİLİT AÇILDI:	新解锁：	NUOVO SBLOCCO:	UUSI AVAUS:
+NEW UNLOCKS:	NOUVEAUX DÉBLOCAGES :	NEU FREIGESCHALTET:	YENİ KİLİTLER AÇILDI:	新解锁：	NUOVI SBLOCCHI:	UUDET AVAUKSET:
+# --- Tutorial ipuçları ---
+<b>{0}</b> to move. Your weapons attack <color=#73EFF7>automatically</color>.	<b>{0}</b> pour te déplacer. Tes armes attaquent <color=#73EFF7>automatiquement</color>.	<b>{0}</b> zum Bewegen. Deine Waffen greifen <color=#73EFF7>automatisch</color> an.	Hareket için <b>{0}</b>. Silahların <color=#73EFF7>otomatik</color> saldırır.	<b>{0}</b> 移动。武器会<color=#73EFF7>自动</color>攻击。	<b>{0}</b> per muoverti. Le tue armi attaccano <color=#73EFF7>automaticamente</color>.	<b>{0}</b> liikkuu. Aseesi hyökkäävät <color=#73EFF7>automaattisesti</color>.
+Collect the <color=#E54658>red orbs</color> for EXP. Level up to pick upgrades.	Ramasse les <color=#E54658>orbes rouges</color> pour gagner de l'EXP. Monte de niveau pour choisir des améliorations.	Sammle die <color=#E54658>roten Kugeln</color> für EP. Steige auf, um Upgrades zu wählen.	EXP için <color=#E54658>kırmızı küreleri</color> topla. Seviye atlayınca geliştirme seç.	收集<color=#E54658>红色光球</color>获取经验。升级后可选择强化。	Raccogli le <color=#E54658>sfere rosse</color> per l'EXP. Sali di livello per scegliere i potenziamenti.	Kerää <color=#E54658>punaisia palloja</color> saadaksesi EXP:tä. Nouse tasolla valitaksesi päivityksiä.
+Pick <b>one</b> upgrade. Weapon cards cost <color=#FFCD75>coins</color> - press <b>{0}</b> to reroll the cards.	Choisis <b>une</b> amélioration. Les cartes d'arme coûtent des <color=#FFCD75>pièces</color> - appuie sur <b>{0}</b> pour relancer les cartes.	Wähle <b>ein</b> Upgrade. Waffenkarten kosten <color=#FFCD75>Münzen</color> - drücke <b>{0}</b>, um neu zu würfeln.	<b>Bir</b> geliştirme seç. Silah kartları <color=#FFCD75>altın</color> ister - kartları yenilemek için <b>{0}</b>'a bas.	选择<b>一项</b>强化。武器卡需要<color=#FFCD75>金币</color> - 按 <b>{0}</b> 刷新卡牌。	Scegli <b>un</b> potenziamento. Le carte arma costano <color=#FFCD75>monete</color> - premi <b>{0}</b> per rilanciare le carte.	Valitse <b>yksi</b> päivitys. Asekortit maksavat <color=#FFCD75>kolikoita</color> - paina <b>{0}</b> arpoaksesi kortit uudelleen.
+Press <b>{0}</b> to use <color=#73EFF7>{1}</color>. Skills recharge over time.	Appuie sur <b>{0}</b> pour utiliser <color=#73EFF7>{1}</color>. Les compétences se rechargent avec le temps.	Drücke <b>{0}</b>, um <color=#73EFF7>{1}</color> zu nutzen. Skills laden sich mit der Zeit auf.	<color=#73EFF7>{1}</color> kullanmak için <b>{0}</b>'a bas. Yetenekler zamanla dolar.	按 <b>{0}</b> 使用 <color=#73EFF7>{1}</color>。技能会随时间充能。	Premi <b>{0}</b> per usare <color=#73EFF7>{1}</color>. Le abilità si ricaricano col tempo.	Paina <b>{0}</b> käyttääksesi taitoa <color=#73EFF7>{1}</color>. Taidot latautuvat ajan myötä.
+<color=#FFCD75>Coins</color> buy weapons on level-up cards. Save them up!	Les <color=#FFCD75>pièces</color> achètent des armes sur les cartes de niveau. Économise-les !	Mit <color=#FFCD75>Münzen</color> kaufst du Waffen auf Level-up-Karten. Spar sie dir auf!	<color=#FFCD75>Altınlar</color> seviye kartlarında silah alır. Biriktir!	<color=#FFCD75>金币</color>可在升级卡中购买武器。存起来吧！	Le <color=#FFCD75>monete</color> comprano armi sulle carte di livello. Mettile da parte!	<color=#FFCD75>Kolikoilla</color> ostetaan aseita tasokorteista. Säästä niitä!
+Buy the <b>same weapon</b> again to <color=#C78BFF>MERGE</color> it into a stronger tier!	Achète la <b>même arme</b> pour la <color=#C78BFF>FUSIONNER</color> en un rang supérieur !	Kaufe die <b>gleiche Waffe</b> erneut, um sie zu einer stärkeren Stufe zu <color=#C78BFF>VERSCHMELZEN</color>!	<b>Aynı silahı</b> tekrar alarak daha güçlü bir seviyeye <color=#C78BFF>BİRLEŞTİR</color>!	再次购买<b>同一把武器</b>，即可<color=#C78BFF>合成</color>更高阶！	Compra di nuovo la <b>stessa arma</b> per <color=#C78BFF>FONDERLA</color> in un livello superiore!	Osta <b>sama ase</b> uudelleen <color=#C78BFF>YHDISTÄÄKSESI</color> sen vahvemmaksi tasoksi!
+<color=#E5533C>Boss!</color> It hits hard - keep moving and use your skills.	<color=#E5533C>Boss !</color> Il frappe fort - reste en mouvement et utilise tes compétences.	<color=#E5533C>Boss!</color> Er schlägt hart zu - bleib in Bewegung und nutze deine Skills.	<color=#E5533C>Boss!</color> Sert vurur - hareket etmeye devam et ve yeteneklerini kullan.	<color=#E5533C>首领！</color>它攻击很猛 - 保持移动并使用技能。	<color=#E5533C>Boss!</color> Colpisce forte - continua a muoverti e usa le abilità.	<color=#E5533C>Pomo!</color> Se iskee kovaa - pysy liikkeessä ja käytä taitojasi.
+<b>{0}</b> pauses. <color=#73EFF7>SAVE & QUIT</color> lets you continue this run later.	<b>{0}</b> met en pause. <color=#73EFF7>SAUVER & QUITTER</color> te permet de reprendre plus tard.	<b>{0}</b> pausiert. Mit <color=#73EFF7>SPEICHERN & ENDE</color> kannst du den Run später fortsetzen.	<b>{0}</b> oyunu duraklatır. <color=#73EFF7>KAYDET & ÇIK</color> ile bu oyuna sonra devam edebilirsin.	<b>{0}</b> 暂停。<color=#73EFF7>保存并退出</color>可稍后继续本局。	<b>{0}</b> mette in pausa. <color=#73EFF7>SALVA & ESCI</color> ti permette di continuare più tardi.	<b>{0}</b> keskeyttää. <color=#73EFF7>TALLENNA & LOPETA</color> antaa jatkaa peliä myöhemmin.
+You earned <color=#73EFF7>CORE</color>! Spend it in <color=#73EFF7>UPGRADES</color> for permanent bonuses.	Tu as gagné du <color=#73EFF7>CORE</color> ! Dépense-le dans <color=#73EFF7>AMÉLIORATIONS</color> pour des bonus permanents.	Du hast <color=#73EFF7>CORE</color> verdient! Gib es unter <color=#73EFF7>UPGRADES</color> für dauerhafte Boni aus.	<color=#73EFF7>CORE</color> kazandın! Kalıcı bonuslar için <color=#73EFF7>GELİŞTİRMELER</color>'de harca.	你获得了 <color=#73EFF7>CORE</color>！在<color=#73EFF7>强化</color>中使用它获得永久加成。	Hai guadagnato <color=#73EFF7>CORE</color>! Spendilo in <color=#73EFF7>POTENZIAMENTI</color> per bonus permanenti.	Ansaitsit <color=#73EFF7>COREA</color>! Käytä sitä kohdassa <color=#73EFF7>PÄIVITYKSET</color> pysyviin bonuksiin.
+Left stick	Stick gauche	Linker Stick	Sol analog	左摇杆	Levetta sinistra	Vasen sauva

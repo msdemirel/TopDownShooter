@@ -52,6 +52,9 @@ public class PlayerSkills : MonoBehaviour
     float[] readyTimes;      // slot bazında: bu zamandan önce tekrar kullanılamaz
     float[] cooldownUsed;    // slot bazında: son kullanımda uygulanan cooldown (Afterburner kısaltabilir)
     int overdriveActive;     // süren Overdrive sayısı (Afterburner / Supercharge sinerjileri okur)
+    // Süren Overdrive'ların silah çarpanlarına eklediği GEÇİCİ bonus (kayıtta çıkarılır, kalıcı olmasın)
+    public float ActiveOverdriveDamage { get; private set; }
+    public float ActiveOverdriveFireRate { get; private set; }
     readonly HashSet<SynergyId> activeSynergies = new HashSet<SynergyId>();
     int shieldCount;         // iç içe kalkanlar birbirinin dokunulmazlığını bozmasın
     InputAction[] actions;   // slot tuşları: referanslar + asset'te adıyla bulunan ek slotlar
@@ -219,14 +222,37 @@ public class PlayerSkills : MonoBehaviour
 
     // Skiller değişince aktif sinerjileri yeniden hesapla; yeni açılanları bildir.
     // (Swap ile bir skill giderse o sinerji sessizce kapanır.)
-    void RefreshSynergies()
+    void RefreshSynergies(bool notify = true)
     {
         foreach (var d in SkillSynergies.All)
         {
             bool on = HasSkillType(d.a) && HasSkillType(d.b);
-            if (on && activeSynergies.Add(d.id)) OnSynergyActivated?.Invoke(d);
+            if (on && activeSynergies.Add(d.id) && notify)
+            {
+                AudioManager.Play(SfxId.Synergy);
+                OnSynergyActivated?.Invoke(d);
+            }
             else if (!on) activeSynergies.Remove(d.id);
         }
+    }
+
+    public int GetSkillLevel(int slot) => slot >= 0 && slot < skillLevels.Count ? skillLevels[slot] : 0;
+
+    // Kayıttan devam (RunSave): skill'ler slot sırasıyla, seviyeleriyle. HUD'a eklenir,
+    // sinerjiler sessizce açılır (bildirim/ses yok: zaten kazanılmışlardı).
+    public void RestoreSkills(System.Collections.Generic.IList<(SkillUpgradeData skill, int level)> list)
+    {
+        skills.Clear();
+        skillLevels.Clear();
+        foreach (var (skill, level) in list)
+        {
+            if (skill == null || skills.Count >= SlotCount) continue;
+            skills.Add(skill);
+            skillLevels.Add(level);
+            readyTimes[skills.Count - 1] = 0f;
+            OnSkillAdded?.Invoke(skills.Count - 1, skill);
+        }
+        RefreshSynergies(notify: false);
     }
 
     // ---- HUD'un okuduğu bilgiler ----
@@ -265,15 +291,41 @@ public class PlayerSkills : MonoBehaviour
 
         InputAction action = Actions[slot];
 
+        // Son kullanılan cihazın bağlantısı: klavyede "Space"/"E", gamepad'de "A"/"X"...
+        bool pad = InputMode.UsingGamepad;
         var bindings = action.bindings;
         for (int i = 0; i < bindings.Count; i++)
         {
             if (bindings[i].isComposite || bindings[i].isPartOfComposite) continue;
-            if (IsSpacePath(bindings[i].effectivePath)) return "Space";
+            string path = bindings[i].effectivePath;
+            bool isPad = path != null && path.StartsWith("<Gamepad>");
+            if (isPad != pad) continue;
+            if (!pad && IsSpacePath(path)) return "Space";
+            return pad ? PadName(path) : action.GetBindingDisplayString(i);
         }
-
         return action.GetBindingDisplayString();
     }
+
+    // Gamepad tuşu -> kısa ad (Xbox düzeni; ekranda A / X / Y / RB)
+    static string PadName(string path)
+    {
+        string c = path.Substring(path.IndexOf('/') + 1);
+        switch (c)
+        {
+            case "buttonSouth": return "A";
+            case "buttonWest": return "X";
+            case "buttonNorth": return "Y";
+            case "buttonEast": return "B";
+            case "rightShoulder": return "RB";
+            case "leftShoulder": return "LB";
+            case "rightTrigger": return "RT";
+            case "leftTrigger": return "LT";
+            default: return c;
+        }
+    }
+
+    // Bir panel/menü aynı tuşla kapanınca (gamepad A = Skill1) o kare skill tetiklenmesin
+    public void IgnoreInputThisFrame() => ignoreInputFrame = Time.frameCount;
 
     // "<Keyboard>/space" gibi bir yol boşluk tuşunu mu gösteriyor?
     static bool IsSpacePath(string path)
@@ -291,7 +343,7 @@ public class PlayerSkills : MonoBehaviour
             cooldown = Mathf.Max(0.1f, cooldown * SkillSynergies.AfterburnerCooldownFactor);
         readyTimes[slot] = Time.time + cooldown;
         cooldownUsed[slot] = cooldown;
-        AudioManager.PlaySkill();
+        AudioManager.Play(SkillSound(s.skillType));
 
         switch (s.skillType)
         {
@@ -350,6 +402,20 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
+    static SfxId SkillSound(SkillType t) => t switch
+    {
+        SkillType.Dash => SfxId.Dash,
+        SkillType.AreaBlast => SfxId.Blast,
+        SkillType.Shield => SfxId.Shield,
+        SkillType.PulseWave => SfxId.Pulse,
+        SkillType.Burst => SfxId.Burst,
+        SkillType.Heal => SfxId.Heal,
+        SkillType.FrostNova => SfxId.Frost,
+        SkillType.Overdrive => SfxId.Overdrive,
+        SkillType.ChainLightning => SfxId.Lightning,
+        _ => SfxId.Blast,
+    };
+
     // Yarıçaptaki düşmanlara hasar + yavaşlatma. Önce yavaşlat, sonra vur:
     // hasar düşmanı öldürürse listeden silinir (sondan başa dönme sebebi, bkz. BlastWave.ApplyDamage).
     void DoFrostNova(SkillLevelStats lv)
@@ -382,6 +448,8 @@ public class PlayerSkills : MonoBehaviour
         float rate = lv.overdriveFireRateBonus;
         weapons.AddDamageMultiplier(dmg);
         weapons.AddFireRateMultiplier(rate);
+        ActiveOverdriveDamage += dmg;
+        ActiveOverdriveFireRate += rate;
 
         var aura = OverdriveAura.Attach(gameObject, lv.overdriveDuration, overdriveColor);
         GameObject fx = SpawnEffect(s, 0f, attach: true);   // opsiyonel ek prefab
@@ -392,6 +460,8 @@ public class PlayerSkills : MonoBehaviour
         if (fx != null) Destroy(fx);
         weapons.AddDamageMultiplier(-dmg);
         weapons.AddFireRateMultiplier(-rate);
+        ActiveOverdriveDamage -= dmg;
+        ActiveOverdriveFireRate -= rate;
         overdriveActive--;
     }
 

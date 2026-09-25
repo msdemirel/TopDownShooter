@@ -22,7 +22,20 @@ public class RunStats : MonoBehaviour
     public float DamageDealt => damageDealt;
 
     // Scaled zaman: upgrade paneli / pause sırasında geçen süre SAYILMAZ.
-    public float TimeSurvived => deathTime >= 0f ? deathTime : Time.timeSinceLevelLoad;
+    public float TimeSurvived => (deathTime >= 0f ? deathTime : Time.timeSinceLevelLoad) + timeOffset;
+    float timeOffset;   // kayıttan devam edilince önceki oturumun süresi
+
+    // Kayıttan devam (RunSave). Para geri yüklendikten SONRA çağrılmalı: o artış "toplanan" sayılmasın.
+    public void RestoreState(RunResult r)
+    {
+        kills = r.kills;
+        coinsCollected = r.coins;
+        damageDealt = r.damage;
+        crits = r.crits;
+        bossKills = r.bossKills;
+        timeOffset = r.timeSurvived - Time.timeSinceLevelLoad;
+        if (playerStats != null) lastMoney = playerStats.Money;
+    }
 
     public int WaveReached => waves != null ? Mathf.Max(1, waves.CurrentWave) : 1;
     public int Level => playerStats != null ? playerStats.Level : 1;

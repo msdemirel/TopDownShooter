@@ -96,6 +96,7 @@ public class SkillHUD : MonoBehaviour
             if (slots[i] != null && slots[i].root != null) slotBaseScales[i] = slots[i].root.transform.localScale;
 
         playerSkills.OnSkillAdded += HandleSkillAdded;
+        InputMode.Changed += RefreshKeyLabels;
         playerSkills.OnSkillReplaced += HandleSkillReplaced;
 
         // Başta tüm kutular gizli (skill kazanılınca açılır)
@@ -107,6 +108,7 @@ public class SkillHUD : MonoBehaviour
     {
         if (playerSkills == null) return;
         playerSkills.OnSkillAdded -= HandleSkillAdded;
+        InputMode.Changed -= RefreshKeyLabels;
         playerSkills.OnSkillReplaced -= HandleSkillReplaced;
     }
 
@@ -262,6 +264,14 @@ public class SkillHUD : MonoBehaviour
 
     void HandleSkillReplaced(int slot, SkillUpgradeData skill) => HandleSkillAdded(slot, skill);
 
+    // Klavye <-> gamepad değişince "Space" / "A" etiketleri güncellensin
+    void RefreshKeyLabels()
+    {
+        if (playerSkills == null) return;
+        for (int i = 0; i < slots.Length; i++)
+            if (slots[i] != null && slots[i].keyText != null) slots[i].keyText.text = playerSkills.GetKeyName(i);
+    }
+
     // ---- Swap ----
     // Oyun donukken çağrılır (upgrade paneli yerine). Seçim onPick(slot), vazgeçme onCancel ile döner.
     public void BeginSwap(SkillUpgradeData incoming, Action<int> onPick, Action onCancel)
@@ -272,13 +282,24 @@ public class SkillHUD : MonoBehaviour
         BuildSwapPrompt();
         swapPrompt.SetActive(true);
         swapPrompt.transform.SetAsLastSibling();   // diğer UI'ın önünde
-        swapTitle.text = $"Slots full! Replace a skill with <color=#FFCD75>{incoming.title}</color>\n" +
-                         "<size=70%>Click a skill below or press its key.  Its level will be lost.</size>";
+        swapTitle.text = Loc.F("Slots full! Replace a skill with <color=#FFCD75>{0}</color>", incoming.title) + "\n<size=70%>" +
+                         Loc.T(InputMode.UsingGamepad
+                             ? "Choose a skill with the D-pad and press A.  Its level will be lost."
+                             : "Click a skill below or press its key.  Its level will be lost.") + "</size>";
         swapIcon.sprite = incoming.icon;
         swapIcon.enabled = incoming.icon != null;
 
         for (int i = 0; i < slots.Length; i++)
             SetSlotClickable(i, playerSkills.GetSkill(i) != null);
+
+        // Gamepad ile gezilebilsin: ilk dolu slot seçili gelsin
+        if (UnityEngine.EventSystems.EventSystem.current != null)
+            for (int i = 0; i < slots.Length; i++)
+                if (slots[i] != null && slots[i].root != null && playerSkills.GetSkill(i) != null)
+                {
+                    UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(slots[i].root);
+                    break;
+                }
     }
 
     void EndSwap()
@@ -377,7 +398,7 @@ public class SkillHUD : MonoBehaviour
         cancelGo.GetComponent<Button>().onClick.AddListener(CancelSwap);
 
         var ct = MakeText("Label", crt, font, 22f, TextAlignmentOptions.Center);
-        ct.text = "Cancel (Esc)";
+        Loc.Bind(ct, "Cancel (Esc)");
         ct.rectTransform.anchorMin = Vector2.zero;
         ct.rectTransform.anchorMax = Vector2.one;
         ct.rectTransform.offsetMin = ct.rectTransform.offsetMax = Vector2.zero;
@@ -425,9 +446,10 @@ public class SkillHUD : MonoBehaviour
     void UpdateSwap()
     {
         var kb = Keyboard.current;
-        if (kb != null && kb.escapeKey.wasPressedThisFrame) { CancelSwap(); return; }
+        if ((kb != null && kb.escapeKey.wasPressedThisFrame) || InputMode.BackPressed) { CancelSwap(); return; }
 
-        int pressed = playerSkills.GetPressedSlot();
+        // Gamepad: seçim d-pad ile gezilip A ile yapılır (A aynı zamanda Skill1 tuşu: slot 1'i seçmesin)
+        int pressed = InputMode.UsingGamepad ? -1 : playerSkills.GetPressedSlot();
         if (pressed >= 0 && playerSkills.GetSkill(pressed) != null) { PickSlot(pressed); return; }
 
         float k = 1f + (swapPulseScale - 1f) * (0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 8f));

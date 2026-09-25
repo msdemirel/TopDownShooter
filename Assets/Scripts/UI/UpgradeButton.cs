@@ -55,7 +55,7 @@ public class UpgradeButton : MonoBehaviour
         if (descriptionText != null)
         {
             string desc = choice.data.GetDescription(choice.tier);
-            string noteText = choice.replacesSkill ? replacesNote : choice.replacesWeapon ? replacesWeaponNote : null;
+            string noteText = Loc.T(choice.replacesSkill ? replacesNote : choice.replacesWeapon ? replacesWeaponNote : null);
             if (!string.IsNullOrEmpty(noteText))
             {
                 string note = $"<color=#{ColorUtility.ToHtmlStringRGB(replacesNoteColor)}>{noteText}</color>";
@@ -81,7 +81,7 @@ public class UpgradeButton : MonoBehaviour
 
         if (costText != null)
         {
-            costText.text = cost <= 0 ? freeText : cost.ToString();
+            costText.text = cost <= 0 ? Loc.T(freeText) : cost.ToString();
             costText.color = affordable ? affordColor : cantAffordColor;
         }
 

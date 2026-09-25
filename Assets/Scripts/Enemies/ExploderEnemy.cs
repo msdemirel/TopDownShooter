@@ -71,6 +71,7 @@ public class ExploderEnemy : EnemyBase
         if (explosionVfx != null)
             Instantiate(explosionVfx, transform.position, Quaternion.identity);
 
+        AudioManager.Play(SfxId.Explosion, 0.8f);
         if (shakeStrength > 0f)
             CameraShake.Shake(shakeStrength, shakeDuration);
 

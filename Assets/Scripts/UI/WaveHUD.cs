@@ -16,6 +16,7 @@ public class WaveHUD : MonoBehaviour
     [SerializeField] string waveFormat = "Wave {0}";
     [SerializeField] TMP_Text waveTimerText;   // dalganın kalan süresi (sürekli görünür)
     [SerializeField] TMP_Text countdownText;   // 5 4 3 2 1 (sadece dalga sonunda)
+    int lastCountdown = -1;
 
     void Awake()
     {
@@ -30,7 +31,7 @@ public class WaveHUD : MonoBehaviour
         // Dalga numarası (0 = henüz ilk dalga başlamadı)
         if (waveText != null)
             waveText.text = waveManager.CurrentWave > 0
-                ? string.Format(waveFormat, waveManager.CurrentWave)
+                ? Loc.F(waveFormat, waveManager.CurrentWave)
                 : "";
 
         float left = waveManager.WaveTimeLeft;
@@ -49,7 +50,15 @@ public class WaveHUD : MonoBehaviour
             bool show = waveManager.WaveActive && left > 0f && left <= waveManager.CountdownSeconds;
 
             countdownText.gameObject.SetActive(show);
-            if (show) countdownText.text = Mathf.CeilToInt(left).ToString();
+            if (show)
+            {
+                int n = Mathf.CeilToInt(left);
+                countdownText.text = n.ToString();
+                // Her saniye bir tik; son saniyelerde perde yükselir (gerilim)
+                if (n != lastCountdown) AudioManager.Play(SfxId.CountdownTick, 1f, 1f + 0.08f * (waveManager.CountdownSeconds - n));
+                lastCountdown = n;
+            }
+            else lastCountdown = -1;
         }
     }
 }

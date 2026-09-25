@@ -66,13 +66,13 @@ public class UpgradeToastUI : MonoBehaviour
     // bekleyip sıraya öyle giriyor ki önce "Frost Nova acquired!", sonra sinerji görünsün.
     void HandleSynergy(SkillSynergies.Def d)
         => StartCoroutine(ShowNextFrame(
-            $"<color={SkillUpgradeData.SynergyColor}>SYNERGY: {d.name}!</color>\n<size=70%>{d.description}</size>"));
+            $"<color={SkillUpgradeData.SynergyColor}>{Loc.F("SYNERGY: {0}!", d.name)}</color>\n<size=70%>{Loc.T(d.description)}</size>"));
 
     // "Bat merged -> Tier II!" (zincirleme birleşmede her kademe ayrı bildirilir)
     void HandleMerged(Weapon w, int freedSlot)
     {
         if (w == null || w.Data == null) return;
-        Show($"<color={WeaponTiers.Hex(w.Tier)}>{w.Data.weaponName} merged -> Tier {WeaponTiers.RomanNumeral(w.Tier)}!</color>");
+        Show($"<color={WeaponTiers.Hex(w.Tier)}>{Loc.F("{0} merged -> Tier {1}!", w.Data.weaponName, WeaponTiers.RomanNumeral(w.Tier))}</color>");
     }
 
     IEnumerator ShowNextFrame(string msg)

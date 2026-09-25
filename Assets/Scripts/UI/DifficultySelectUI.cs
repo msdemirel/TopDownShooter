@@ -37,8 +37,13 @@ public class DifficultySelectUI : MonoBehaviour
     bool starting;
     int openedFrame;   // paneli açan ENTER aynı karede kartı da seçmesin
 
+    void OnDisable() => Loc.Changed -= Rebuild;
+    void Rebuild() { Build(); Highlight(); }
+
     void OnEnable()
     {
+        Loc.Changed -= Rebuild;
+        Loc.Changed += Rebuild;
         starting = false;
         openedFrame = Time.frameCount;
         Build();
@@ -50,10 +55,12 @@ public class DifficultySelectUI : MonoBehaviour
     void Update()
     {
         var kb = Keyboard.current;
-        if (kb == null || starting || cards.Count == 0 || Time.frameCount <= openedFrame) return;
+        if (starting || cards.Count == 0 || Time.frameCount <= openedFrame) return;
+        if (kb == null) { int st = InputMode.HorizontalStep; if (st != 0) Move(st); return; }
 
-        if (kb.leftArrowKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame) Move(-1);
-        else if (kb.rightArrowKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame) Move(1);
+        int padStep = InputMode.HorizontalStep;   // gamepad d-pad / sol analog
+        if (kb.leftArrowKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame || padStep < 0) Move(-1);
+        else if (kb.rightArrowKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame || padStep > 0) Move(1);
         else if (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame || kb.spaceKey.wasPressedThisFrame)
             Choose(selected);
 
@@ -127,6 +134,7 @@ public class DifficultySelectUI : MonoBehaviour
             btn.targetGraphic = img;
             btn.transition = Selectable.Transition.None;   // renk Highlight'ta yönetiliyor
             btn.interactable = open;
+            btn.navigation = new Navigation { mode = Navigation.Mode.None };   // gezinmeyi biz yönetiyoruz (kart atlamasın)
             int idx = cards.Count;
             btn.onClick.AddListener(() => Choose(idx));
             // Üstüne gelince seç (klavye ve fare aynı kartı göstersin)
@@ -136,23 +144,23 @@ public class DifficultySelectUI : MonoBehaviour
             trigger.triggers.Add(enter);
 
             float y = cardSize.y * 0.5f - 60f;
-            Label(rt, "Title", d.title, 52f, open ? d.color : Muted, TextAlignmentOptions.Center, new Vector2(0f, y), new Vector2(cardSize.x - 40f, 64f));
-            var desc = Label(rt, "Desc", d.description, 20f, Muted, TextAlignmentOptions.Top, new Vector2(0f, y - 78f), new Vector2(cardSize.x - 60f, 60f));
+            Label(rt, "Title", Loc.T(d.title), 52f, open ? d.color : Muted, TextAlignmentOptions.Center, new Vector2(0f, y), new Vector2(cardSize.x - 40f, 64f));
+            var desc = Label(rt, "Desc", Loc.T(d.description), 20f, Muted, TextAlignmentOptions.Top, new Vector2(0f, y - 78f), new Vector2(cardSize.x - 60f, 60f));
             desc.textWrappingMode = TextWrappingModes.Normal;
 
             string mods =
-                $"Enemy health  <color=#FFFFFF>x{d.enemyHealth:0.##}</color>\n" +
-                $"Enemy damage  <color=#FFFFFF>x{d.enemyDamage:0.##}</color>\n" +
-                $"Enemy speed  <color=#FFFFFF>x{d.enemySpeed:0.##}</color>";
+                $"{Loc.T("Enemy health")}  <color=#FFFFFF>x{d.enemyHealth:0.##}</color>\n" +
+                $"{Loc.T("Enemy damage")}  <color=#FFFFFF>x{d.enemyDamage:0.##}</color>\n" +
+                $"{Loc.T("Enemy speed")}  <color=#FFFFFF>x{d.enemySpeed:0.##}</color>";
             var modText = Label(rt, "Modifiers", mods, 24f, Muted, TextAlignmentOptions.Center, new Vector2(0f, -10f), new Vector2(cardSize.x - 40f, 120f));
             modText.lineSpacing = 12f;
-            Label(rt, "Core", $"CORE x{d.coreMultiplier:0.##}", 30f, Gold, TextAlignmentOptions.Center,
+            Label(rt, "Core", $"{Loc.T("CORE")} x{d.coreMultiplier:0.##}", 30f, Gold, TextAlignmentOptions.Center,
                   new Vector2(0f, -110f), new Vector2(cardSize.x - 40f, 40f));
 
             if (open)
             {
                 int best = Difficulty.BestWave(d);
-                Label(rt, "Best", best > 0 ? $"BEST WAVE {best}" : "NOT PLAYED YET", 22f, White,
+                Label(rt, "Best", best > 0 ? Loc.F("BEST WAVE {0}", best) : Loc.T("NOT PLAYED YET"), 22f, White,
                       TextAlignmentOptions.Center, new Vector2(0f, -cardSize.y * 0.5f + 50f), new Vector2(cardSize.x - 40f, 30f));
             }
             else
@@ -168,8 +176,13 @@ public class DifficultySelectUI : MonoBehaviour
                 simg.raycastTarget = false;
 
                 int have = d.requires != null ? Difficulty.BestWave(d.requires, orHarder: true) : 0;
-                Label(rt, "Lock", $"LOCKED\n<size=60%><color=#FFCD75>{d.LockText}</color>\n<color=#94B0C2>{Mathf.Min(have, d.requiredWave)}/{d.requiredWave}</color></size>",
-                      36f, White, TextAlignmentOptions.Center, new Vector2(0f, -cardSize.y * 0.5f + 80f), new Vector2(cardSize.x - 40f, 120f));
+                // Başlık ve koşul ayrı: uzun koşul (her dilde) iki satıra kırılır, CORE satırına binmez
+                float bottom = -cardSize.y * 0.5f;
+                Label(rt, "Lock", Loc.T("LOCKED"), 34f, White, TextAlignmentOptions.Center,
+                      new Vector2(0f, bottom + 118f), new Vector2(cardSize.x - 40f, 40f));
+                var cond = Label(rt, "LockCondition", $"<color=#FFCD75>{d.LockText}</color>\n<color=#94B0C2>{Mathf.Min(have, d.requiredWave)}/{d.requiredWave}</color>",
+                                 21f, White, TextAlignmentOptions.Top, new Vector2(0f, bottom + 55f), new Vector2(cardSize.x - 60f, 76f));
+                cond.textWrappingMode = TextWrappingModes.Normal;
             }
 
             cards.Add(new Card { data = d, root = rt, frame = img });

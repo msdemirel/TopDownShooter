@@ -49,6 +49,9 @@ public class OptionsUI : MonoBehaviour
     [Tooltip("Slider yazısı. {0} = 0-100 arası değer.")]
     [SerializeField] string volumeFormat = "{0}%";
 
+    [Tooltip("Dil seçimi. Boşsa Quality menüsünün kopyası olarak pencerenin sağ üstüne kendiliğinden eklenir.")]
+    [SerializeField] TMP_Dropdown languageDropdown;
+
     // Dropdown sırası ile gerçek çözünürlükler burada eşleşir.
     readonly List<Vector2Int> resolutions = new List<Vector2Int>();
 
@@ -56,6 +59,8 @@ public class OptionsUI : MonoBehaviour
     {
         BuildQualityOptions();
         BuildResolutionOptions();
+        BuildLanguageDropdown();
+        Loc.Changed += BuildQualityOptions;   // kalite adları da çevrilir
 
         if (masterSlider       != null) masterSlider.onValueChanged.AddListener(OnMasterChanged);
         if (musicSlider        != null) musicSlider.onValueChanged.AddListener(OnMusicChanged);
@@ -110,6 +115,7 @@ public class OptionsUI : MonoBehaviour
 
     void Refresh()
     {
+        if (languageDropdown != null) languageDropdown.SetValueWithoutNotify(Loc.Column);
         SetupSlider(masterSlider, GameSettings.MasterVolume, masterValueText);
         SetupSlider(musicSlider,  GameSettings.MusicVolume,  musicValueText);
         SetupSlider(sfxSlider,    GameSettings.SfxVolume,    sfxValueText);
@@ -149,12 +155,43 @@ public class OptionsUI : MonoBehaviour
         if (label != null) label.text = string.Format(volumeFormat, Mathf.RoundToInt(value * 100f));
     }
 
+    void OnDestroy() => Loc.Changed -= BuildQualityOptions;
+
     void BuildQualityOptions()
     {
         if (qualityDropdown == null) return;
 
+        var names = new List<string>();
+        foreach (var n in QualitySettings.names) names.Add(Loc.T(n));
         qualityDropdown.ClearOptions();
-        qualityDropdown.AddOptions(new List<string>(QualitySettings.names));
+        qualityDropdown.AddOptions(names);
+        qualityDropdown.SetValueWithoutNotify(Mathf.Clamp(GameSettings.QualityLevel, 0, names.Count - 1));
+    }
+
+    // Dil menüsü: her dil kendi adıyla. Seçim anında uygulanır (tüm yazılar Loc.Changed ile güncellenir).
+    void BuildLanguageDropdown()
+    {
+        if (languageDropdown == null && qualityDropdown != null)
+        {
+            // Quality menüsünün kopyası: aynı stil; pencerenin sağ üstüne ("OPTIONS" başlığının karşısı)
+            var go = Instantiate(qualityDropdown.gameObject, qualityDropdown.transform.parent);
+            go.name = "LanguageDropdown";
+            var rt = (RectTransform)go.transform;
+            var window = rt.parent as RectTransform;
+            float top = window != null ? window.rect.height * 0.5f - 60f : 350f;
+            float right = window != null ? window.rect.width * 0.5f - 60f : 440f;
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(320f, 56f);
+            rt.anchoredPosition = new Vector2(right - 160f, top);
+            languageDropdown = go.GetComponent<TMP_Dropdown>();
+            languageDropdown.onValueChanged = new TMP_Dropdown.DropdownEvent();   // kopyalanan kalite bağlantısı olmasın
+        }
+        if (languageDropdown == null) return;
+
+        languageDropdown.ClearOptions();
+        languageDropdown.AddOptions(new List<string>(Loc.NativeNames));
+        languageDropdown.SetValueWithoutNotify(Loc.Column);
+        languageDropdown.onValueChanged.AddListener(Loc.Set);
     }
 
     void BuildResolutionOptions()

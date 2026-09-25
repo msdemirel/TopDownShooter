@@ -81,7 +81,7 @@ public static class PauseMenuBuilder
         var dim = pause.gameObject.AddComponent<Image>();
         dim.color = new Color(0.02f, 0.03f, 0.07f, 0.72f);   // oyun arkada görünsün ama tıklanmasın
 
-        var win = Frame("Window", pause, UIDir + "frame_panel.png", Vector2.zero, new Vector2(640f, 800f));
+        var win = Frame("Window", pause, UIDir + "frame_panel.png", Vector2.zero, new Vector2(640f, 880f));
         Icon("PauseIcon", win, MenuIcons + "ui_pause.png", new Vector2(-120f, 330f), 60f);
         ShadowText("Title", win, "PAUSED", 72f, Cyan, new Vector2(60f, 330f));
         // ShadowText 1000 genişlik kullanır; başlığı pencereye sığdır
@@ -107,20 +107,23 @@ public static class PauseMenuBuilder
         Place(divider2.rectTransform, new Vector2(0f, 142f), new Vector2(560f, 3f));
 
         // Butonlar
-        var size = new Vector2(440f, 78f);
-        var resume = MakeButton("ResumeButton", win, "RESUME", MenuIcons + "ui_play.png", new Vector2(0f, 82f),
-                                new Vector2(460f, 88f), 36f, PrimaryTint, ui.Resume);
-        var options = MakeButton("OptionsButton", win, "OPTIONS", MenuIcons + "ui_gear.png", new Vector2(0f, -18f),
+        // SAVE & QUIT: kaydet + oyundan çık. MAIN MENU / QUIT: kaydetmeden (onay penceresiyle).
+        var size = new Vector2(440f, 72f);
+        var resume = MakeButton("ResumeButton", win, "RESUME", MenuIcons + "ui_play.png", new Vector2(0f, 84f),
+                                new Vector2(460f, 84f), 36f, PrimaryTint, ui.Resume);
+        var options = MakeButton("OptionsButton", win, "OPTIONS", MenuIcons + "ui_gear.png", new Vector2(0f, -4f),
                                  size, 30f, White, ui.OpenOptions);
-        MakeButton("RestartButton", win, "RESTART", GameOverIcons + "ui_restart.png", new Vector2(0f, -108f),
+        MakeButton("RestartButton", win, "RESTART", GameOverIcons + "ui_restart.png", new Vector2(0f, -86f),
                    size, 30f, White, ui.Restart);
-        MakeButton("MainMenuButton", win, "MAIN MENU", GameOverIcons + "ui_home.png", new Vector2(0f, -198f),
+        MakeButton("SaveQuitButton", win, "SAVE & QUIT", MenuIcons + "ui_check.png", new Vector2(0f, -168f),
+                   size, 30f, new Color32(0x73, 0xEF, 0xF7, 0xFF), ui.SaveAndQuit);
+        MakeButton("MainMenuButton", win, "MAIN MENU", GameOverIcons + "ui_home.png", new Vector2(0f, -250f),
                    size, 30f, White, ui.GoToMainMenu);
-        MakeButton("QuitButton", win, "QUIT", GameOverIcons + "ui_quit.png", new Vector2(0f, -288f),
+        MakeButton("QuitButton", win, "QUIT", GameOverIcons + "ui_quit.png", new Vector2(0f, -332f),
                    size, 30f, White, ui.QuitGame);
 
         var hint = Text("Hint", win, "ESC TO RESUME", 22f, Muted, TextAlignmentOptions.Center,
-                        new Vector2(0f, -360f), new Vector2(500f, 30f));
+                        new Vector2(0f, -400f), new Vector2(500f, 30f));
         hint.characterSpacing = 6f;
 
         // ================= Options paneli (ana menüyle aynı) =================

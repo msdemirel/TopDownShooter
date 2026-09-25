@@ -180,7 +180,7 @@ public class PlayerHUD : MonoBehaviour
 
     void UpdateLevel(int level)
     {
-        if (levelText != null) levelText.text = string.Format(levelFormat, level);
+        if (levelText != null) levelText.text = Loc.F(levelFormat, level);
         FitLevelClock();
 
         // Level atlandı: saat sıfırdan yeniden dolsun + kısa bir büyüme nabzı.

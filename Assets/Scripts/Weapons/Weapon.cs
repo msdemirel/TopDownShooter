@@ -194,6 +194,7 @@ public class Weapon : MonoBehaviour
     {
         Vector2 aim = targetPos - (Vector2)transform.position;
         if (aim.sqrMagnitude < 0.0001f) return;
+        AudioManager.Play(SfxId.MeleeSwing, 0.8f);
 
         float aimAngle = Mathf.Atan2(aim.y, aim.x) * Mathf.Rad2Deg;
         StartCoroutine(ThrustRoutine(aim.normalized, aimAngle));   // hedefe doğru dürtme

@@ -40,7 +40,7 @@ public class CursorManager : MonoBehaviour
         }
 
         bool inGameplay = player != null && !player.IsDead && Time.timeScale > 0f;
-        bool visible = !(inGameplay && (settings == null || settings.hideDuringGameplay));
+        bool visible = !(inGameplay && (settings == null || settings.hideDuringGameplay)) && !InputMode.UsingGamepad;
 
         if (lastVisible != visible)
         {

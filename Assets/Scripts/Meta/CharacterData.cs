@@ -68,13 +68,13 @@ public class CharacterData : ScriptableObject
         Line(sb, moveSpeed, "Move Speed", true);
         Line(sb, critChance, "Crit Chance", true);
         Line(sb, magnetRange, "Pickup Range", true);
-        return sb.Length > 0 ? sb.ToString().TrimEnd('\n') : "<color=#94B0C2>Balanced, no modifiers</color>";
+        return sb.Length > 0 ? sb.ToString().TrimEnd('\n') : $"<color=#94B0C2>{Loc.T("Balanced, no modifiers")}</color>";
     }
 
     static void Line(System.Text.StringBuilder sb, float v, string label, bool percent)
     {
         if (Mathf.Approximately(v, 0f)) return;
         string num = percent ? $"{(v * 100f):+0;-0}%" : $"{v:+0;-0}";
-        sb.Append(v > 0f ? "<color=#5EDC5E>" : "<color=#E5533C>").Append(num).Append(' ').Append(label).Append("</color>\n");
+        sb.Append(v > 0f ? "<color=#5EDC5E>" : "<color=#E5533C>").Append(num).Append(' ').Append(Loc.T(label)).Append("</color>\n");
     }
 }

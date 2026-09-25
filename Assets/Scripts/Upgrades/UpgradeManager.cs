@@ -54,6 +54,27 @@ public class UpgradeManager : MonoBehaviour
 
     public void AddFreeRerolls(int count) => freeRerolls += Mathf.Max(0, count);
 
+    // ---- Kayıttan devam (RunSave) ----
+    public int FreeRerolls => freeRerolls;
+    // Seçim bekleyen level'lar (açık panel dahil): kayıttan dönünce panel yeniden açılır
+    public int PendingLevelUps => pendingLevelUps;
+    public IReadOnlyList<UpgradeData> Pool => pool;
+
+    public List<(UpgradeData data, int times)> GetTimesTaken()
+    {
+        var list = new List<(UpgradeData, int)>();
+        foreach (var kv in timesTaken) list.Add((kv.Key, kv.Value));
+        return list;
+    }
+
+    public void RestoreState(IEnumerable<(UpgradeData data, int times)> taken, int rerolls, int pendingLevels)
+    {
+        timesTaken.Clear();
+        foreach (var (d, t) in taken) if (d != null) timesTaken[d] = t;
+        freeRerolls = Mathf.Max(0, rerolls);
+        for (int i = 0; i < pendingLevels; i++) HandleLevelUp(stats != null ? stats.Level : 1);
+    }
+
     // upgrade -> kaç kez alındı (bir sonraki teklif edilecek kademe)
     readonly Dictionary<UpgradeData, int> timesTaken = new Dictionary<UpgradeData, int>();
 
@@ -194,7 +215,10 @@ public class UpgradeManager : MonoBehaviour
     bool TryPay(UpgradeChoice c)
     {
         int cost = c.data.GetCost(c.tier);
-        return cost <= 0 || (stats != null && stats.TrySpendMoney(cost));
+        if (cost <= 0) return true;
+        if (stats == null || !stats.TrySpendMoney(cost)) return false;
+        AudioManager.Play(SfxId.Purchase);
+        return true;
     }
 
     void FinishSwap(UpgradeChoice chosen, int slot)
@@ -247,12 +271,14 @@ public class UpgradeManager : MonoBehaviour
         if (freeRerolls > 0) freeRerolls--;                 // bedava hak: fiyat artmaz
         else if (cost > 0 && (stats == null || !stats.TrySpendMoney(cost))) return;
         else rerollsThisPanel++;
+        AudioManager.Play(SfxId.Reroll);
         PickChoices();
         ShowPanel();
     }
 
     void CloseAndContinue()
     {
+        if (ctx != null && ctx.skills != null) ctx.skills.IgnoreInputThisFrame();   // gamepad A = Skill1
         panelOpen = false;
         pendingLevelUps--;
         panel.Hide();

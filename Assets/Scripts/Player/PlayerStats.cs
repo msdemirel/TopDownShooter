@@ -33,6 +33,17 @@ public class PlayerStats : MonoBehaviour
     public event Action<int> OnLevelUp;           // yeni level — her level için bir kez
     public event Action<int> OnMoneyChanged;
 
+    // Kayıttan devam (RunSave): level atlama olayı TETİKLENMEZ (panel açılmasın), HUD güncellenir.
+    public void RestoreState(int lvl, int curExp, int total, int cash)
+    {
+        level = Mathf.Max(1, lvl);
+        exp = Mathf.Max(0, curExp);
+        totalExp = Mathf.Max(0, total);
+        money = Mathf.Max(0, cash);
+        OnExpChanged?.Invoke(exp, ExpToNextLevel);
+        OnMoneyChanged?.Invoke(money);
+    }
+
     public void AddExp(int amount)
     {
         if (amount <= 0) return;

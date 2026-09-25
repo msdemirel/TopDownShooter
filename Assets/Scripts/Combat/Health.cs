@@ -72,6 +72,15 @@ public class Health : MonoBehaviour, IDamageable
         OnHealthChanged?.Invoke(this);
     }
 
+    // Kayıttan devam (RunSave): can ve dirilme hakkı mutlak değerlerle geri yüklenir.
+    public void RestoreState(float max, float cur, int extraLives)
+    {
+        maxHealth = Mathf.Max(1f, max);
+        current = Mathf.Clamp(cur, 1f, maxHealth);
+        ExtraLives = extraLives;
+        OnHealthChanged?.Invoke(this);
+    }
+
     public void TakeDamage(float amount) => TakeDamage(amount, false);
 
     // isCrit sadece bilgi amaçlı taşınır (hasar yazısının rengi/boyutu için);

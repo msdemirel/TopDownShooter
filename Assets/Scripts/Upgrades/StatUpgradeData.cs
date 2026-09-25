@@ -35,7 +35,7 @@ public class StatUpgradeData : UpgradeData
     // Altına kazanım satırı otomatik eklenir (yeşil): "+20 Maks Can" gibi.
     public override string GetDescription(int tier)
     {
-        string text = string.Format(description, GetAmount(tier));
+        string text = Loc.F(description, GetAmount(tier));
         return text + "\n" + Green(BonusLabel(tier));
     }
 
@@ -49,13 +49,13 @@ public class StatUpgradeData : UpgradeData
         float a = GetAmount(tier);
         switch (stat)
         {
-            case StatType.MaxHealth: return $"+{Num(a)} Max Health";
-            case StatType.MoveSpeed: return $"+{Num(a)} Speed";
-            case StatType.Damage:    return $"+{Num(a * 100f)}% Damage";
-            case StatType.FireRate:  return $"+{Num(a * 100f)}% Fire Rate";
-            case StatType.Heal:      return $"+{Num(a)} Health";
-            case StatType.MagnetRange: return $"+{Num(a)} Pickup Range";
-            case StatType.CritChance: return $"+{Num(a * 100f)}% Crit Chance";
+            case StatType.MaxHealth: return Loc.F("+{0} Max Health", Num(a));
+            case StatType.MoveSpeed: return Loc.F("+{0} Speed", Num(a));
+            case StatType.Damage:    return Loc.F("+{0}% Damage", Num(a * 100f));
+            case StatType.FireRate:  return Loc.F("+{0}% Fire Rate", Num(a * 100f));
+            case StatType.Heal:      return Loc.F("+{0} Health", Num(a));
+            case StatType.MagnetRange: return Loc.F("+{0} Pickup Range", Num(a));
+            case StatType.CritChance: return Loc.F("+{0}% Crit Chance", Num(a * 100f));
             default: return "";
         }
     }

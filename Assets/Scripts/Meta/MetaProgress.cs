@@ -150,15 +150,15 @@ public static class MetaProgress
         int n = Mathf.RoundToInt(t);
         switch (c)
         {
-            case UnlockCondition.ReachWave: return $"Reach wave {n}";
-            case UnlockCondition.TotalKills: return $"Kill {n:N0} enemies in total";
-            case UnlockCondition.TotalCrits: return $"Land {n:N0} critical hits";
-            case UnlockCondition.RunsPlayed: return $"Play {n} runs";
-            case UnlockCondition.BossKills: return n <= 1 ? "Defeat the Big Boss" : $"Defeat {n} bosses";
-            case UnlockCondition.SurviveSeconds: return $"Survive {Mathf.RoundToInt(t / 60f)} minutes in one run";
-            case UnlockCondition.RunKills: return $"Kill {n} enemies in one run";
-            case UnlockCondition.ReachLevel: return $"Reach level {n} in one run";
-            case UnlockCondition.CoreEarned: return $"Earn {n:N0} Core in total";
+            case UnlockCondition.ReachWave: return Loc.F("Reach wave {0}", n);
+            case UnlockCondition.TotalKills: return Loc.F("Kill {0} enemies in total", n.ToString("N0"));
+            case UnlockCondition.TotalCrits: return Loc.F("Land {0} critical hits", n.ToString("N0"));
+            case UnlockCondition.RunsPlayed: return Loc.F("Play {0} runs", n);
+            case UnlockCondition.BossKills: return n <= 1 ? Loc.T("Defeat the Big Boss") : Loc.F("Defeat {0} bosses", n);
+            case UnlockCondition.SurviveSeconds: return Loc.F("Survive {0} minutes in one run", Mathf.RoundToInt(t / 60f));
+            case UnlockCondition.RunKills: return Loc.F("Kill {0} enemies in one run", n);
+            case UnlockCondition.ReachLevel: return Loc.F("Reach level {0} in one run", n);
+            case UnlockCondition.CoreEarned: return Loc.F("Earn {0} Core in total", n.ToString("N0"));
             default: return "";
         }
     }

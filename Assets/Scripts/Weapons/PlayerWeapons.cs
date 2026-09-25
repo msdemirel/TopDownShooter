@@ -54,6 +54,29 @@ public class PlayerWeapons : MonoBehaviour
     public void AddCritChance(float amount)
         => CritChanceBonus = Mathf.Clamp01(CritChanceBonus + amount);
 
+    // Kayıttan devam (RunSave): çarpanlar mutlak değerlerle
+    public void RestoreMultipliers(float damage, float fireRate, float crit)
+    {
+        DamageMultiplier = Mathf.Max(0.1f, damage);
+        FireRateMultiplier = Mathf.Max(0.1f, fireRate);
+        CritChanceBonus = Mathf.Clamp01(crit);
+    }
+
+    // Kayıttan devam: tüm silahları söküp kayıttakileri (slot, kademe) takar
+    public void RestoreWeapons(System.Collections.Generic.IList<(int slot, WeaponData data, int tier)> list)
+    {
+        for (int i = 0; i < slotCount; i++)
+            if (weapons[i] != null) { Destroy(weapons[i].gameObject); weapons[i] = null; }
+        WeaponCount = 0;
+
+        foreach (var (slot, data, tier) in list)
+        {
+            if (data == null || slot < 0 || slot >= slotCount || weapons[slot] != null) continue;
+            if (PlaceWeapon(slot, data)) weapons[slot].SetTier(tier);
+        }
+        OnWeaponAdded?.Invoke(null);   // HUD tazelensin
+    }
+
     // i. slottaki silahın verisi (boşsa null). HUD slot ikonlarını buradan okur.
     public WeaponData GetSlotData(int index)
         => weapons != null && index >= 0 && index < weapons.Length && weapons[index] != null
@@ -177,6 +200,7 @@ public class PlayerWeapons : MonoBehaviour
         // Birleşme efekti: silahın üstünde kademe renginde flaş + kıvılcım
         Color c = WeaponTiers.Color(w.Tier);
         SkillVfx.Flash(w.transform.position, c, 1.2f, 0.3f);
+        AudioManager.Play(SfxId.Merge, 1f, 1f + 0.06f * (w.Tier - 2));   // yüksek kademe biraz daha tiz
         SkillVfx.SparkBurst(w.transform.position, c, 12, 4f, 0.3f, 0.4f);
 
         OnWeaponMerged?.Invoke(w, freedSlot);

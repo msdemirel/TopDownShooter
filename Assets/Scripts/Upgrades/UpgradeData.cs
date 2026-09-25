@@ -66,7 +66,7 @@ public abstract class UpgradeData : ScriptableObject
     public virtual string GetTitle(int tier)
         => TierCount > 1 ? $"{title} {tier + 1}" : title;
 
-    public virtual string GetDescription(int tier) => description;
+    public virtual string GetDescription(int tier) => Loc.T(description);   // isim (title) çevrilmez
 
     // Upgrade SEÇİLDİKTEN sonra HUD'da kısaca gösterilecek özet: sadece DEĞİŞİM
     // yazılır ("+1 Hasar" gibi), tam değer değil. Boş dönerse HUD bir şey göstermez.

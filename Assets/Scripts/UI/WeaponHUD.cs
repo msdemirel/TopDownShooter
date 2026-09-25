@@ -166,13 +166,20 @@ public class WeaponHUD : MonoBehaviour
         swapPrompt.SetActive(true);
         swapPrompt.transform.SetAsLastSibling();   // diğer UI'ın önünde
         string name = incoming.weapon != null ? incoming.weapon.weaponName : incoming.title;
-        swapTitle.text = $"Weapon slots full! Replace a weapon with <color=#FFCD75>{name}</color>\n" +
-                         $"<size=70%>Click a weapon below-right or press its number (1-{frames.Length}).</size>";
+        swapTitle.text = Loc.F("Weapon slots full! Replace a weapon with <color=#FFCD75>{0}</color>", name) + "\n<size=70%>" +
+                         Loc.F("Click a weapon below-right or press its number (1-{0}).", frames.Length) + "</size>";
         Sprite icon = incoming.weapon != null ? incoming.weapon.Icon : incoming.icon;
         swapIcon.sprite = icon;
         swapIcon.enabled = icon != null;
 
         for (int i = 0; i < frames.Length; i++) SetSlotClickable(i, weapons.GetSlotData(i) != null);
+
+        // Gamepad ile gezilebilsin: ilk slot seçili gelsin; ipucu metni cihaza göre
+        if (UnityEngine.EventSystems.EventSystem.current != null && frames.Length > 0)
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(frames[0].gameObject);
+        if (InputMode.UsingGamepad)
+            swapTitle.text = Loc.F("Weapon slots full! Replace a weapon with <color=#FFCD75>{0}</color>", name) + "\n<size=70%>" +
+                             Loc.T("Choose a weapon below-right with the D-pad and press A.  B to cancel.") + "</size>";
     }
 
     void EndSwap()
@@ -209,6 +216,7 @@ public class WeaponHUD : MonoBehaviour
         if (kb != null)
         {
             if (kb.escapeKey.wasPressedThisFrame) { CancelSwap(); return; }
+            if (InputMode.UsingGamepad) goto pulse;   // gamepad: rakam tuşu yok, d-pad + A
             for (int i = 0; i < frames.Length && i < 9; i++)
             {
                 var key = kb[Key.Digit1 + i];
@@ -221,6 +229,8 @@ public class WeaponHUD : MonoBehaviour
             }
         }
 
+    pulse:
+        if (InputMode.BackPressed) { CancelSwap(); return; }
         float k = 1f + (swapPulseScale - 1f) * (0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * 8f));
         for (int i = 0; i < frames.Length; i++)
             if (weapons.GetSlotData(i) != null) frames[i].rectTransform.localScale = Vector3.one * k;
@@ -290,7 +300,7 @@ public class WeaponHUD : MonoBehaviour
         cancelGo.GetComponent<Button>().onClick.AddListener(CancelSwap);
 
         var ct = MakePromptText("Label", crt, 22f, TextAlignmentOptions.Center);
-        ct.text = "Cancel (Esc)";
+        Loc.Bind(ct, "Cancel (Esc)");
         ct.rectTransform.anchorMin = Vector2.zero;
         ct.rectTransform.anchorMax = Vector2.one;
         ct.rectTransform.offsetMin = ct.rectTransform.offsetMax = Vector2.zero;
@@ -343,7 +353,7 @@ public class WeaponHUD : MonoBehaviour
         float headerY = -padding.z - headerHeight * 0.5f;
         var textPos = new Vector2(padding.x + textInset, headerY);
         float textWidth = grid.x - textInset * 2f;
-        MakeText("Title", title, titleColor, TextAlignmentOptions.MidlineLeft, textPos, textWidth);
+        Loc.Bind(MakeText("Title", title, titleColor, TextAlignmentOptions.MidlineLeft, textPos, textWidth), title);
         countText = MakeText("Count", "", countColor, TextAlignmentOptions.MidlineRight, textPos, textWidth);
 
         frames = new Image[slotCount];

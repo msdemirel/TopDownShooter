@@ -38,8 +38,13 @@ public class CharacterSelectUI : MonoBehaviour
     bool choosing;
     int openedFrame;   // paneli açan ENTER aynı karede kartı da seçmesin
 
+    void OnDisable() => Loc.Changed -= Rebuild;
+    void Rebuild() { Build(); Highlight(); }
+
     void OnEnable()
     {
+        Loc.Changed -= Rebuild;
+        Loc.Changed += Rebuild;
         choosing = false;
         openedFrame = Time.frameCount;
         Build();
@@ -68,9 +73,11 @@ public class CharacterSelectUI : MonoBehaviour
         }
 
         var kb = Keyboard.current;
-        if (kb == null || choosing || Time.frameCount <= openedFrame) return;
-        if (kb.leftArrowKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame) Move(-1);
-        else if (kb.rightArrowKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame) Move(1);
+        if (choosing || Time.frameCount <= openedFrame) return;
+        if (kb == null) { int st = InputMode.HorizontalStep; if (st != 0) Move(st); return; }
+        int padStep = InputMode.HorizontalStep;   // gamepad d-pad / sol analog
+        if (kb.leftArrowKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame || padStep < 0) Move(-1);
+        else if (kb.rightArrowKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame || padStep > 0) Move(1);
         else if (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame || kb.spaceKey.wasPressedThisFrame)
             Choose(selected);
     }
@@ -133,6 +140,7 @@ public class CharacterSelectUI : MonoBehaviour
             btn.targetGraphic = img;
             btn.transition = Selectable.Transition.None;   // renk Highlight'ta
             btn.interactable = open;
+            btn.navigation = new Navigation { mode = Navigation.Mode.None };   // gezinmeyi biz yönetiyoruz (kart atlamasın)
             int idx = cards.Count;
             btn.onClick.AddListener(() => Choose(idx));
             var trigger = go.AddComponent<EventTrigger>();
@@ -156,7 +164,7 @@ public class CharacterSelectUI : MonoBehaviour
 
             Label(rt, "Title", d.title, 40f, open ? d.color : Muted, TextAlignmentOptions.Center,
                   new Vector2(0f, top - 232f), new Vector2(cardSize.x - 30f, 48f)).enableAutoSizing = false;
-            var desc = Label(rt, "Desc", d.description, 18f, Muted, TextAlignmentOptions.Top,
+            var desc = Label(rt, "Desc", Loc.T(d.description), 18f, Muted, TextAlignmentOptions.Top,
                              new Vector2(0f, top - 285f), new Vector2(cardSize.x - 40f, 48f));
             desc.textWrappingMode = TextWrappingModes.Normal;
 
@@ -174,7 +182,7 @@ public class CharacterSelectUI : MonoBehaviour
                     wimg.sprite = d.startingWeapon.Icon;
                     wimg.preserveAspect = true;
                     wimg.raycastTarget = false;
-                    var wl = Label(rt, "Weapon", $"<size=70%><color=#94B0C2>STARTS WITH</color></size>\n{d.startingWeapon.weaponName}",
+                    var wl = Label(rt, "Weapon", $"<size=70%><color=#94B0C2>{Loc.T("STARTS WITH")}</color></size>\n{d.startingWeapon.weaponName}",
                                    22f, White, TextAlignmentOptions.MidlineLeft,
                                    new Vector2(40f, top - 345f), new Vector2(cardSize.x - 130f, 52f));
                     wl.lineSpacing = -10f;
@@ -185,7 +193,7 @@ public class CharacterSelectUI : MonoBehaviour
             }
             else
             {
-                Label(rt, "Lock", $"LOCKED\n<size=60%><color=#FFCD75>{MetaProgress.Describe(d.unlockCondition, d.unlockThreshold)}</color>\n" +
+                Label(rt, "Lock", $"{Loc.T("LOCKED")}\n<size=60%><color=#FFCD75>{MetaProgress.Describe(d.unlockCondition, d.unlockThreshold)}</color>\n" +
                                   $"<color=#94B0C2>{MetaProgress.ProgressText(d.unlockCondition, d.unlockThreshold)}</color></size>",
                       34f, White, TextAlignmentOptions.Center, new Vector2(0f, top - 420f), new Vector2(cardSize.x - 30f, 140f));
             }

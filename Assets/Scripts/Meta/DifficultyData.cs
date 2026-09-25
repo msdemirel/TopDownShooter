@@ -28,5 +28,5 @@ public class DifficultyData : ScriptableObject
 
     public bool IsUnlocked => requires == null || Difficulty.BestWave(requires, orHarder: true) >= requiredWave;
 
-    public string LockText => requires == null ? "" : $"Reach wave {requiredWave} on {requires.title}";
+    public string LockText => requires == null ? "" : Loc.F("Reach wave {0} on {1}", requiredWave, Loc.T(requires.title));
 }

@@ -126,6 +126,8 @@ public class GameOverUI : MonoBehaviour
         Time.timeScale = 0f;   // oyunu dondur (UI çalışmaya devam eder)
 
         // Rekorları HEMEN kaydet: oyuncu paneli beklemeden sahneden çıksa da kaybolmasın
+        RunSave.Delete();   // ölen oyun devam ettirilemez
+
         RunResult run = runStats.Snapshot();
         var lockedBefore = MetaProgress.CurrentlyLocked();   // rekorlar güncellenmeden önce
         var charsBefore = MetaProgress.CurrentlyLockedCharacters();
@@ -139,6 +141,7 @@ public class GameOverUI : MonoBehaviour
     IEnumerator ShowRoutine(RunResult run, RunResult previous, BestRecords.NewBestFlags flags)
     {
         if (showDelay > 0f) yield return new WaitForSecondsRealtime(showDelay);
+        AudioManager.Play(SfxId.GameOver);
 
         if (panel != null) panel.SetActive(true);
         PrepareTexts(run, previous, flags);
@@ -174,6 +177,7 @@ public class GameOverUI : MonoBehaviour
         SetBadge(coinsRow, flags.coins);
         SetBadge(damageRow, flags.damage);
         if (newRecordBanner != null) newRecordBanner.SetActive(flags.Any);
+        if (flags.Any) AudioManager.Play(SfxId.NewRecord);
     }
 
     void PrepareTexts(RunResult run, RunResult previous, BestRecords.NewBestFlags flags)
@@ -185,9 +189,9 @@ public class GameOverUI : MonoBehaviour
         {
             var diff = Difficulty.Current;
             var ch = CharacterSelection.Current;
-            string diffTag = diff != null ? $"  -  <color=#{ColorUtility.ToHtmlStringRGB(diff.color)}>{diff.title}</color>" : "";
+            string diffTag = diff != null ? $"  -  <color=#{ColorUtility.ToHtmlStringRGB(diff.color)}>{Loc.T(diff.title)}</color>" : "";
             string charTag = ch != null ? $"  -  <color=#{ColorUtility.ToHtmlStringRGB(ch.color)}>{ch.title}</color>" : "";
-            subtitleText.text = $"WAVE {run.wave}{diffTag}{charTag}  -  RUN #{BestRecords.TotalRuns}";
+            subtitleText.text = $"{Loc.F("WAVE {0}", run.wave)}{diffTag}{charTag}  -  {Loc.F("RUN #{0}", BestRecords.TotalRuns)}";
         }
 
         // "BEST" = bu oyun dahil en iyi değer (rekor kırıldıysa yeni değer)
@@ -205,14 +209,14 @@ public class GameOverUI : MonoBehaviour
         if (coreBreakdownText != null)
         {
             coreBreakdownText.text = report == null ? "" :
-                $"WAVES +{report.coreFromWaves}   KILLS +{report.coreFromKills}" +
-                (report.coreFromBosses > 0 ? $"   BOSS +{report.coreFromBosses}" : "") +
+                $"{Loc.T("WAVES")} +{report.coreFromWaves}   {Loc.T("KILLS")} +{report.coreFromKills}" +
+                (report.coreFromBosses > 0 ? $"   {Loc.T("BOSS")} +{report.coreFromBosses}" : "") +
                 (report.coreFromDifficulty > 0 && report.difficulty != null
-                    ? $"   <color=#{ColorUtility.ToHtmlStringRGB(report.difficulty.color)}>{report.difficulty.title} " +
+                    ? $"   <color=#{ColorUtility.ToHtmlStringRGB(report.difficulty.color)}>{Loc.T(report.difficulty.title)} " +
                       $"x{report.difficulty.coreMultiplier:0.##} +{report.coreFromDifficulty}</color>"
                     : "");
         }
-        if (coreTotalText != null) coreTotalText.text = $"TOTAL {MetaProgress.Core:N0}";
+        if (coreTotalText != null) coreTotalText.text = Loc.F("TOTAL {0}", MetaProgress.Core.ToString("N0"));
         if (unlockSection != null) unlockSection.SetActive(false);
 
         SetValues(run, 0f);
@@ -233,7 +237,7 @@ public class GameOverUI : MonoBehaviour
         }
         foreach (var u in report.newlyUnlocked) { names.Add(DisplayName(u)); sprites.Add(u.icon); }
         if (unlockText != null)
-            unlockText.text = $"NEW UNLOCK{(names.Count > 1 ? "S" : "")}: <color=#F4F4F4>{string.Join(", ", names)}</color>";
+            unlockText.text = $"{Loc.T(names.Count > 1 ? "NEW UNLOCKS:" : "NEW UNLOCK:")} <color=#F4F4F4>{string.Join(", ", names)}</color>";
 
         if (unlockIcons != null)
         {
@@ -255,6 +259,7 @@ public class GameOverUI : MonoBehaviour
         }
 
         unlockSection.SetActive(true);
+        AudioManager.Play(SfxId.Unlock);
         var srt = unlockSection.transform;
         for (float t = 0f; t < 0.25f; t += Time.unscaledDeltaTime)
         {
@@ -285,7 +290,7 @@ public class GameOverUI : MonoBehaviour
     }
 
     static void SetValue(StatRow r, string s) { if (r.value != null) r.value.text = s; }
-    static void SetBest(StatRow r, string s) { if (r.best != null) r.best.text = "BEST " + s; }
+    static void SetBest(StatRow r, string s) { if (r.best != null) r.best.text = Loc.F("BEST {0}", s); }
     static void SetBadge(StatRow r, bool on) { if (r.newBestBadge != null) r.newBestBadge.SetActive(on); }
 
     // 332.4 -> "05:32", 1 saati geçerse "1:05:32"

@@ -34,19 +34,20 @@ public class WeaponUpgradeData : UpgradeData
     // Açıklamanın altına silahın değerlerini yeşil ekler (skill/stat kartlarıyla aynı düzen).
     public override string GetDescription(int tier)
     {
-        if (weapon == null) return description;
+        if (weapon == null) return Loc.T(description);
 
-        string stats = Green($"Damage: {Num(weapon.damage)}  Attacks: {Num(weapon.fireRate)}/s") + "\n" +
-                       Green($"Range: {Num(weapon.range)}");
-        string text = string.IsNullOrEmpty(description) ? stats : description + "\n" + stats;
+        string stats = Green(Loc.F("Damage: {0}  Attacks: {1}/s", Num(weapon.damage), Num(weapon.fireRate))) + "\n" +
+                       Green(Loc.F("Range: {0}", Num(weapon.range)));
+        string text = string.IsNullOrEmpty(description) ? stats : Loc.T(description) + "\n" + stats;
 
         // Sahip olunan bir kopyayla birleşecekse: hangi kademeye çıkacağını yaz
         var owner = PlayerWeapons.Current;
         if (owner != null && owner.CanMerge(weapon))
         {
             int t = owner.MergeResultTier(weapon);
-            text += $"\n<color={WeaponTiers.Hex(t)}>MERGE: {weapon.weaponName} -> Tier {WeaponTiers.RomanNumeral(t)}" +
-                    $" (x{Num(WeaponTiers.DamageMultiplier(t))} damage)</color>";
+            text += $"\n<color={WeaponTiers.Hex(t)}>" +
+                    Loc.F("MERGE: {0} -> Tier {1} (x{2} damage)", weapon.weaponName, WeaponTiers.RomanNumeral(t),
+                          Num(WeaponTiers.DamageMultiplier(t))) + "</color>";
         }
         return text;
     }
@@ -57,6 +58,6 @@ public class WeaponUpgradeData : UpgradeData
     {
         bool merged = lastApplyMerged;
         lastApplyMerged = false;
-        return merged ? "" : Green($"{title} acquired!");
+        return merged ? "" : Green(Loc.F("{0} acquired!", title));
     }
 }

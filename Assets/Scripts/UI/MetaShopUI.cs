@@ -55,8 +55,13 @@ public class MetaShopUI : MonoBehaviour
     readonly List<UpgradeCard> cards = new List<UpgradeCard>();
     bool showingUnlocks;
 
+    void OnDisable() => Loc.Changed -= Rebuild;
+    void Rebuild() { BuildUpgrades(); BuildUnlocks(); ShowTab(showingUnlocks); RefreshAll(); }
+
     void OnEnable()
     {
+        Loc.Changed -= Rebuild;
+        Loc.Changed += Rebuild;
         if (upgradesTab != null) { upgradesTab.onClick.RemoveAllListeners(); upgradesTab.onClick.AddListener(() => ShowTab(false)); }
         if (unlocksTab != null) { unlocksTab.onClick.RemoveAllListeners(); unlocksTab.onClick.AddListener(() => ShowTab(true)); }
 
@@ -90,7 +95,7 @@ public class MetaShopUI : MonoBehaviour
         if (upgradesContent == null) return;
         Clear(upgradesContent);
         var catalog = MetaProgress.Catalog;
-        if (catalog == null) { EmptyNote(upgradesContent, "Run TopDownShooter > Meta > Setup first."); return; }
+        if (catalog == null) { EmptyNote(upgradesContent, Loc.T("Run TopDownShooter > Meta > Setup first.")); return; }
 
         int n = catalog.upgrades.Count;
         for (int i = 0; i < n; i++)
@@ -113,7 +118,7 @@ public class MetaShopUI : MonoBehaviour
                 card.pips[p] = Pic(card.root, $"Pip{p}", null, new Vector2(108f + p * (pipW + 6f), -64f), new Vector2(pipW, 12f));
 
             // Açıklama iki satıra kayar; yine sığmazsa küçülür (kartın dışına taşmasın)
-            var desc = Label(card.root, "Desc", data.description, 18f, Muted, new Vector2(20f, -86f),
+            var desc = Label(card.root, "Desc", Loc.T(data.description), 18f, Muted, new Vector2(20f, -86f),
                              new Vector2(upgradeCardSize.x - 40f, 48f));
             desc.textWrappingMode = TextWrappingModes.Normal;
             desc.alignment = TextAlignmentOptions.TopLeft;
@@ -154,7 +159,7 @@ public class MetaShopUI : MonoBehaviour
     void Buy(UpgradeCard card)
     {
         if (!MetaProgress.TryBuy(card.data)) return;
-        AudioManager.PlaySkill();
+        AudioManager.Play(SfxId.Purchase);
         RefreshAll();
         StartCoroutine(Pop(card.root));
     }
@@ -169,16 +174,16 @@ public class MetaShopUI : MonoBehaviour
             for (int p = 0; p < c.pips.Length; p++) c.pips[p].color = p < d.Level ? Cyan : PipOff;
 
             c.effect.text = d.IsMaxed
-                ? $"{d.FormatValue(d.TotalValue)}  <color=#94B0C2>(MAX)</color>"
+                ? $"{d.FormatValue(d.TotalValue)}  <color=#94B0C2>({Loc.T("MAX")})</color>"
                 : d.Level == 0
-                    ? $"NEXT {d.FormatValue(d.valuePerLevel)}"
-                    : $"NOW {d.FormatValue(d.TotalValue)}  <color=#94B0C2>-></color>  {d.FormatValue(d.TotalValue + d.valuePerLevel)}";
+                    ? $"{Loc.T("NEXT")} {d.FormatValue(d.valuePerLevel)}"
+                    : $"{Loc.T("NOW")} {d.FormatValue(d.TotalValue)}  <color=#94B0C2>-></color>  {d.FormatValue(d.TotalValue + d.valuePerLevel)}";
 
             if (d.IsMaxed)
             {
                 // İkon yok: yazı butonun tamamını kullanır, ortalanır (dar fiyat kutusundan taşmasın)
                 SetCostLayout(c, full: true);
-                c.cost.text = "MAXED";
+                c.cost.text = Loc.T("MAXED");
                 c.cost.color = Gold;
                 c.costIcon.enabled = false;
                 c.buy.interactable = false;
@@ -226,7 +231,7 @@ public class MetaShopUI : MonoBehaviour
         var list = new List<UpgradeData>();
         foreach (var u in catalog.lockables) if (u != null && !u.IsMetaUnlocked) list.Add(u);
         foreach (var u in catalog.lockables) if (u != null && u.IsMetaUnlocked) list.Add(u);
-        if (list.Count == 0) { EmptyNote(unlocksContent, "Nothing to unlock."); return; }
+        if (list.Count == 0) { EmptyNote(unlocksContent, Loc.T("Nothing to unlock.")); return; }
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -238,7 +243,7 @@ public class MetaShopUI : MonoBehaviour
             var icon = Pic(row, "Icon", u.icon, new Vector2(14f, -12f), new Vector2(52f, 52f));
             icon.color = open ? Color.white : new Color(0.22f, 0.25f, 0.34f, 1f);   // kilitliyken silüet
 
-            string kind = u is WeaponUpgradeData ? "WEAPON" : u is SkillUpgradeData ? "SKILL" : "UPGRADE";
+            string kind = Loc.T(u is WeaponUpgradeData ? "WEAPON" : u is SkillUpgradeData ? "SKILL" : "UPGRADE");
             // Sağdaki ilerleme çubuğuna/UNLOCKED yazısına binmesin: sığmazsa küçülür
             float textW = unlockRowSize.x - 82f - 290f;
             AutoSize(Label(row, "Name", $"{DisplayName(u)}  <size=65%><color=#94B0C2>{kind}</color></size>", 24f,
@@ -250,7 +255,7 @@ public class MetaShopUI : MonoBehaviour
             {
                 // Tik + yazı sağ kenardan içeride biter (yazı ~150 birim, sığmazsa küçülür)
                 Pic(row, "Check", checkIcon, new Vector2(unlockRowSize.x - 222f, -20f), new Vector2(36f, 36f));
-                var status = AutoSize(Label(row, "Status", "UNLOCKED", 22f, Green,
+                var status = AutoSize(Label(row, "Status", Loc.T("UNLOCKED"), 22f, Green,
                                             new Vector2(unlockRowSize.x - 180f, -23f), new Vector2(160f, 30f)), 14f);
                 status.alignment = TextAlignmentOptions.MidlineLeft;
             }

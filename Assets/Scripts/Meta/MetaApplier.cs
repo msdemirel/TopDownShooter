@@ -112,6 +112,7 @@ public class MetaApplier : MonoBehaviour
     void HandleRevived(Health h)
     {
         StartCoroutine(InvulnerableFor(h, ReviveInvulnerability));
+        AudioManager.Play(SfxId.Revive);
 
         Vector3 pos = h.transform.position;
         SkillVfx.Flash(pos, ReviveColor, 3f, 0.4f);
@@ -120,7 +121,7 @@ public class MetaApplier : MonoBehaviour
                  .Scale(0.5f, 4f, true);
 
         var toast = FindAnyObjectByType<UpgradeToastUI>();
-        if (toast != null) toast.Show("<color=#FFCD75>SECOND CHANCE!</color>");
+        if (toast != null) toast.Show($"<color=#FFCD75>{Loc.T("SECOND CHANCE!")}</color>");
     }
 
     static IEnumerator InvulnerableFor(Health h, float seconds)

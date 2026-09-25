@@ -130,7 +130,7 @@ public class SkillUpgradeData : UpgradeData
 
     public override string GetDescription(int tier)
     {
-        string text = description;
+        string text = Loc.T(description);   // açıklama çevrilir, skill ADI çevrilmez
         string bonus = BuildBonusText(tier);
         if (!string.IsNullOrEmpty(bonus)) text = string.IsNullOrEmpty(text) ? bonus : text + "\n" + bonus;
 
@@ -150,14 +150,14 @@ public class SkillUpgradeData : UpgradeData
         {
             if (lines.Count >= max) break;
             if (!owner.HasSkillType(d.Partner(skillType))) continue;
-            lines.Add($"<color={SynergyColor}>SYNERGY: {d.name}</color>\n<size=80%><color={SynergyColor}>{d.description}</color></size>");
+            lines.Add($"<color={SynergyColor}>{Loc.F("SYNERGY: {0}", d.name)}</color>\n<size=80%><color={SynergyColor}>{Loc.T(d.description)}</color></size>");
         }
         return string.Join("\n", lines);
     }
 
     // HUD bildirimi: ilk alımda skill adı, geliştirmede sadece farklar.
     public override string GetBonusSummary(int tier)
-        => tier == 0 ? Green($"{title} acquired!") : BuildDiffText(tier);
+        => tier == 0 ? Green(Loc.F("{0} acquired!", title)) : BuildDiffText(tier);
 
     string BuildBonusText(int tier)
         => tier == 0 ? BuildBaseStatsText() : BuildDiffText(tier);
@@ -168,38 +168,38 @@ public class SkillUpgradeData : UpgradeData
         SkillLevelStats cur = GetLevel(0);
         var lines = new System.Collections.Generic.List<string>();
 
-        lines.Add(Green($"Cooldown: {Num(cur.cooldown)}s"));
+        lines.Add(Green(Loc.F("Cooldown: {0}s", Num(cur.cooldown))));
         switch (skillType)
         {
             case SkillType.Dash:
-                lines.Add(Green($"Speed: {Num(cur.dashSpeed)}  Duration: {Num(cur.dashDuration)}s"));
+                lines.Add(Green(Loc.F("Speed: {0}  Duration: {1}s", Num(cur.dashSpeed), Num(cur.dashDuration))));
                 break;
             case SkillType.AreaBlast:
-                lines.Add(Green($"Damage: {Num(cur.blastDamage)}  Radius: {Num(cur.blastRadius)}"));
+                lines.Add(Green(Loc.F("Damage: {0}  Radius: {1}", Num(cur.blastDamage), Num(cur.blastRadius))));
                 break;
             case SkillType.Shield:
-                lines.Add(Green($"Duration: {Num(cur.shieldDuration)}s"));
+                lines.Add(Green(Loc.F("Duration: {0}s", Num(cur.shieldDuration))));
                 break;
             case SkillType.PulseWave:
-                lines.Add(Green($"{cur.waveCount}x Waves  Damage: {Num(cur.waveDamage)}  Radius: {Num(cur.waveRadius)}"));
+                lines.Add(Green(Loc.F("{0}x Waves  Damage: {1}  Radius: {2}", cur.waveCount, Num(cur.waveDamage), Num(cur.waveRadius))));
                 break;
             case SkillType.Burst:
-                lines.Add(Green($"{cur.burstCount}x Shots  Damage: {Num(cur.burstDamage)}"));
+                lines.Add(Green(Loc.F("{0}x Shots  Damage: {1}", cur.burstCount, Num(cur.burstDamage))));
                 break;
             case SkillType.Heal:
-                lines.Add(Green($"Heal: {Num(cur.healAmount)} HP"));
+                lines.Add(Green(Loc.F("Heal: {0} HP", Num(cur.healAmount))));
                 break;
             case SkillType.FrostNova:
-                lines.Add(Green($"Damage: {Num(cur.frostDamage)}  Radius: {Num(cur.frostRadius)}"));
-                lines.Add(Green($"Slow: {Pct(cur.slowPercent)}  for {Num(cur.slowDuration)}s"));
+                lines.Add(Green(Loc.F("Damage: {0}  Radius: {1}", Num(cur.frostDamage), Num(cur.frostRadius))));
+                lines.Add(Green(Loc.F("Slow: {0}  for {1}s", Pct(cur.slowPercent), Num(cur.slowDuration))));
                 break;
             case SkillType.Overdrive:
-                lines.Add(Green($"+{Pct(cur.overdriveDamageBonus)} Damage  +{Pct(cur.overdriveFireRateBonus)} Fire Rate"));
-                lines.Add(Green($"Duration: {Num(cur.overdriveDuration)}s"));
+                lines.Add(Green(Loc.F("+{0} Damage  +{1} Fire Rate", Pct(cur.overdriveDamageBonus), Pct(cur.overdriveFireRateBonus))));
+                lines.Add(Green(Loc.F("Duration: {0}s", Num(cur.overdriveDuration))));
                 break;
             case SkillType.ChainLightning:
-                lines.Add(Green($"{cur.chainCount}x Chains  Damage: {Num(cur.chainDamage)}"));
-                lines.Add(Green($"Range: {Num(cur.chainRange)}"));
+                lines.Add(Green(Loc.F("{0}x Chains  Damage: {1}", cur.chainCount, Num(cur.chainDamage))));
+                lines.Add(Green(Loc.F("Range: {0}", Num(cur.chainRange))));
                 break;
         }
         return string.Join("\n", lines);
@@ -273,7 +273,7 @@ public class SkillUpgradeData : UpgradeData
         if (Num(Mathf.Abs(d)) == "0") return;
 
         bool good = lowerIsBetter ? d < 0f : d > 0f;
-        string text = $"{(d > 0f ? "+" : "")}{Num(d)}{unit} {label}";
+        string text = $"{(d > 0f ? "+" : "")}{Num(d)}{unit} {Loc.T(label)}";
         lines.Add(good ? Green(text) : Red(text));
     }
 }

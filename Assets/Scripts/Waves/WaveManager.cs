@@ -101,6 +101,9 @@ public class WaveManager : MonoBehaviour
     public float WaveDuration { get; private set; }     // planın toplam süresi
     public float CountdownSeconds => countdownSeconds;
 
+    // Bir sonraki oyun sahnesi bu dalgadan başlar (1-tabanlı, 0 = baştan). RunSave ayarlar.
+    public static int PendingStartWave;
+
     // Her dalgada yeniden kullanılan tamponlar (her seferinde yeni liste ayırmamak için)
     readonly List<SpawnStep> plan = new List<SpawnStep>();
     readonly List<WaveData.SpawnEntry> bag = new List<WaveData.SpawnEntry>();
@@ -133,7 +136,9 @@ public class WaveManager : MonoBehaviour
             yield break;
         }
 
-        int index = 0;
+        // Kayıttan devam: kaldığı dalganın BAŞINDAN başla (RunSave ayarlar, bir kez kullanılır)
+        int index = Mathf.Max(0, PendingStartWave - 1);
+        PendingStartWave = 0;
         while (true)
         {
             // Sıra: önce elle yazılmış dalgalar, sonra sonsuz üretim.

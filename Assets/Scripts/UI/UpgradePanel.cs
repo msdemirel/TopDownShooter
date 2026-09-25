@@ -43,6 +43,7 @@ public class UpgradePanel : MonoBehaviour
         onChosen = chosenCallback;
         Root.SetActive(true);
         SetupReroll(money, rerollCost, rerollCallback);
+        StartCoroutine(SelectFirstCard());
 
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -76,9 +77,14 @@ public class UpgradePanel : MonoBehaviour
         rerollButton.onClick.RemoveAllListeners();
         rerollButton.onClick.AddListener(Reroll);
 
+        // Butondaki kısayol: klavyede (R), gamepad'de (Y)
+        var label = rerollButton.transform.Find("Label")?.GetComponent<TMP_Text>();
+        if (label != null)
+            label.text = $"{Loc.T("REROLL")} <size=70%><color=#94B0C2>({InputMode.Key("R", "Y")})</color></size>";
+
         if (rerollCostText != null)
         {
-            rerollCostText.text = cost <= 0 ? rerollFreeText : cost.ToString();
+            rerollCostText.text = cost <= 0 ? Loc.T(rerollFreeText) : cost.ToString();
             rerollCostText.color = affordable ? rerollAffordColor : rerollCantAffordColor;
         }
     }
@@ -96,7 +102,21 @@ public class UpgradePanel : MonoBehaviour
     {
         if (onReroll == null) return;
         var kb = Keyboard.current;
-        if (kb != null && kb.rKey.wasPressedThisFrame) Reroll();
+        if ((kb != null && kb.rKey.wasPressedThisFrame) || InputMode.RerollPressed) Reroll();
+    }
+
+    // Gamepad ile gezilebilsin: ilk kart seçili gelsin (bir kare sonra: kartlar yeni açıldı)
+    System.Collections.IEnumerator SelectFirstCard()
+    {
+        yield return null;
+        var es = UnityEngine.EventSystems.EventSystem.current;
+        if (es == null) yield break;
+        foreach (var b in buttons)
+            if (b != null && b.gameObject.activeInHierarchy)
+            {
+                var btn = b.GetComponentInChildren<Button>();
+                if (btn != null && btn.IsInteractable()) { es.SetSelectedGameObject(btn.gameObject); yield break; }
+            }
     }
 
     public void Hide()

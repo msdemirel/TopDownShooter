@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // Ana menü: Play / Upgrades (mağaza) / Options / Quit + en iyi rekorlar kartı + Core bakiyesi.
 //
@@ -105,13 +106,19 @@ public class MainMenuUI : MonoBehaviour
     {
         // (Proje yeni Input System kullanıyor — eski Input.GetKeyDown burada exception atar.)
         var kb = Keyboard.current;
-        if (kb != null && !starting)
+        if (!starting)
         {
+            bool esc = (kb != null && kb.escapeKey.wasPressedThisFrame) || InputMode.BackPressed;
+            bool enter = (kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
+                         || InputMode.StartPressed;
             // Zorluk ekranından ESC karakter seçimine döner (ikisi bir akışın adımları)
-            if (kb.escapeKey.wasPressedThisFrame && DifficultyOpen && characterPanel != null) SwitchTo(characterPanel, null);
-            else if (kb.escapeKey.wasPressedThisFrame && SubPanelOpen) ShowMain();
-            else if (!SubPanelOpen && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
-                Play();
+            if (ContinueDialogOpen)
+            {
+                if (esc) { HideContinueDialog(); Select(firstSelected); }
+            }
+            else if (esc && DifficultyOpen && characterPanel != null) SwitchTo(characterPanel, null);
+            else if (esc && SubPanelOpen) ShowMain();
+            else if (!SubPanelOpen && enter) Play();
         }
 
         float t = Time.unscaledTime;
@@ -139,7 +146,11 @@ public class MainMenuUI : MonoBehaviour
             return;
         }
 
+        // Yeni oyun (Continue değil): kayıtlı yarım oyun varsa bitmiş sayılır (Core + rekorlar verilir)
+        if (RunSave.Pending == null) RunSave.AbandonIfExists();
+
         starting = true;
+        AudioManager.Play(SfxId.UiStart);
         Time.timeScale = 1f;
         StartCoroutine(StartGameRoutine());
     }
@@ -150,9 +161,23 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(gameSceneName);
     }
 
-    // PLAY butonu: karakter seçimi -> zorluk seçimi -> oyun. Kurulu olmayan adım atlanır.
+    // PLAY butonu: kayıtlı oyun varsa önce "Continue / New Run" sorulur;
+    // yeni oyunda karakter seçimi -> zorluk seçimi -> oyun (kurulu olmayan adım atlanır).
     public void Play()
     {
+        // Kayıt varken yeni oyun SADECE pencerenin "NEW RUN" butonuyla başlar: aynı karede gelen
+        // ikinci bir Play (ENTER + buton Submit) kaydı yanlışlıkla bitirmesin.
+        if (RunSave.Exists)
+        {
+            if (!ContinueDialogOpen) ShowContinueDialog();
+            return;
+        }
+        StartNewRunFlow();
+    }
+
+    void StartNewRunFlow()
+    {
+        HideContinueDialog();
         if (characterPanel != null) SwitchTo(characterPanel, null);
         else OpenDifficulty();
     }
@@ -210,6 +235,118 @@ public class MainMenuUI : MonoBehaviour
     {
         int s = Mathf.FloorToInt(Mathf.Max(0f, seconds));
         return s >= 3600 ? $"{s / 3600}:{s / 60 % 60:00}:{s % 60:00}" : $"{s / 60:00}:{s % 60:00}";
+    }
+
+    // ---- Continue penceresi (kayıtlı oyun varken PLAY) ----
+    // Ana menünün kendi butonları kopyalanarak kodla kurulur: stil aynı, sahneye bir şey eklemek gerekmez.
+    GameObject continueDialog;
+    TMP_Text continueInfo;
+    GameObject continueFirst;
+    bool ContinueDialogOpen => continueDialog != null && continueDialog.activeSelf;
+
+    void ShowContinueDialog()
+    {
+        var data = RunSave.Load();
+        if (data == null) { RunSave.Delete(); StartNewRunFlow(); return; }   // bozuk kayıt
+        if (continueDialog == null) BuildContinueDialog();
+        if (continueDialog == null) { StartNewRunFlow(); return; }
+
+        continueInfo.text = RunSave.Describe(data);
+        continueDialog.SetActive(true);
+        continueDialog.transform.SetAsLastSibling();
+        StartCoroutine(SelectNextFrame(continueFirst));   // pencereyi açan ENTER, CONTINUE'ya da basmasın
+    }
+
+    IEnumerator SelectNextFrame(GameObject go)
+    {
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+        yield return null;
+        Select(go);
+    }
+
+    void HideContinueDialog()
+    {
+        if (continueDialog != null) continueDialog.SetActive(false);
+    }
+
+    public void ContinueRun()
+    {
+        if (starting || !RunSave.PrepareContinue()) return;
+        HideContinueDialog();
+        StartGame();   // karakter/zorluk ekranları atlanır: seçim kayıttan
+    }
+
+    void BuildContinueDialog()
+    {
+        var canvas = GetComponentInParent<Canvas>();
+        var playBtn = mainPanel != null ? mainPanel.transform.Find("PlayButton") : null;
+        if (canvas == null || playBtn == null) return;
+
+        // Karartma
+        continueDialog = new GameObject("ContinueDialog", typeof(RectTransform), typeof(Image));
+        var root = (RectTransform)continueDialog.transform;
+        root.SetParent(canvas.transform, false);
+        root.anchorMin = Vector2.zero; root.anchorMax = Vector2.one;
+        root.offsetMin = root.offsetMax = Vector2.zero;
+        continueDialog.GetComponent<Image>().color = new Color(0.02f, 0.03f, 0.07f, 0.8f);
+
+        // Pencere: rekor kartının çerçevesiyle aynı sprite
+        var win = new GameObject("Window", typeof(RectTransform), typeof(Image));
+        var wrt = (RectTransform)win.transform;
+        wrt.SetParent(root, false);
+        wrt.sizeDelta = new Vector2(980f, 440f);
+        var wimg = win.GetComponent<Image>();
+        var card = mainPanel.transform.Find("RecordsCard");
+        if (card != null && card.TryGetComponent<Image>(out var cardImg)) { wimg.sprite = cardImg.sprite; wimg.type = Image.Type.Sliced; }
+        else wimg.color = new Color(0.1f, 0.12f, 0.2f, 1f);
+
+        var font = playBtn.GetComponentInChildren<TMP_Text>()?.font;
+        DialogText(wrt, "Title", "RUN IN PROGRESS", 56f, new Color32(0xFF, 0xCD, 0x75, 0xFF), font, new Vector2(0f, 150f));
+        continueInfo = DialogText(wrt, "Info", "", 26f, Color.white, font, new Vector2(0f, 80f));
+        DialogText(wrt, "Hint", "<color=#94B0C2>Starting a new run ends the saved one (its Core is still awarded).</color>",
+                   20f, Color.white, font, new Vector2(0f, 30f));
+
+        continueFirst = DialogButton(playBtn.gameObject, wrt, "CONTINUE", new Vector2(-220f, -90f), ContinueRun);
+        DialogButton(playBtn.gameObject, wrt, "NEW RUN", new Vector2(220f, -90f), StartNewRunFlow, new Color(1f, 0.75f, 0.7f));
+        continueDialog.SetActive(false);
+    }
+
+    static TMP_Text DialogText(RectTransform parent, string name, string text, float size, Color color, TMP_FontAsset font, Vector2 pos)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
+        var rt = (RectTransform)go.transform;
+        rt.SetParent(parent, false);
+        rt.anchoredPosition = pos;
+        rt.sizeDelta = new Vector2(920f, size + 16f);
+        var t = go.GetComponent<TextMeshProUGUI>();
+        if (font != null) t.font = font;
+        t.fontSize = size; t.color = color;
+        if (Loc.Has(text)) Loc.Bind(t, text); else t.text = text;   // sabit yazılar dil değişince güncel kalsın
+        t.alignment = TextAlignmentOptions.Center;
+        t.textWrappingMode = TextWrappingModes.NoWrap;
+        t.richText = true;
+        t.raycastTarget = false;
+        t.enableAutoSizing = true; t.fontSizeMax = size; t.fontSizeMin = size * 0.6f;
+        return t;
+    }
+
+    // PLAY butonunun kopyası: aynı çerçeve/ikon/hover; yazı ve tıklama değişir
+    static GameObject DialogButton(GameObject template, RectTransform parent, string label, Vector2 pos,
+                                   UnityEngine.Events.UnityAction onClick, Color? tint = null)
+    {
+        var go = Instantiate(template, parent);
+        go.name = label.Replace(" ", "") + "Button";
+        var rt = (RectTransform)go.transform;
+        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = pos;
+        rt.sizeDelta = new Vector2(400f, 96f);
+        var btn = go.GetComponent<Button>();
+        btn.onClick = new Button.ButtonClickedEvent();   // kopyalanan kalıcı (Play) bağlantısını sil
+        btn.onClick.AddListener(onClick);
+        if (tint.HasValue && btn.targetGraphic != null) btn.targetGraphic.color = tint.Value;
+        var t = go.GetComponentInChildren<TMP_Text>();
+        if (t != null) Loc.Bind(t, label);
+        return go;
     }
 
     // ---- Yardımcılar ----
