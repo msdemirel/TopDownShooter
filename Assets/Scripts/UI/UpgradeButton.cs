@@ -31,6 +31,8 @@ public class UpgradeButton : MonoBehaviour
     [Header("Skill Swap")]
     [Tooltip("Slotlar doluyken yeni skill kartında açıklamanın altına eklenen not.")]
     [SerializeField] string replacesNote = "Replaces a skill";
+    [Tooltip("Silah slotları doluyken silah kartında açıklamanın altına eklenen not.")]
+    [SerializeField] string replacesWeaponNote = "Replaces a weapon";
     [SerializeField] Color replacesNoteColor = new Color(1f, 0.8f, 0.46f);   // sarı (#FFCD75)
     [Tooltip("Opsiyonel: ikonun köşesindeki swap rozeti. Boşsa UpgradePanel'deki Swap Sprite ile " +
              "ikonun sağ üst köşesine otomatik oluşturulur.")]
@@ -53,9 +55,10 @@ public class UpgradeButton : MonoBehaviour
         if (descriptionText != null)
         {
             string desc = choice.data.GetDescription(choice.tier);
-            if (choice.replacesSkill && !string.IsNullOrEmpty(replacesNote))
+            string noteText = choice.replacesSkill ? replacesNote : choice.replacesWeapon ? replacesWeaponNote : null;
+            if (!string.IsNullOrEmpty(noteText))
             {
-                string note = $"<color=#{ColorUtility.ToHtmlStringRGB(replacesNoteColor)}>{replacesNote}</color>";
+                string note = $"<color=#{ColorUtility.ToHtmlStringRGB(replacesNoteColor)}>{noteText}</color>";
                 desc = string.IsNullOrEmpty(desc) ? note : desc + "\n" + note;
             }
             descriptionText.text = desc;
@@ -83,7 +86,8 @@ public class UpgradeButton : MonoBehaviour
         }
 
         UpdateCoinIcon(cost > 0, coinSprite);
-        UpdateSwapBadge(choice.replacesSkill, swapSprite);
+        UpdateSwapBadge(choice.replacesSkill || choice.replacesWeapon, swapSprite);
+        FitTitle();
 
         if (button == null) button = GetComponent<Button>();
         if (button != null)
@@ -156,6 +160,34 @@ public class UpgradeButton : MonoBehaviour
 
         if (swapSprite != null) swapBadge.sprite = swapSprite;
         swapBadge.gameObject.SetActive(show && swapBadge.sprite != null);
+    }
+
+    // Uzun başlıklar ("Chain Lightning 3", "Buy +1 Assault Rifle") ikonun üstüne taşmasın:
+    // başlığa ikonun sağ kenarı kadar İKİ yandan eşit iç boşluk verilir (ortalı kalır) ve
+    // sığmazsa yazı küçülür. Kart yerleşimi değişmediği için bir kez hesaplanır.
+    bool titleFitted;
+    void FitTitle()
+    {
+        if (titleFitted || titleText == null) return;
+        titleFitted = true;
+
+        titleText.textWrappingMode = TextWrappingModes.NoWrap;
+        titleText.fontSizeMax = titleText.fontSize;
+        titleText.fontSizeMin = titleText.fontSize * 0.55f;
+        titleText.enableAutoSizing = true;
+
+        if (icon == null) return;
+        var corners = new Vector3[4];
+        icon.rectTransform.GetWorldCorners(corners);
+        RectTransform trt = titleText.rectTransform;
+        float iconRight = trt.InverseTransformPoint(corners[2]).x;
+        float inset = iconRight - trt.rect.xMin;
+        if (inset <= 0f) return;                        // ikon başlık alanının dışında
+
+        inset += (iconRight - trt.InverseTransformPoint(corners[0]).x) * 0.15f;   // ikonla yazı arasında nefes payı
+        Vector4 m = titleText.margin;
+        m.x = m.z = inset;
+        titleText.margin = m;
     }
 
     // Bir grafiğin raycast hedefini kapatır (tıklamayı Button'a geçirsin, engellemesin).

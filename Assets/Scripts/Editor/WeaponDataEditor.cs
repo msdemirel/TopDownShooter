@@ -13,6 +13,7 @@ public class WeaponDataEditor : Editor
 
         Draw("weaponName");
         Draw("sprite");
+        Draw("icon");
         Draw("weaponType");
 
         var type = (WeaponType)serializedObject.FindProperty("weaponType").enumValueIndex;
@@ -32,6 +33,7 @@ public class WeaponDataEditor : Editor
             Draw("projectileCount");
             Draw("spreadAngle");
             Draw("inaccuracyAngle");
+            Draw("pierce");
         }
         else
         {

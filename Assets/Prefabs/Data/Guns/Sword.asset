@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: Sword
   sprite: {fileID: -2188655523723985976, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  icon: {fileID: 21300000, guid: c7ca16043cba4adc8b8ddfd86f111991, type: 3}
   weaponType: 1
-  damage: 1
+  damage: 100
   fireRate: 1.5
   range: 2
   projectilePrefab: {fileID: 0}

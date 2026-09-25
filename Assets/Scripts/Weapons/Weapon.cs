@@ -44,6 +44,8 @@ public class Weapon : MonoBehaviour
         ApplyVisual();   // elle atanmış data varsa görselini uygula
     }
 
+    public WeaponData Data => data;
+
     // Slota takılırken PlayerWeapons çağırır.
     public void SetData(WeaponData newData)
     {
@@ -234,6 +236,7 @@ public class Weapon : MonoBehaviour
             proj.team = Team.Player;
             proj.damage = CurrentDamage * (isCrit ? data.critMultiplier : 1f);
             proj.isCrit = isCrit;
+            if (data.pierce) proj.EnablePierce();
         }
     }
 

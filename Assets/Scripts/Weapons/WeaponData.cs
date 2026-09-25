@@ -15,6 +15,8 @@ public class WeaponData : ScriptableObject
     public string weaponName = "Weapon";
     [Tooltip("Silahın görseli. Slota takılınca silah prefab'ının SpriteRenderer'ına yazılır.")]
     public Sprite sprite;
+    [Tooltip("HUD'daki silah slotunda ve kartlarda görünen ikon. Boşsa Sprite kullanılır.")]
+    public Sprite icon;
     [Tooltip("Ranged = mermi fırlatır. Melee = yakın menzilde yay çizerek biçer (kılıç).")]
     public WeaponType weaponType = WeaponType.Ranged;
 
@@ -55,7 +57,11 @@ public class WeaponData : ScriptableObject
     [Tooltip("Her mermiye eklenen RASTGELE sapma (± derece). 0 = kusursuz nişan (lazer gibi). " +
              "3-8 arası gerçekçi durur; büyüttükçe silah dağıtır.")]
     public float inaccuracyAngle = 5f;
+    [Tooltip("Açıksa mermiler düşmanları delip geçer (sniper gibi). Kapalıysa mermi prefab'ının ayarı geçerli.")]
+    public bool pierce;
 
     // İki atış arasındaki süre (saniye).
+    public Sprite Icon => icon != null ? icon : sprite;
+
     public float FireCooldown => fireRate > 0f ? 1f / fireRate : float.MaxValue;
 }

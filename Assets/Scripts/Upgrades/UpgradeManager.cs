@@ -12,12 +12,17 @@ using UnityEngine;
 // oyuncuya hangi skill'i değiştireceğini sorar. Değiştirilen skill'in ilerlemesi
 // sıfırlanır (ileride yeniden 1. seviyeden teklif edilebilir). Vazgeçerse aynı
 // seçenekler tekrar gösterilir.
+//
+// SİLAH SWAP: Silah slotları doluyken silah kartı seçilirse aynı akış WeaponHUD ile
+// işler: oyuncu bırakacağı silahı seçer, para ancak seçimden sonra ödenir.
 public class UpgradeManager : MonoBehaviour
 {
     [Header("Referanslar")]
     [SerializeField] UpgradePanel panel;
     [Tooltip("Slotlar doluyken skill değiştirme ekranı. Boşsa sahnede aranır.")]
     [SerializeField] SkillHUD skillHud;
+    [Tooltip("Silah slotları doluyken silah değiştirme ekranı. Boşsa sahnede aranır.")]
+    [SerializeField] WeaponHUD weaponHud;
 
     [Tooltip("Teklif edilebilecek tüm upgrade'ler. Panel bunlar arasından rastgele seçer.")]
     [SerializeField] List<UpgradeData> pool = new List<UpgradeData>();
@@ -26,11 +31,25 @@ public class UpgradeManager : MonoBehaviour
     [Tooltip("Panelde kaç seçenek gösterilsin.")]
     [SerializeField] int choiceCount = 3;
 
+    [Header("Reroll")]
+    [Tooltip("Kartları yenilemenin ilk fiyatı. -1 = reroll kapalı.")]
+    [SerializeField] int rerollBaseCost = 5;
+    [Tooltip("Aynı seçimde her reroll'dan sonra fiyata eklenen miktar. Yeni level'da fiyat sıfırlanır.")]
+    [SerializeField] int rerollCostIncrease = 5;
+
     PlayerContext ctx;
     PlayerStats stats;
 
     int pendingLevelUps;   // seçim bekleyen level sayısı
     bool panelOpen;
+    int rerollsThisPanel;  // bu seçimde kaç kez reroll yapıldı (fiyatı artırır)
+    int freeRerolls;       // oyun boyu bedava reroll hakkı (kalıcı "Lucky Dice" upgrade'i)
+
+    int RerollCost => rerollBaseCost < 0 ? -1
+                    : freeRerolls > 0 ? 0
+                    : rerollBaseCost + rerollsThisPanel * rerollCostIncrease;
+
+    public void AddFreeRerolls(int count) => freeRerolls += Mathf.Max(0, count);
 
     // upgrade -> kaç kez alındı (bir sonraki teklif edilecek kademe)
     readonly Dictionary<UpgradeData, int> timesTaken = new Dictionary<UpgradeData, int>();
@@ -71,6 +90,7 @@ public class UpgradeManager : MonoBehaviour
         }
 
         if (skillHud == null) skillHud = FindAnyObjectByType<SkillHUD>();
+        if (weaponHud == null) weaponHud = FindAnyObjectByType<WeaponHUD>();
 
         stats.OnLevelUp += HandleLevelUp;
         panel.Hide();
@@ -102,9 +122,9 @@ public class UpgradeManager : MonoBehaviour
             if (choices.Count > 0)
             {
                 panelOpen = true;
+                rerollsThisPanel = 0;
                 Time.timeScale = 0f;          // oyunu dondur (UI zamandan etkilenmez)
-                int money = stats != null ? stats.Money : 0;
-                panel.Show(choices, money, OnChosen);
+                ShowPanel();
                 return;
             }
 
@@ -133,6 +153,16 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
 
+        // Silah slotları dolu: önce hangi silahın bırakılacağını sor
+        if (NeedsWeaponSwap(chosen.data))
+        {
+            panel.Hide();
+            weaponHud.BeginSwap((WeaponUpgradeData)chosen.data,
+                                slot => FinishWeaponSwap(chosen, slot),
+                                ReshowPanel);
+            return;
+        }
+
         if (chosen.data != null)
         {
             if (!TryPay(chosen)) return;
@@ -151,6 +181,9 @@ public class UpgradeManager : MonoBehaviour
         => data is SkillUpgradeData && tier == 0
            && ctx.skills != null && !ctx.skills.HasFreeSlot
            && skillHud != null;
+
+    bool NeedsWeaponSwap(UpgradeData data)
+        => data is WeaponUpgradeData && ctx.weapons != null && !ctx.weapons.HasFreeSlot && weaponHud != null;
 
     // Parası varsa öde; yetmezse seçimi işleme (normalde buton pasif olduğu için buraya gelinmez)
     bool TryPay(UpgradeChoice c)
@@ -175,11 +208,42 @@ public class UpgradeManager : MonoBehaviour
         CloseAndContinue();
     }
 
+    void FinishWeaponSwap(UpgradeChoice chosen, int slot)
+    {
+        if (!panelOpen) return;
+        if (!TryPay(chosen)) { ReshowPanel(); return; }
+
+        var up = (WeaponUpgradeData)chosen.data;
+        ctx.weapons.ReplaceWeapon(slot, up.weapon);
+        OnUpgradeApplied?.Invoke(up, chosen.tier);
+
+        CloseAndContinue();
+    }
+
     // Swap'tan vazgeçildi: aynı seçenekleri tekrar göster (oyun donuk kalır).
     void ReshowPanel()
     {
         if (!panelOpen) return;
-        panel.Show(choices, stats != null ? stats.Money : 0, OnChosen);
+        ShowPanel();
+    }
+
+    void ShowPanel()
+    {
+        int money = stats != null ? stats.Money : 0;
+        panel.Show(choices, money, OnChosen, RerollCost, Reroll);
+    }
+
+    // Parayla yeni kartlar çek. Aynı seçimde her reroll bir öncekinden pahalı.
+    void Reroll()
+    {
+        if (!panelOpen) return;
+        int cost = RerollCost;
+        if (cost < 0) return;
+        if (freeRerolls > 0) freeRerolls--;                 // bedava hak: fiyat artmaz
+        else if (cost > 0 && (stats == null || !stats.TrySpendMoney(cost))) return;
+        else rerollsThisPanel++;
+        PickChoices();
+        ShowPanel();
     }
 
     void CloseAndContinue()
@@ -207,7 +271,12 @@ public class UpgradeManager : MonoBehaviour
             timesTaken.TryGetValue(u, out int tier);   // hiç alınmadıysa 0
             if (!u.CanOffer(ctx, tier)) continue;
 
-            var choice = new UpgradeChoice { data = u, tier = tier, replacesSkill = NeedsSwap(u, tier) };
+            var choice = new UpgradeChoice
+            {
+                data = u, tier = tier,
+                replacesSkill = NeedsSwap(u, tier),
+                replacesWeapon = NeedsWeaponSwap(u),
+            };
             if (u.GetCost(tier) > 0) paidCandidates.Add(choice);
             else freeCandidates.Add(choice);
         }

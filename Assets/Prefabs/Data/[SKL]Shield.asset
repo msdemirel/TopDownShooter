@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: '[SKL]Shield'
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: Shield
-  description: An energy barrier absorbs all damage briefly
-  icon: {fileID: 321266653871289858, guid: 9e9c66ffa611739e75646b5f5dbca3f0, type: 3}
+  description: An energy barrier blocks all damage for a short time.
+  icon: {fileID: 21300000, guid: 7086ad29e1cc4179ae9d6b9f16f5271b, type: 3}
   unlockWave: 5
   lastWave: 0
   skillType: 2

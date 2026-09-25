@@ -7,6 +7,7 @@ public struct UpgradeChoice
     public UpgradeData data;
     public int tier;
     public bool replacesSkill;   // slotlar dolu: seçilirse bir skill'in yerine geçer (kartta not + ikon)
+    public bool replacesWeapon;  // silah slotları dolu: seçilirse bir silahın yerine geçer
 }
 
 // Tüm upgrade'lerin ortak temeli.
@@ -34,6 +35,15 @@ public abstract class UpgradeData : ScriptableObject
              "Zayıf silah sürümlerini emekli etmek için: Sword I -> 8 yazıp Sword II'yi 5'te açmak gibi.")]
     [Min(0)] public int lastWave = 0;
 
+    [Header("Kalıcı Kilit (meta)")]
+    [Tooltip("None = baştan açık. Diğerleri: koşul sağlanana kadar (oyunlar arası) hiç teklif edilmez. " +
+             "Dalga kilidi de ayrıca geçerli.")]
+    public UnlockCondition unlockCondition = UnlockCondition.None;
+    [Tooltip("Koşulun eşiği (ör. ReachWave 5, TotalKills 1000, SurviveSeconds 480).")]
+    public float unlockThreshold;
+
+    public bool IsMetaUnlocked => MetaProgress.IsMet(unlockCondition, unlockThreshold);
+
     // Toplam kademe sayısı. 1 = tek seferlik upgrade.
     public virtual int TierCount => 1;
 
@@ -41,7 +51,7 @@ public abstract class UpgradeData : ScriptableObject
     public bool IsUnlocked(PlayerContext ctx)
     {
         int wave = ctx.CurrentWave;
-        return wave >= unlockWave && (lastWave <= 0 || wave <= lastWave);
+        return IsMetaUnlocked && wave >= unlockWave && (lastWave <= 0 || wave <= lastWave);
     }
 
     // Bu kademe şu anda teklif edilebilir mi?

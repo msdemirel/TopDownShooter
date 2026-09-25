@@ -47,6 +47,11 @@ public class PlayerWeapons : MonoBehaviour
     public void AddCritChance(float amount)
         => CritChanceBonus = Mathf.Clamp01(CritChanceBonus + amount);
 
+    // i. slottaki silahın verisi (boşsa null). HUD slot ikonlarını buradan okur.
+    public WeaponData GetSlotData(int index)
+        => weapons != null && index >= 0 && index < weapons.Length && weapons[index] != null
+            ? weapons[index].Data : null;
+
     // Upgrade paneli / HUD bunu dinleyebilir
     public event Action<Weapon> OnWeaponAdded;
 
@@ -99,29 +104,46 @@ public class PlayerWeapons : MonoBehaviour
         }
 
         for (int i = 0; i < slotCount; i++)
-        {
-            if (weapons[i] != null) continue;
-
-            GameObject go = Instantiate(weaponPrefab, slots[i]);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.name = $"Weapon_{data.weaponName}";
-
-            if (!go.TryGetComponent<Weapon>(out var w))
-            {
-                Debug.LogWarning("[PlayerWeapons] Weapon Prefab'ında Weapon component'i yok.", this);
-                Destroy(go);
-                return false;
-            }
-
-            w.SetData(data);
-            weapons[i] = w;
-            WeaponCount++;
-            OnWeaponAdded?.Invoke(w);
-            return true;
-        }
+            if (weapons[i] == null) return PlaceWeapon(i, data);
 
         return false;  // tüm slotlar dolu
+    }
+
+    // Boş i. slota silahı takar.
+    bool PlaceWeapon(int i, WeaponData data)
+    {
+        GameObject go = Instantiate(weaponPrefab, slots[i]);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
+        go.name = $"Weapon_{data.weaponName}";
+
+        if (!go.TryGetComponent<Weapon>(out var w))
+        {
+            Debug.LogWarning("[PlayerWeapons] Weapon Prefab'ında Weapon component'i yok.", this);
+            Destroy(go);
+            return false;
+        }
+
+        w.SetData(data);
+        weapons[i] = w;
+        WeaponCount++;
+        OnWeaponAdded?.Invoke(w);
+        return true;
+    }
+
+    // Slotlar doluyken yeni silah alınınca (swap): o slottaki silahı söküp yenisini takar.
+    // Silah sayısı değişmez. HUD OnWeaponAdded ile güncellenir.
+    public bool ReplaceWeapon(int index, WeaponData data)
+    {
+        if (data == null || weaponPrefab == null || index < 0 || index >= slotCount) return false;
+
+        if (weapons[index] != null)
+        {
+            Destroy(weapons[index].gameObject);
+            weapons[index] = null;
+            WeaponCount--;
+        }
+        return PlaceWeapon(index, data);
     }
 
     // Slot dizilimini Scene view'da göster (oyun çalışmıyorken de).

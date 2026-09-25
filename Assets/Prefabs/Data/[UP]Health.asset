@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: '[UP]Health'
   m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
   title: Health
-  description: Increases max health by {0}
-  icon: {fileID: 561316698340963439, guid: eec9b75638b877e5f98e365ae9c824d9, type: 3}
+  description: Raise your maximum health.
+  icon: {fileID: 21300000, guid: 6a081f5f30784330a386d100a985ff5e, type: 3}
   unlockWave: 1
   lastWave: 0
   stat: 0

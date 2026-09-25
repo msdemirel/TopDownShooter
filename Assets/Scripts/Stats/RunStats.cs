@@ -10,6 +10,8 @@ public class RunStats : MonoBehaviour
     WaveManager waves;
 
     int kills;
+    int crits;
+    int bossKills;
     int coinsCollected;
     float damageDealt;
     float deathTime = -1f;   // ölünce süre donsun (Game Over açıkken artmasın)
@@ -54,12 +56,18 @@ public class RunStats : MonoBehaviour
         Health.AnyDamaged -= HandleDamage;
     }
 
-    void HandleKill(EnemyBase e) => kills++;
+    void HandleKill(EnemyBase e)
+    {
+        kills++;
+        if (e != null && e.IsBoss) bossKills++;
+    }
 
     // Sadece düşmanlara verilen hasar (oyuncunun aldığı değil)
     void HandleDamage(Health h, float amount, bool isCrit)
     {
-        if (h != null && h.Team == Team.Enemy) damageDealt += amount;
+        if (h == null || h.Team != Team.Enemy) return;
+        damageDealt += amount;
+        if (isCrit) crits++;
     }
 
     // OnMoneyChanged toplam parayı verir; sadece ARTIŞLAR toplanır (harcama düşmez).
@@ -82,6 +90,8 @@ public class RunStats : MonoBehaviour
         level = Level,
         coins = coinsCollected,
         damage = damageDealt,
+        crits = crits,
+        bossKills = bossKills,
     };
 }
 
@@ -95,4 +105,6 @@ public struct RunResult
     public int level;
     public int coins;
     public float damage;
+    public int crits;       // kalıcı ilerleme (Revolver kilidi) için
+    public int bossKills;   // Core ödülü + Sniper kilidi için
 }

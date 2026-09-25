@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: Dash
   description: Blink across short distances at light speed.
-  icon: {fileID: 1050860382680927372, guid: d138a3c57a69b3cceca4c37a92e34389, type: 3}
-  unlockWave: 4
+  icon: {fileID: 21300000, guid: 7e093e250cfe483bbb71d88dd4000c9f, type: 3}
+  unlockWave: 1
   lastWave: 0
   skillType: 0
   levels:

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatUpgradeData
   title: Attack Speed
   description: All weapons attack faster.
-  icon: {fileID: 1090713597792580856, guid: 8336e2d13f702cae66425cf30c71866a, type: 3}
+  icon: {fileID: 21300000, guid: 7b01ee1c867241878a6bb2c726dac56a, type: 3}
   unlockWave: 2
   lastWave: 0
   stat: 3

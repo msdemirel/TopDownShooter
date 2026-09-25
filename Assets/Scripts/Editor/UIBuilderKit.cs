@@ -26,7 +26,7 @@ public static class UIBuilderKit
 
     // Oyunun pixel fontu (ilk kullanımda yüklenir)
     static TMP_FontAsset font;
-    static TMP_FontAsset Font => font != null ? font : (font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath));
+    public static TMP_FontAsset Font => font != null ? font : (font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath));
 
     // Options paneli (tam ekran, hafif karartmalı): Master/Music/SFX, Fullscreen/VSync,
     // Quality/Resolution, Reset ve Back. OptionsUI panele eklenir ve tüm alanları bağlanır.

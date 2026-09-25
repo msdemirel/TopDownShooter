@@ -271,7 +271,7 @@ MonoBehaviour:
   centerOffset: {x: 0, y: -0.24}
   firstSlotAngle: 0
   weaponPrefab: {fileID: 466636930007341634, guid: f96dfbd9065926d47b2f4ae7510ddb15, type: 3}
-  startingWeapon: {fileID: 11400000, guid: c0f3062b495396347a1f8e6f996b6142, type: 2}
+  startingWeapon: {fileID: 11400000, guid: 95c6aeaf41adf0b71a861925e30d2353, type: 2}
 --- !u!114 &1957679157681311204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +297,9 @@ MonoBehaviour:
   frostColor: {r: 0.65, g: 0.95, b: 1, a: 0.95}
   overdriveColor: {r: 1, g: 0.55, b: 0.25, a: 0.9}
   lightningColor: {r: 1, g: 0.95, b: 0.45, a: 1}
+  shieldColor: {r: 0.35, g: 0.75, b: 1, a: 1}
+  dashColor: {r: 0.4, g: 0.92, b: 1, a: 1}
+  blastExpandTime: 0.3
   lightningThickness: 0.08
 --- !u!1 &5877893260729471450
 GameObject:

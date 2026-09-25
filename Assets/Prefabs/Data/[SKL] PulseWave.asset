@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: '[SKL] PulseWave'
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: Pulse Wave
-  description: 
-  icon: {fileID: 542485652895485070, guid: e1a861b02e35304860e2ac5dc30beaec, type: 3}
+  description: Send out shockwaves that hit every enemy they touch.
+  icon: {fileID: 21300000, guid: 1aad0147b3d74146b4d779b3cb0b366f, type: 3}
   unlockWave: 4
   lastWave: 0
+  unlockCondition: 8
+  unlockThreshold: 15
   skillType: 3
   levels:
   - cooldown: 9

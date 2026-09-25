@@ -50,10 +50,12 @@ public class UpgradeToastUI : MonoBehaviour
             upgradeManager.OnUpgradeApplied -= HandleUpgradeApplied;
     }
 
-    void HandleUpgradeApplied(UpgradeData data, int tier)
+    void HandleUpgradeApplied(UpgradeData data, int tier) => Show(data.GetBonusSummary(tier));
+
+    // Dışarıdan bildirim (ör. "Second Chance!" dirilme mesajı). Sıraya eklenir.
+    public void Show(string msg)
     {
-        string msg = data.GetBonusSummary(tier);
-        if (string.IsNullOrEmpty(msg)) return;
+        if (string.IsNullOrEmpty(msg) || text == null) return;
 
         pending.Enqueue(msg);
         if (!showing) StartCoroutine(ShowQueue());

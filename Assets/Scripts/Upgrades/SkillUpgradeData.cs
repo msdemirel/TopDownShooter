@@ -177,6 +177,7 @@ public class SkillUpgradeData : UpgradeData
                 break;
             case SkillType.ChainLightning:
                 lines.Add(Green($"{cur.chainCount}x Chains  Damage: {Num(cur.chainDamage)}"));
+                lines.Add(Green($"Range: {Num(cur.chainRange)}"));
                 break;
         }
         return string.Join("\n", lines);
@@ -246,7 +247,8 @@ public class SkillUpgradeData : UpgradeData
                         bool lowerIsBetter = false)
     {
         float d = to - from;
-        if (Mathf.Approximately(d, 0f)) return;
+        // Yuvarlanınca 0 görünen farkı yazma ("+0s Duration" gibi boş satır çıkmasın)
+        if (Num(Mathf.Abs(d)) == "0") return;
 
         bool good = lowerIsBetter ? d < 0f : d > 0f;
         string text = $"{(d > 0f ? "+" : "")}{Num(d)}{unit} {label}";

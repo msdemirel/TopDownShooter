@@ -44,6 +44,22 @@ public class SkillHUD : MonoBehaviour
     [SerializeField] float swapPulseScale = 1.12f;
     [SerializeField] Color swapPromptBackground = new Color(0.1f, 0.11f, 0.17f, 0.92f);
 
+    [Header("Görünüm")]
+    [Tooltip("Opsiyonel: her skill ikonunun arkasına konan çerçeve. Boşsa çerçeve oluşturulmaz.")]
+    [SerializeField] Sprite slotFrame;
+    [Tooltip("Çerçevenin boyutu, ikonun boyutuna oranla (1.28 = ikondan %28 büyük).")]
+    [Range(1f, 2f)] [SerializeField] float slotFrameSize = 1.28f;
+    [Tooltip("Opsiyonel: tüm kutuların arkasındaki panel (9-slice). Kutuların kapladığı alana göre " +
+             "otomatik boyutlanır; skill bar'ı nereye taşırsan oraya uyar.")]
+    [SerializeField] Sprite barFrame;
+    [Tooltip("Panelin kutuların dışına taşma payı (x: yanlar, y: üst/alt).")]
+    [SerializeField] Vector2 barPadding = new Vector2(14f, 10f);
+    [Tooltip("Panel kenarlarının kalınlık çarpanı (Image.pixelsPerUnitMultiplier). " +
+             "0.5 = sprite pikseli 2 UI birimi (diğer HUD parçalarıyla aynı piksel boyutu).")]
+    [SerializeField] float barFramePixelScale = 0.5f;
+    [Tooltip("Henüz skill olmayan slotlarda çerçevenin sönük hali (0 = gösterme).")]
+    [Range(0f, 1f)] [SerializeField] float emptySlotAlpha = 0.35f;
+
     // Swap durumu
     Action<int> onSwapPick;
     Action onSwapCancel;
@@ -69,7 +85,12 @@ public class SkillHUD : MonoBehaviour
             return;
         }
 
+        // Çerçeveler kopyalamadan ÖNCE: EnsureSlotCount'un ürettiği kutular da çerçeveli gelsin
+        foreach (var s in slots)
+            if (s != null) AddSlotFrame(s.icon);
+
         EnsureSlotCount(playerSkills.SlotCount);
+        BuildBarFrame();
         slotBaseScales = new Vector3[slots.Length];
         for (int i = 0; i < slots.Length; i++)
             if (slots[i] != null && slots[i].root != null) slotBaseScales[i] = slots[i].root.transform.localScale;
@@ -87,6 +108,98 @@ public class SkillHUD : MonoBehaviour
         if (playerSkills == null) return;
         playerSkills.OnSkillAdded -= HandleSkillAdded;
         playerSkills.OnSkillReplaced -= HandleSkillReplaced;
+    }
+
+    // İkonun hemen ARKASINA (bir önceki kardeş olarak) aynı yerde, biraz daha büyük bir çerçeve koyar.
+    void AddSlotFrame(Image icon)
+    {
+        if (slotFrame == null || icon == null) return;
+
+        RectTransform iconRt = icon.rectTransform;
+        var go = new GameObject("SlotFrame", typeof(RectTransform), typeof(Image));
+        var rt = (RectTransform)go.transform;
+        rt.SetParent(iconRt.parent, false);
+        rt.SetSiblingIndex(iconRt.GetSiblingIndex());   // ikonun hemen arkası
+        rt.anchorMin = iconRt.anchorMin;
+        rt.anchorMax = iconRt.anchorMax;
+        rt.pivot = iconRt.pivot;
+        rt.anchoredPosition = iconRt.anchoredPosition;
+        rt.localScale = iconRt.localScale;
+        rt.sizeDelta = iconRt.rect.size * slotFrameSize;
+
+        var img = go.GetComponent<Image>();
+        img.sprite = slotFrame;
+        img.raycastTarget = false;
+    }
+
+    // Tüm kutuların arkasına tek panel + her slot için sönük boş yuva koyar. Kutular gizliyken de
+    // görünür: oyuncu kaç skill slotu olduğunu ve hangilerinin boş olduğunu görür.
+    // Kutuların DÜNYA köşelerinden hesaplanır, yani skill bar sahnede nereye taşınırsa taşınsın uyar.
+    void BuildBarFrame()
+    {
+        if (barFrame == null && (slotFrame == null || emptySlotAlpha <= 0f)) return;
+
+        RectTransform bar = (RectTransform)transform;
+        Vector2 min = new Vector2(float.MaxValue, float.MaxValue);
+        Vector2 max = new Vector2(float.MinValue, float.MinValue);
+        var corners = new Vector3[4];
+        bool any = false;
+
+        foreach (var s in slots)
+        {
+            if (s == null || s.root == null) continue;
+            ((RectTransform)s.root.transform).GetWorldCorners(corners);
+            foreach (var c in corners)
+            {
+                Vector2 p = bar.InverseTransformPoint(c);
+                min = Vector2.Min(min, p);
+                max = Vector2.Max(max, p);
+            }
+            any = true;
+        }
+        if (!any) return;
+
+        // Boş yuvalar: slot ikonunun yerinde, kutudan bağımsız (kutu gizliyken de görünsün)
+        if (slotFrame != null && emptySlotAlpha > 0f)
+        {
+            for (int i = slots.Length - 1; i >= 0; i--)
+            {
+                if (slots[i] == null || slots[i].icon == null) continue;
+                slots[i].icon.rectTransform.GetWorldCorners(corners);
+                Vector2 a = bar.InverseTransformPoint(corners[0]);
+                Vector2 b = bar.InverseTransformPoint(corners[2]);
+
+                var img = CreateBarImage($"EmptySlot ({i})", bar, slotFrame, (a + b) * 0.5f, (b - a) * slotFrameSize);
+                img.color = new Color(1f, 1f, 1f, emptySlotAlpha);
+            }
+        }
+
+        if (barFrame != null)
+        {
+            var frame = CreateBarImage("BarFrame", bar, barFrame, (min + max) * 0.5f, max - min + barPadding * 2f);
+            frame.type = Image.Type.Sliced;
+            frame.pixelsPerUnitMultiplier = barFramePixelScale;
+            frame.transform.SetAsFirstSibling();   // her şeyin arkası
+        }
+    }
+
+    // Skill bar'ın (bu objenin) yerel koordinatında, verilen merkez/boyutta bir Image; kutuların arkasında.
+    static Image CreateBarImage(string name, RectTransform parent, Sprite sprite, Vector2 center, Vector2 size)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+        var rt = (RectTransform)go.transform;
+        rt.SetParent(parent, false);
+        rt.SetAsFirstSibling();
+        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+        // anchor ebeveynin ortasında; yerel nokta ise pivot'a göre -> farkı düzelt
+        Vector2 pivotOffset = (new Vector2(0.5f, 0.5f) - parent.pivot) * parent.rect.size;
+        rt.anchoredPosition = center - pivotOffset;
+        rt.sizeDelta = size;
+
+        var img = go.GetComponent<Image>();
+        img.sprite = sprite;
+        img.raycastTarget = false;
+        return img;
     }
 
     // Sahnedeki kutu sayısı slot sayısından azsa, son kutuyu kopyalayıp aynı aralıkla dizer.

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d159516487cb4eff8aec1f2d8f6c44e, type: 3}
+  m_Name: MetaCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::MetaCatalog
+  upgrades:
+  - {fileID: 11400000, guid: ad40d44d3455da1f991616c35de21126, type: 2}
+  - {fileID: 11400000, guid: 21fc4c829350fadee88c633af97060bb, type: 2}
+  - {fileID: 11400000, guid: 10a823154ad6713288facb2debb9f478, type: 2}
+  - {fileID: 11400000, guid: fe122d286b18212a3945f827edcd1428, type: 2}
+  - {fileID: 11400000, guid: 6e4d08626a4ff86fa90df996192c2490, type: 2}
+  - {fileID: 11400000, guid: 3a78b9fb53253a1799fd549659ebeb45, type: 2}
+  - {fileID: 11400000, guid: 0a6d68d5b2b9d6e5db81dcb0967efebb, type: 2}
+  - {fileID: 11400000, guid: 1f68b15e8a5ef4d1c9f4d1152e05504e, type: 2}
+  lockables:
+  - {fileID: 11400000, guid: fc0963a00687bbb4cbea93cfc854666f, type: 2}
+  - {fileID: 11400000, guid: 39af8fc478ec4592b170c9fb59f5edc1, type: 2}
+  - {fileID: 11400000, guid: dd28c6cea191434b9124c0a58742b05c, type: 2}
+  - {fileID: 11400000, guid: 4c54734a70ce4f15a5e06f633856a524, type: 2}
+  - {fileID: 11400000, guid: 7848458a96e72bae383ee969431fc365, type: 2}
+  - {fileID: 11400000, guid: bb9b849262a4ccc5eabe7ce6f9e3ef75, type: 2}
+  - {fileID: 11400000, guid: fe9a2ff90fbf551ddbb57e4f5d467933, type: 2}
+  - {fileID: 11400000, guid: 0e8a9011a9d0beb8e85a92235171266d, type: 2}
+  - {fileID: 11400000, guid: 2676106804615617fb949f66dc6f4439, type: 2}
+  - {fileID: 11400000, guid: 70a152d21231c4278ad13321dfde56e9, type: 2}
+  - {fileID: 11400000, guid: 1a0908d8592fe0f9193989aaeb1375ca, type: 2}

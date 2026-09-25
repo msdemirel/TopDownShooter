@@ -7,7 +7,8 @@ using static UIBuilderKit;
 
 // Ana menüyü (MainMenu sahnesi) baştan kurar:
 //   - Hareketli arka plan: kayan zemin, ışık parçacıkları, kenar karartması (MenuBackground)
-//   - Başlık + parıltı, Play / Options / Quit butonları, "BEST RECORDS" kartı
+//   - Başlık + parıltı, Play / Upgrades / Options / Quit butonları, "BEST RECORDS" kartı
+//   - Kalıcı upgrade mağazası (MetaShopBuilder)
 //   - Options paneli: Master/Music/SFX slider'ları, Fullscreen/VSync, Quality/Resolution,
 //     Reset ve Back butonları (OptionsUI bu panele taşınır)
 //   - Açılış/geçiş için siyah perde, sürüm yazısı, "PRESS ENTER TO PLAY"
@@ -167,6 +168,10 @@ public static class MainMenuBuilder
         mso.FindProperty("title").objectReferenceValue = titleRt;
         mso.FindProperty("pressStartText").objectReferenceValue = pressStart;
         mso.FindProperty("versionText").objectReferenceValue = version;
+
+        // Mağaza: UPGRADES butonu + panel (Options/Quit'i bir adım aşağı kaydırır)
+        MetaShopBuilder.Build(menu, root, main, mso);
+        fader.transform.SetAsLastSibling();   // perde mağazanın da önünde kalsın
         mso.ApplyModifiedPropertiesWithoutUndo();
 
         EditorSceneManager.MarkSceneDirty(menu.gameObject.scene);

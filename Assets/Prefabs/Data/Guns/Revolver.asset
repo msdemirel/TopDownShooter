@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a791f9860a08d648ab3e65a369145e6, type: 3}
+  m_Name: Revolver
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Revolver
+  sprite: {fileID: 4321398367205095341, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
+  icon: {fileID: 21300000, guid: c852a41a2d424e6893e20d187f610530, type: 3}
+  weaponType: 0
+  damage: 26
+  fireRate: 1.1
+  range: 6
+  projectilePrefab: {fileID: 6604449588755319442, guid: aa5c6c72eebf4cc448e89b10021ac013, type: 3}
+  projectileSpeed: 16
+  meleeArc: 120
+  lungeDistance: 0.5
+  swingTime: 0.15
+  projectileCount: 1
+  spreadAngle: 0
+  critChance: 0.2
+  critMultiplier: 2.5
+  inaccuracyAngle: 2
+  pierce: 0

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c582ce6075e1dcbfa9d3b0999fc3c28, type: 3}
+  m_Name: Wisdom
+  m_EditorClassIdentifier: Assembly-CSharp::MetaUpgradeData
+  id: wisdom
+  title: Wisdom
+  description: Gain more experience.
+  icon: {fileID: 21300000, guid: bde10297e84243239fe5e05bcb04a8b3, type: 3}
+  effect: 3
+  valuePerLevel: 0.1
+  costs: 190000002d0000004b00000073000000a5000000

@@ -15,6 +15,10 @@ public class PlayerStats : MonoBehaviour
     int exp;        // MEVCUT level içinde biriken exp (level atlayınca sıfırlanır)
     int totalExp;   // oyun boyunca toplanan toplam exp
     int money;
+    float expRemainder;   // çarpanlı exp'in küsuratı kaybolmasın (1 exp x 1.1 -> birikir)
+
+    // Kalıcı "Wisdom" upgrade'i: toplanan exp bu oranla çarpılır.
+    public float ExpMultiplier { get; set; } = 1f;
 
     public int Level => level;
     public int Exp => exp;
@@ -31,6 +35,11 @@ public class PlayerStats : MonoBehaviour
 
     public void AddExp(int amount)
     {
+        if (amount <= 0) return;
+
+        float scaled = amount * ExpMultiplier + expRemainder;
+        amount = Mathf.FloorToInt(scaled);
+        expRemainder = scaled - amount;
         if (amount <= 0) return;
 
         exp += amount;

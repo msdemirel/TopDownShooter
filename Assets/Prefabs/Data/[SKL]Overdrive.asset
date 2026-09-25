@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: Overdrive
   description: Temporarily boosts weapon damage and fire rate.
-  icon: {fileID: 4136736798376599375, guid: 7bbc3024711944a4bccabaca97492e7a, type: 3}
+  icon: {fileID: 21300000, guid: a80eeab420ef4bb995a8b359cb98e214, type: 3}
   unlockWave: 4
   lastWave: 0
+  unlockCondition: 9
+  unlockThreshold: 500
   skillType: 7
   levels:
   - cooldown: 15

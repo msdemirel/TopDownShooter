@@ -7,8 +7,12 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 // Game Over panelini sahnede baştan kurar: karartma, pencere, başlık, 6 istatistik kartı
-// (ikon + değer + rekor + NEW! rozeti), "NEW RECORD!" şeridi ve Restart / Main Menu / Quit
-// butonları. GameOverUI'daki tüm referansları ve butonların OnClick'lerini bağlar.
+// (ikon + değer + rekor + NEW! rozeti), "NEW RECORD!" şeridi, Core (kalıcı ilerleme) şeridi +
+// "NEW UNLOCK" bölümü ve Restart / Main Menu / Quit butonları. GameOverUI'daki tüm
+// referansları ve butonların OnClick'lerini bağlar.
+//
+// Panel zaten kuruluysa ve sadece Core bölümü eksikse: Menü > TopDownShooter > UI >
+// Game Over'a Core Bölümü Ekle (paneli silmez; pencereyi uzatıp butonları aşağı kaydırır).
 //
 // Kullanım: MainGame sahnesi açıkken Menü > TopDownShooter > UI > Game Over Panelini Kur
 // Tekrar çalıştırmak güvenli: panelin ESKİ içeriği silinip yeniden kurulur. Sonrasında her
@@ -23,6 +27,10 @@ public static class GameOverPanelBuilder
     const string FrameSlot = "Assets/Art/Generated/UI/frame_slot.png";
     const string CoinIcon = "Assets/Art/Generated/Pickups/pickup_coin.png";
     const string DamageIcon = "Assets/Art/Generated/Icons/Upgrades/stat_damage.png";
+    const string CoreIcon = "Assets/Art/Generated_v2/HUD/icon_core.png";
+
+    // Core bölümü: şerit (78) + boşluk (8) + NEW UNLOCK (80) ve üstündeki boşluk
+    const float CoreSectionH = 170f, CoreSectionGap = 14f;
 
     // Renkler (Sweetie-16 paleti, ikonlarla uyumlu)
     static readonly Color Dim = new Color(0.04f, 0.04f, 0.08f, 0.82f);
@@ -31,6 +39,7 @@ public static class GameOverPanelBuilder
     static readonly Color Gold = new Color32(0xFF, 0xCD, 0x75, 0xFF);
     static readonly Color White = new Color32(0xF4, 0xF4, 0xF4, 0xFF);
     static readonly Color PrimaryTint = new Color32(0xA7, 0xF0, 0x70, 0xFF);   // Restart: yeşilimsi
+    static readonly Color CoreCyan = new Color32(0x73, 0xEF, 0xF7, 0xFF);
 
     static TMP_FontAsset font;
 
@@ -83,7 +92,7 @@ public static class GameOverPanelBuilder
         var group = GetOrAdd<CanvasGroup>(panelGo);
 
         // ---- Pencere ----
-        var window = Frame("Window", panel, FramePanel, new Vector2(900f, 840f));
+        var window = Frame("Window", panel, FramePanel, new Vector2(900f, 840f + CoreSectionH + CoreSectionGap));
         window.anchoredPosition = Vector2.zero;
 
         Icon("SkullIcon", window, IconDir + "ui_skull.png", new Vector2(88f, 88f), Top(0f, -36f));
@@ -142,8 +151,12 @@ public static class GameOverPanelBuilder
             rp.FindPropertyRelative("newBestBadge").objectReferenceValue = badge;
         }
 
+        // ---- Core (kalıcı ilerleme) + NEW UNLOCK ----
+        float gridBottom = gridTop - 3 * cardH - 2 * gapY;
+        BuildCoreSection(window, so, gridBottom - CoreSectionGap);
+
         // ---- Butonlar ----
-        float btnY = gridTop - 3 * cardH - 2 * gapY - 70f;
+        float btnY = gridBottom - CoreSectionH - CoreSectionGap - 70f;
         var restart = MakeButton("RestartButton", window, "RESTART", IconDir + "ui_restart.png",
                                  new Vector2(-285f, btnY), PrimaryTint, ui.Restart);
         MakeButton("MainMenuButton", window, "MAIN MENU", IconDir + "ui_home.png",
@@ -164,6 +177,97 @@ public static class GameOverPanelBuilder
         panelGo.SetActive(false);   // sahnede kapalı başlamalı
         EditorSceneManager.MarkSceneDirty(ui.gameObject.scene);
         return true;
+    }
+
+    // Kurulu panele sadece Core bölümünü ekler (panelin geri kalanına dokunmaz).
+    [MenuItem("TopDownShooter/UI/Game Over'a Core Bölümü Ekle")]
+    static void AddCoreSectionMenu()
+    {
+        if (Application.isPlaying) { EditorUtility.DisplayDialog("Game Over", "Önce Play Mode'dan çık.", "Tamam"); return; }
+
+        var ui = Object.FindAnyObjectByType<GameOverUI>(FindObjectsInactive.Include);
+        var so = ui != null ? new SerializedObject(ui) : null;
+        var window = so?.FindProperty("window").objectReferenceValue as RectTransform;
+        if (window == null)
+        {
+            EditorUtility.DisplayDialog("Game Over", "Kurulu Game Over paneli bulunamadı. Önce 'Game Over Panelini Kur'.", "Tamam");
+            return;
+        }
+        font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPath);
+
+        // Varsa eskisini sil; yoksa pencereyi uzat ve butonları aşağı kaydır (bir kez)
+        var old = window.Find("CoreSection");
+        if (old != null)
+        {
+            var oldUnlock = window.Find("UnlockSection");
+            if (oldUnlock != null) Undo.DestroyObjectImmediate(oldUnlock.gameObject);
+            Undo.DestroyObjectImmediate(old.gameObject);
+        }
+        else
+        {
+            Undo.RecordObject(window, "Core Bölümü");
+            window.sizeDelta += new Vector2(0f, CoreSectionH + CoreSectionGap);
+            foreach (Transform child in window)
+                if (child.name.EndsWith("Button"))
+                {
+                    var brt = (RectTransform)child;
+                    Undo.RecordObject(brt, "Core Bölümü");
+                    brt.anchoredPosition -= new Vector2(0f, CoreSectionH + CoreSectionGap);
+                }
+        }
+
+        // Kartların alt kenarı: en alttaki Stat_ kartı
+        float gridBottom = 0f;
+        foreach (Transform child in window)
+            if (child.name.StartsWith("Stat_"))
+            {
+                var crt = (RectTransform)child;
+                gridBottom = Mathf.Min(gridBottom, crt.anchoredPosition.y - crt.sizeDelta.y * 0.5f);
+            }
+
+        BuildCoreSection(window, so, gridBottom - CoreSectionGap);
+        so.ApplyModifiedProperties();
+        EditorSceneManager.MarkSceneDirty(ui.gameObject.scene);
+        Debug.Log("[GameOverPanelBuilder] Core bölümü eklendi. Sahneyi kaydetmeyi unutma (Ctrl+S).");
+    }
+
+    // Core şeridi: [kristal] CORE EARNED / döküm ............ +61 / TOTAL 245
+    // Altında (varsa) NEW UNLOCK: yazı + açılan içeriklerin ikonları.
+    static void BuildCoreSection(RectTransform window, SerializedObject so, float top)
+    {
+        var strip = Frame("CoreSection", window, FrameSlot, new Vector2(840f, 78f));
+        strip.anchorMin = strip.anchorMax = new Vector2(0.5f, 1f);
+        strip.anchoredPosition = new Vector2(0f, top - 39f);
+
+        Icon("CoreIcon", strip, CoreIcon, new Vector2(52f, 52f), Left(20f, 0f));
+        Text("Label", strip, "CORE EARNED", 20f, Muted, TextAlignmentOptions.Left,
+             TopLeft(88f, -12f), new Vector2(300f, 26f));
+        var breakdown = Text("Breakdown", strip, "WAVES +0   KILLS +0", 18f, White, TextAlignmentOptions.Left,
+                             TopLeft(88f, -42f), new Vector2(460f, 24f));
+        var earned = Text("Earned", strip, "+0", 42f, CoreCyan, TextAlignmentOptions.Right,
+                          TopRight(-24f, -6f), new Vector2(200f, 46f));
+        var total = Text("Total", strip, "TOTAL 0", 18f, Gold, TextAlignmentOptions.Right,
+                         BottomRight(-24f, 8f), new Vector2(240f, 24f));
+
+        var unlock = new GameObject("UnlockSection", typeof(RectTransform));
+        var urt = (RectTransform)unlock.transform;
+        urt.SetParent(window, false);
+        Place(urt, Top(0f, top - 86f), new Vector2(840f, 80f));
+        var unlockText = Text("Label", urt, "NEW UNLOCK: -", 26f, Gold, TextAlignmentOptions.Center,
+                              Top(0f, -2f), new Vector2(820f, 32f));
+        var icons = new GameObject("Icons", typeof(RectTransform));
+        var irt = (RectTransform)icons.transform;
+        irt.SetParent(urt, false);
+        Place(irt, Top(0f, -36f), new Vector2(820f, 44f));
+        irt.pivot = new Vector2(0.5f, 1f);
+        unlock.SetActive(false);
+
+        so.FindProperty("coreEarnedText").objectReferenceValue = earned;
+        so.FindProperty("coreBreakdownText").objectReferenceValue = breakdown;
+        so.FindProperty("coreTotalText").objectReferenceValue = total;
+        so.FindProperty("unlockSection").objectReferenceValue = unlock;
+        so.FindProperty("unlockText").objectReferenceValue = unlockText;
+        so.FindProperty("unlockIcons").objectReferenceValue = irt;
     }
 
     // ---- Yapı taşları ----

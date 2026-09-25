@@ -2,11 +2,13 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 // Oyuncu ölünce Game Over panelini açar ve oyunu dondurur.
 // Oyunun istatistiklerini (RunStats) gösterir, rekorları (BestRecords) günceller:
 // değerler sayarak dolar, kırılan rekorların yanında "NEW!" rozeti belirir.
+// Kalıcı ilerleme (MetaProgress): kazanılan Core ve dökümü + bu oyunla açılan içerikler.
 //
 // Kurulum: Menü > TopDownShooter > UI > Game Over Panelini Kur
 // (paneli, ikonları, butonları ve buradaki referansları otomatik bağlar).
@@ -53,6 +55,20 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] StatRow levelRow = new StatRow();
     [SerializeField] StatRow coinsRow = new StatRow();
     [SerializeField] StatRow damageRow = new StatRow();
+
+    [Header("Core (kalıcı ilerleme, opsiyonel)")]
+    [Tooltip("Kazanılan Core (\"+61\"), diğer sayılarla birlikte sayarak dolar.")]
+    [SerializeField] TMP_Text coreEarnedText;
+    [Tooltip("Döküm: \"WAVES +30  KILLS +31  BOSS +15\".")]
+    [SerializeField] TMP_Text coreBreakdownText;
+    [Tooltip("Oyundan sonraki toplam bakiye: \"TOTAL 245\".")]
+    [SerializeField] TMP_Text coreTotalText;
+    [Tooltip("Bu oyunla içerik açıldıysa görünen bölüm (\"NEW UNLOCK\" + ikonlar).")]
+    [SerializeField] GameObject unlockSection;
+    [SerializeField] TMP_Text unlockText;
+    [Tooltip("Açılan içeriklerin ikonları buraya dizilir (yatay).")]
+    [SerializeField] RectTransform unlockIcons;
+    [SerializeField] float unlockIconSize = 44f;
 
     [Header("Animasyon")]
     [Tooltip("Panel açılmadan önce ölüm anının görülmesi için bekleme (gerçek zaman, sn).")]
@@ -111,7 +127,9 @@ public class GameOverUI : MonoBehaviour
 
         // Rekorları HEMEN kaydet: oyuncu paneli beklemeden sahneden çıksa da kaybolmasın
         RunResult run = runStats.Snapshot();
+        var lockedBefore = MetaProgress.CurrentlyLocked();   // rekorlar güncellenmeden önce
         BestRecords.NewBestFlags flags = BestRecords.Submit(run, out RunResult previous);
+        MetaProgress.EndRun(run, lockedBefore);               // Core + toplamlar + yeni açılanlar
 
         StartCoroutine(ShowRoutine(run, previous, flags));
     }
@@ -144,6 +162,9 @@ public class GameOverUI : MonoBehaviour
         }
         SetValues(run, 1f);
 
+        // Yeni açılan içerikler: rozetlerden hemen önce, küçük bir "pop" ile
+        yield return ShowUnlocks(MetaProgress.LastReport);
+
         // Kırılan rekorların rozetleri en sonda belirir (vurgu olsun)
         SetBadge(timeRow, flags.time);
         SetBadge(waveRow, flags.wave);
@@ -173,8 +194,61 @@ public class GameOverUI : MonoBehaviour
         foreach (var r in new[] { timeRow, waveRow, killsRow, levelRow, coinsRow, damageRow })
             if (r.newBestBadge != null) r.newBestBadge.SetActive(false);
 
+        var report = MetaProgress.LastReport;
+        if (coreBreakdownText != null)
+        {
+            coreBreakdownText.text = report == null ? "" :
+                $"WAVES +{report.coreFromWaves}   KILLS +{report.coreFromKills}" +
+                (report.coreFromBosses > 0 ? $"   BOSS +{report.coreFromBosses}" : "");
+        }
+        if (coreTotalText != null) coreTotalText.text = $"TOTAL {MetaProgress.Core:N0}";
+        if (unlockSection != null) unlockSection.SetActive(false);
+
         SetValues(run, 0f);
     }
+
+    IEnumerator ShowUnlocks(MetaProgress.RunReport report)
+    {
+        if (unlockSection == null || report == null || report.newlyUnlocked.Count == 0) yield break;
+
+        var names = new System.Collections.Generic.List<string>();
+        foreach (var u in report.newlyUnlocked) names.Add(DisplayName(u));
+        if (unlockText != null)
+            unlockText.text = $"NEW UNLOCK{(names.Count > 1 ? "S" : "")}: <color=#F4F4F4>{string.Join(", ", names)}</color>";
+
+        if (unlockIcons != null)
+        {
+            for (int i = unlockIcons.childCount - 1; i >= 0; i--) Destroy(unlockIcons.GetChild(i).gameObject);
+            for (int i = 0; i < report.newlyUnlocked.Count; i++)
+            {
+                var go = new GameObject("Unlock", typeof(RectTransform), typeof(Image));
+                var rt = (RectTransform)go.transform;
+                rt.SetParent(unlockIcons, false);
+                rt.sizeDelta = Vector2.one * unlockIconSize;
+                // Ortalanmış yatay dizi
+                float x = (i - (report.newlyUnlocked.Count - 1) * 0.5f) * (unlockIconSize + 8f);
+                rt.anchoredPosition = new Vector2(x, 0f);
+                var img = go.GetComponent<Image>();
+                img.sprite = report.newlyUnlocked[i].icon;
+                img.preserveAspect = true;
+                img.raycastTarget = false;
+            }
+        }
+
+        unlockSection.SetActive(true);
+        var srt = unlockSection.transform;
+        for (float t = 0f; t < 0.25f; t += Time.unscaledDeltaTime)
+        {
+            float k = t / 0.25f;
+            srt.localScale = Vector3.one * (1f + 0.3f * (1f - k) * (1f - k));   // büyükten normale
+            yield return null;
+        }
+        srt.localScale = Vector3.one;
+    }
+
+    // Silah kartları "Buy +1 Katana" başlığını taşır; kilit bildiriminde silahın adı yeter.
+    static string DisplayName(UpgradeData u)
+        => u is WeaponUpgradeData w && w.weapon != null ? w.weapon.weaponName : u.title;
 
     // k: 0 -> 1 arası sayma ilerlemesi
     void SetValues(RunResult run, float k)
@@ -185,6 +259,10 @@ public class GameOverUI : MonoBehaviour
         SetValue(levelRow, Mathf.RoundToInt(run.level * k).ToString());
         SetValue(coinsRow, Mathf.RoundToInt(run.coins * k).ToString());
         SetValue(damageRow, FormatBig(run.damage * k));
+
+        var report = MetaProgress.LastReport;
+        if (coreEarnedText != null)
+            coreEarnedText.text = $"+{Mathf.RoundToInt((report != null ? report.CoreTotal : 0) * k)}";
     }
 
     static void SetValue(StatRow r, string s) { if (r.value != null) r.value.text = s; }

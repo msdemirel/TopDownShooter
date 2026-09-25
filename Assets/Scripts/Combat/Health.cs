@@ -24,6 +24,11 @@ public class Health : MonoBehaviour, IDamageable
     // (PlayerSkills süreli olarak açıp kapatır.)
     public bool Invulnerable { get; set; }
 
+    // Kalıcı "Second Chance" upgrade'i: ölümcül hasarda ölmek yerine canın bu oranıyla dirilir.
+    public int ExtraLives { get; set; }
+    public float ReviveHealthFraction { get; set; } = 0.5f;
+    public event Action<Health> OnRevived;
+
     // UI / loot / spawner bunlara abone olur
     public event Action<Health> OnHealthChanged;
     public event Action<Health> OnDeath;
@@ -81,7 +86,18 @@ public class Health : MonoBehaviour, IDamageable
         AnyDamaged?.Invoke(this, amount, isCrit);
 
         if (current <= 0f)
-            Die();
+        {
+            if (ExtraLives > 0) Revive();
+            else Die();
+        }
+    }
+
+    void Revive()
+    {
+        ExtraLives--;
+        current = Mathf.Max(1f, maxHealth * ReviveHealthFraction);
+        OnHealthChanged?.Invoke(this);
+        OnRevived?.Invoke(this);   // dokunulmazlık + efekt dinleyen tarafta (MetaApplier)
     }
 
     // Anında öldürür — HASAR SAYILMAZ: AnyDamaged tetiklenmez (hasar yazısı çıkmaz,

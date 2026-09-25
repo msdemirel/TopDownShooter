@@ -19,6 +19,9 @@ public class Projectile : MonoBehaviour
     [Tooltip("Bir şeye isabet edince o noktada beliren efekt (opsiyonel). Tek seferlik animasyon prefab'ı.")]
     [SerializeField] GameObject hitEffect;
 
+    // Atış anında silah açabilir (WeaponData.pierce); prefab'daki ayarı kapatmaz.
+    public void EnablePierce() => pierce = true;
+
     bool spent;   // normal mermi isabet etti mi (Destroy kare sonunda çalışır; o ana kadar ikinci isabeti engeller)
 
     void Start()

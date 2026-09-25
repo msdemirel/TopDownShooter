@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillUpgradeData
   title: Chain Lightning
   description: Lightning strikes the nearest enemy and jumps between foes.
-  icon: {fileID: 3156872970766493790, guid: 8296e4c034964ef1a18204905f0eadfc, type: 3}
+  icon: {fileID: 21300000, guid: c2c13917696b482d9f8b32f9ab48e942, type: 3}
   unlockWave: 4
   lastWave: 0
+  unlockCondition: 7
+  unlockThreshold: 300
   skillType: 8
   levels:
   - cooldown: 7

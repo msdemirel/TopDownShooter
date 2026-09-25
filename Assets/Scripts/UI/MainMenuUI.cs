@@ -5,14 +5,16 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-// Ana menü: Play / Options / Quit + en iyi rekorlar kartı.
+// Ana menü: Play / Upgrades (mağaza) / Options / Quit + en iyi rekorlar kartı + Core bakiyesi.
 //
 // Kurulum: MainMenu sahnesi açıkken Menü > TopDownShooter > UI > Ana Menüyü Kur
 // (tüm paneli kurar, referansları ve butonları bağlar). Elle kurmak istersen:
 //   Butonların OnClick'i:  Play -> StartGame,  Options -> OpenOptions,
 //                          Quit -> QuitGame,   Back (Options) -> ShowMain
+//                          Upgrades -> OpenShop, Back (mağaza) -> ShowMain
+// Mağaza paneli: Menü > TopDownShooter > UI > Mağazayı Kur
 //
-// Klavye: ENTER = oyna (ana ekrandayken), ESC = Options'tan geri dön.
+// Klavye: ENTER = oyna (ana ekrandayken), ESC = Options'tan / mağazadan geri dön.
 // Options paneli sahnede açık kalmış olsa da Start()'ta kapatılır — endişelenme.
 public class MainMenuUI : MonoBehaviour
 {
@@ -22,6 +24,11 @@ public class MainMenuUI : MonoBehaviour
 
     [Tooltip("Ayarların olduğu panel (OptionsUI burada). Başlangıçta kapatılır.")]
     [SerializeField] GameObject optionsPanel;
+
+    [Tooltip("Kalıcı upgrade mağazası (MetaShopUI). Opsiyonel. Başlangıçta kapatılır.")]
+    [SerializeField] GameObject shopPanel;
+    [Tooltip("Ana ekrandaki Core bakiyesi yazısı. Opsiyonel.")]
+    [SerializeField] TMP_Text coreBalanceText;
 
     [Header("Sahne")]
     [Tooltip("Play'e basınca yüklenecek sahne. Build Profiles > Scene List'te EKLİ olmalı.")]
@@ -33,6 +40,9 @@ public class MainMenuUI : MonoBehaviour
 
     [Tooltip("Options açılınca seçili gelecek eleman.")]
     [SerializeField] GameObject optionsFirstSelected;
+
+    [Tooltip("Mağaza açılınca seçili gelecek eleman.")]
+    [SerializeField] GameObject shopFirstSelected;
 
     [Header("Rekorlar (opsiyonel)")]
     [SerializeField] TMP_Text bestWaveText;
@@ -65,6 +75,7 @@ public class MainMenuUI : MonoBehaviour
     Coroutine panelFade;
 
     bool OptionsOpen => optionsPanel != null && optionsPanel.activeSelf;
+    bool ShopOpen => shopPanel != null && shopPanel.activeSelf;
 
     void Start()
     {
@@ -88,8 +99,8 @@ public class MainMenuUI : MonoBehaviour
         var kb = Keyboard.current;
         if (kb != null && !starting)
         {
-            if (kb.escapeKey.wasPressedThisFrame && OptionsOpen) ShowMain();
-            else if (!OptionsOpen && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
+            if (kb.escapeKey.wasPressedThisFrame && (OptionsOpen || ShopOpen)) ShowMain();
+            else if (!OptionsOpen && !ShopOpen && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
                 StartGame();
         }
 
@@ -129,9 +140,15 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(gameSceneName);
     }
 
-    public void OpenOptions() => SwitchPanels(showMain: false);
+    public void OpenOptions() => SwitchTo(optionsPanel, optionsFirstSelected);
 
-    public void ShowMain() => SwitchPanels(showMain: true);
+    public void OpenShop() => SwitchTo(shopPanel, shopFirstSelected);
+
+    public void ShowMain()
+    {
+        RefreshRecords();   // mağazadan dönünce Core bakiyesi güncel olsun
+        SwitchTo(mainPanel, firstSelected);
+    }
 
     public void QuitGame()
     {
@@ -160,6 +177,7 @@ public class MainMenuUI : MonoBehaviour
         SetText(bestKillsText, best.kills.ToString());
         SetText(bestLevelText, best.level.ToString());
         SetText(totalRunsText, BestRecords.TotalRuns.ToString());
+        SetText(coreBalanceText, MetaProgress.Core.ToString("N0"));
     }
 
     static void SetText(TMP_Text t, string s) { if (t != null) t.text = s; }
@@ -173,11 +191,14 @@ public class MainMenuUI : MonoBehaviour
     // ---- Yardımcılar ----
 
     void SwitchPanels(bool showMain, bool instant = false)
-    {
-        GameObject show = showMain ? mainPanel : optionsPanel;
-        GameObject hide = showMain ? optionsPanel : mainPanel;
+        => SwitchTo(showMain ? mainPanel : optionsPanel, showMain ? firstSelected : optionsFirstSelected, instant);
 
-        if (hide != null) hide.SetActive(false);
+    // Verilen paneli açar, diğerlerini kapatır.
+    void SwitchTo(GameObject show, GameObject select, bool instant = false)
+    {
+        foreach (var p in new[] { mainPanel, optionsPanel, shopPanel })
+            if (p != null && p != show) p.SetActive(false);
+
         if (show != null)
         {
             show.SetActive(true);
@@ -192,7 +213,7 @@ public class MainMenuUI : MonoBehaviour
             }
         }
 
-        Select(showMain ? firstSelected : optionsFirstSelected);
+        Select(select);
     }
 
     static IEnumerator Fade(CanvasGroup g, float from, float to, float duration)

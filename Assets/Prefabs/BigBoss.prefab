@@ -235,6 +235,7 @@ MonoBehaviour:
   speedParam: Speed
   attackTrigger: Attack
   deathTrigger: Death
+  isBoss: 1
   destroyDelay: 0.3
   explosionVfx: {fileID: 0}
   shakeStrength: 0.25

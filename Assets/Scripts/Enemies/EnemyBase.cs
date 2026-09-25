@@ -29,6 +29,11 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] string attackTrigger = "Attack";   // trigger
     [SerializeField] string deathTrigger = "Death";     // trigger
 
+    [Header("Boss")]
+    [Tooltip("Boss öldürmeleri kalıcı ilerlemede (Core, kilitler) ayrıca sayılır.")]
+    [SerializeField] bool isBoss;
+    public bool IsBoss => isBoss;
+
     [Header("Death")]
     [Tooltip("Death animasyonu oynasın diye yok etmeden önce beklenen süre (sn).")]
     [SerializeField] float destroyDelay = 1f;

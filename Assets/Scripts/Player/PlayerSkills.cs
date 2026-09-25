@@ -34,6 +34,8 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] Color overdriveColor = new Color(1f, 0.55f, 0.25f, 0.9f);
     [SerializeField] Color lightningColor = new Color(1f, 0.95f, 0.45f, 1f);
     [SerializeField] Color shieldColor = new Color(0.35f, 0.75f, 1f, 1f);
+    [Tooltip("Dash izinin rengi (hayalet kopyalar + hız çizgisi).")]
+    [SerializeField] Color dashColor = new Color(0.4f, 0.92f, 1f, 1f);
 
     [Header("Area Blast")]
     [Tooltip("Patlama cephesinin merkezden blastRadius'a ulaşma süresi (sn). Kısa = sert patlama.")]
@@ -237,6 +239,7 @@ public class PlayerSkills : MonoBehaviour
             case SkillType.Dash:
                 Vector2 dashDir = Vector2.right;
                 if (movement != null) dashDir = movement.StartDash(lv.dashSpeed, lv.dashDuration);
+                DashTrail.Play(gameObject, dashDir, lv.dashDuration, dashColor);
                 SpawnDirectedEffect(s, dashDir);   // iz dash yönüne dönük, arkada kalır
                 break;
 

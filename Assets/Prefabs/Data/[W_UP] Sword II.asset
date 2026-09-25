@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: '[W_UP] Sword II'
   m_EditorClassIdentifier: Assembly-CSharp::WeaponUpgradeData
   title: Buy +1 Sword II
-  description: A heavier blade for tougher waves
-  icon: {fileID: 810011636930299403, guid: 3989ddd978fa1f5ab9f4771be9129f2d, type: 3}
-  unlockWave: 4
+  description: A heavier blade for tougher waves.
+  icon: {fileID: 21300000, guid: c7ca16043cba4adc8b8ddfd86f111991, type: 3}
+  unlockWave: 1
   lastWave: 0
+  unlockCondition: 0
+  unlockThreshold: 0
   weapon: {fileID: 11400000, guid: 33973d2f230222fdca97bf53e0dca3b8, type: 2}
-  cost: 12
+  cost: 1
