@@ -24,8 +24,12 @@ public class ShockwaveRing : MonoBehaviour
 
     readonly HashSet<EnemyBase> hitEnemies = new HashSet<EnemyBase>();
 
+    // Cold Front sinerjisi: halka değdiği düşmanı yavaşlatır (0 = kapalı)
+    float slowPercent, slowDuration;
+
     public static void Spawn(Vector3 position, float maxRadius, float expandTime, float damage,
-                             Color color, float thickness, int sortingOrder)
+                             Color color, float thickness, int sortingOrder,
+                             float slowPercent = 0f, float slowDuration = 0f)
     {
         var go = new GameObject("ShockwaveRing");
         // Parent YOK: doğuş konumunda sabit kalır, oyuncuyla hareket etmez
@@ -36,6 +40,8 @@ public class ShockwaveRing : MonoBehaviour
         r.expandTime = Mathf.Max(0.05f, expandTime);
         r.damage = damage;
         r.baseColor = color;
+        r.slowPercent = slowPercent;
+        r.slowDuration = slowDuration;
 
         var lr = go.AddComponent<LineRenderer>();
         lr.useWorldSpace = false;   // local: obje zaten sabit, daire objenin etrafında çizilir
@@ -111,6 +117,7 @@ public class ShockwaveRing : MonoBehaviour
             if (d <= radius)
             {
                 if (damage > 0f) SkillVfx.PulseHit(e.transform.position, baseColor);
+                if (slowPercent > 0f) e.ApplySlow(slowPercent, slowDuration);   // hasardan önce: ölürse de sorun yok
                 if (e.TryGetComponent<Health>(out var h)) h.TakeDamage(damage);
                 hitEnemies.Add(e);   // bu halka bu düşmanı bir daha vurmasın
             }

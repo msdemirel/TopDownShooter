@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Buy +1 Pistol
   description: Shoots enemies from a distance.
   icon: {fileID: 21300000, guid: 9ee56a8db2994b81873e70f7e7ff4d0b, type: 3}
-  unlockWave: 6
+  unlockWave: 2
   lastWave: 0
   weapon: {fileID: 11400000, guid: f9e75fa9a8783e94e8c736d2bb5040c1, type: 2}
-  cost: 20
+  cost: 22

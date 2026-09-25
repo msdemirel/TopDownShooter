@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 // Mouse üstüne gelince UI elemanını yumuşakça büyütür, çekilince eski boyutuna döndürür.
 // Upgrade kartlarına takılır ki hangi kartın seçilebilir olduğu belirgin olsun.
@@ -42,6 +43,8 @@ public class UIHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // Pasif buton/kart (ör. parası yetmiyor) büyümesin: tıklanabilir sanılmasın
+        if (TryGetComponent<Selectable>(out var s) && !s.IsInteractable()) return;
         target = hoverScale;
         if (bringToFront) rect.SetAsLastSibling();
     }

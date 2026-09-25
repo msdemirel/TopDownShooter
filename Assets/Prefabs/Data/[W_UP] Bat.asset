@@ -20,4 +20,4 @@ MonoBehaviour:
   unlockCondition: 0
   unlockThreshold: 0
   weapon: {fileID: 11400000, guid: 95c6aeaf41adf0b71a861925e30d2353, type: 2}
-  cost: 1
+  cost: 12

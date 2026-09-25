@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 Shotgun
   description: Blasts a wide cone of pellets up close.
   icon: {fileID: 21300000, guid: 522c88d8611a49eea8e2097b99ce10e4, type: 3}
-  unlockWave: 1
+  unlockWave: 5
   lastWave: 0
   unlockCondition: 2
   unlockThreshold: 1000
   weapon: {fileID: 11400000, guid: 82e770d1ec7a179bc9e3ceac51da5d3c, type: 2}
-  cost: 1
+  cost: 42

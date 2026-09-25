@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 Katana
   description: Lightning-fast cuts in a narrow arc.
   icon: {fileID: 21300000, guid: 7c8dc298b6f8437392898f602a10c216, type: 3}
-  unlockWave: 1
+  unlockWave: 3
   lastWave: 0
   unlockCondition: 1
   unlockThreshold: 5
   weapon: {fileID: 11400000, guid: 76f378d236658e9e4bf168e7989e1eed, type: 2}
-  cost: 1
+  cost: 30

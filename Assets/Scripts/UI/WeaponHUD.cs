@@ -56,6 +56,8 @@ public class WeaponHUD : MonoBehaviour
     Image[] icons;
     float[] popTime;
     WeaponData[] shown;
+    int[] shownTier;
+    TMP_Text[] badges;   // slot köşesindeki kademe rozeti (II / III / IV)
     TMP_Text countText;
 
     // Swap durumu
@@ -90,15 +92,21 @@ public class WeaponHUD : MonoBehaviour
 
         Build(weapons.SlotCount);
         weapons.OnWeaponAdded += HandleWeaponAdded;
+        weapons.OnWeaponMerged += HandleWeaponMerged;
         Refresh(animate: false);   // başlangıç silahı bu Start'tan önce takılmış olabilir
     }
 
     void OnDestroy()
     {
-        if (weapons != null) weapons.OnWeaponAdded -= HandleWeaponAdded;
+        if (weapons != null)
+        {
+            weapons.OnWeaponAdded -= HandleWeaponAdded;
+            weapons.OnWeaponMerged -= HandleWeaponMerged;
+        }
     }
 
     void HandleWeaponAdded(Weapon w) => Refresh(animate: true);
+    void HandleWeaponMerged(Weapon w, int freedSlot) => Refresh(animate: true);
 
     // Slotları PlayerWeapons'tan okuyup ikonları günceller; değişen slot pop yapar.
     void Refresh(bool animate)
@@ -107,13 +115,26 @@ public class WeaponHUD : MonoBehaviour
         {
             WeaponData d = weapons.GetSlotData(i);
             bool filled = d != null;
+            int tier = weapons.GetSlotTier(i);
 
-            frames[i].color = new Color(1f, 1f, 1f, filled ? 1f : emptySlotAlpha);
+            // Çerçeve: boşsa sönük, 2. kademe ve üstünde kademe renginde
+            Color frameColor = filled && tier > 1 ? Color.Lerp(Color.white, WeaponTiers.Color(tier), 0.7f) : Color.white;
+            frameColor.a = filled ? 1f : emptySlotAlpha;
+            frames[i].color = frameColor;
             icons[i].enabled = filled && d.Icon != null;
             if (filled) icons[i].sprite = d.Icon;
 
-            if (animate && d != shown[i] && filled) popTime[i] = popDuration;
+            badges[i].enabled = filled && tier > 1;
+            if (badges[i].enabled)
+            {
+                badges[i].text = WeaponTiers.RomanNumeral(tier);
+                badges[i].color = WeaponTiers.Color(tier);
+            }
+
+            // Yeni silah ya da kademe atlayan silah pop yapar
+            if (animate && filled && (d != shown[i] || tier != shownTier[i])) popTime[i] = popDuration;
             shown[i] = d;
+            shownTier[i] = tier;
         }
         if (countText != null) countText.text = $"{weapons.WeaponCount}/{weapons.SlotCount}";
     }
@@ -329,6 +350,8 @@ public class WeaponHUD : MonoBehaviour
         icons = new Image[slotCount];
         popTime = new float[slotCount];
         shown = new WeaponData[slotCount];
+        shownTier = new int[slotCount];
+        badges = new TMP_Text[slotCount];
 
         for (int i = 0; i < slotCount; i++)
         {
@@ -346,8 +369,26 @@ public class WeaponHUD : MonoBehaviour
             icon.preserveAspect = true;
             icon.enabled = false;
 
+            // Kademe rozeti: sağ alt köşe, gölgeli (ikonun üstünde okunsun)
+            var badgeGo = new GameObject("Tier", typeof(RectTransform), typeof(TextMeshProUGUI));
+            var brt = (RectTransform)badgeGo.transform;
+            brt.SetParent(frt, false);
+            brt.anchorMin = brt.anchorMax = brt.pivot = new Vector2(1f, 0f);
+            brt.anchoredPosition = new Vector2(-4f, 2f);
+            brt.sizeDelta = new Vector2(slotSize * 0.6f, slotSize * 0.4f);
+            var badge = badgeGo.GetComponent<TextMeshProUGUI>();
+            if (font != null) badge.font = font;
+            badge.fontSize = fontSize + 1f;
+            badge.alignment = TextAlignmentOptions.BottomRight;
+            badge.fontStyle = FontStyles.Bold;
+            badge.outlineWidth = 0.25f;
+            badge.outlineColor = new Color32(9, 11, 22, 255);
+            badge.raycastTarget = false;
+            badge.enabled = false;
+
             frames[i] = frame;
             icons[i] = icon;
+            badges[i] = badge;
         }
     }
 

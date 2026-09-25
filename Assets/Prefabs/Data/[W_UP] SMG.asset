@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 SMG
   description: Sprays a fast stream of light bullets.
   icon: {fileID: 21300000, guid: 5441058dbcd94059b30e03f9b1aa25e7, type: 3}
-  unlockWave: 1
+  unlockWave: 3
   lastWave: 0
   unlockCondition: 0
   unlockThreshold: 0
   weapon: {fileID: 11400000, guid: 842f8c22103416a13b7419acf5910e64, type: 2}
-  cost: 1
+  cost: 25

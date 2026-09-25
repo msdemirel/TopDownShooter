@@ -13,4 +13,10 @@ public class MetaCatalog : ScriptableObject
     [Tooltip("Kalıcı kilidi olan (Unlock Condition != None) silah/skill/stat kartları. " +
              "Kurulum menüsü otomatik doldurur; kilitler ekranı ve 'yeni açıldı' bildirimi bunu kullanır.")]
     public List<UpgradeData> lockables = new List<UpgradeData>();
+
+    [Tooltip("Zorluk seviyeleri, kolaydan zora. İlki varsayılan (baştan açık olmalı).")]
+    public List<DifficultyData> difficulties = new List<DifficultyData>();
+
+    [Tooltip("Başlangıç karakterleri. İlki varsayılan (baştan açık olmalı).")]
+    public List<CharacterData> characters = new List<CharacterData>();
 }

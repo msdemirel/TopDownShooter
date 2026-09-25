@@ -126,11 +126,33 @@ public class SkillUpgradeData : UpgradeData
 
     // Açıklamanın altına kazanımları renkli ekler:
     // ilk alımda başlangıç değerleri, geliştirmede bir önceki seviyeye göre FARKLAR.
+    public const string SynergyColor = "#C78BFF";   // mor: yeşil (kazanım) ve sarı (swap notu) ile karışmasın
+
     public override string GetDescription(int tier)
     {
+        string text = description;
         string bonus = BuildBonusText(tier);
-        if (string.IsNullOrEmpty(bonus)) return description;
-        return string.IsNullOrEmpty(description) ? bonus : description + "\n" + bonus;
+        if (!string.IsNullOrEmpty(bonus)) text = string.IsNullOrEmpty(text) ? bonus : text + "\n" + bonus;
+
+        // İlk alımda: slottaki bir skill'le açılacak sinerjiler (en fazla 2, kart taşmasın)
+        string syn = tier == 0 ? BuildSynergyText(2) : "";
+        if (!string.IsNullOrEmpty(syn)) text = string.IsNullOrEmpty(text) ? syn : text + "\n" + syn;
+        return text;
+    }
+
+    string BuildSynergyText(int max)
+    {
+        var owner = PlayerSkills.Current;
+        if (owner == null || owner.HasSkillType(skillType)) return "";
+
+        var lines = new System.Collections.Generic.List<string>();
+        foreach (var d in SkillSynergies.For(skillType))
+        {
+            if (lines.Count >= max) break;
+            if (!owner.HasSkillType(d.Partner(skillType))) continue;
+            lines.Add($"<color={SynergyColor}>SYNERGY: {d.name}</color>\n<size=80%><color={SynergyColor}>{d.description}</color></size>");
+        }
+        return string.Join("\n", lines);
     }
 
     // HUD bildirimi: ilk alımda skill adı, geliştirmede sadece farklar.

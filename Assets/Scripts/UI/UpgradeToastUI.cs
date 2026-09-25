@@ -27,6 +27,8 @@ public class UpgradeToastUI : MonoBehaviour
 
     readonly Queue<string> pending = new Queue<string>();
     bool showing;
+    PlayerSkills skills;
+    PlayerWeapons weapons;
 
     void Start()
     {
@@ -41,6 +43,11 @@ public class UpgradeToastUI : MonoBehaviour
         }
 
         upgradeManager.OnUpgradeApplied += HandleUpgradeApplied;
+
+        skills = FindAnyObjectByType<PlayerSkills>();
+        if (skills != null) skills.OnSynergyActivated += HandleSynergy;
+        weapons = FindAnyObjectByType<PlayerWeapons>();
+        if (weapons != null) weapons.OnWeaponMerged += HandleMerged;
         SetVisible(false);
     }
 
@@ -48,9 +55,31 @@ public class UpgradeToastUI : MonoBehaviour
     {
         if (upgradeManager != null)
             upgradeManager.OnUpgradeApplied -= HandleUpgradeApplied;
+        if (skills != null) skills.OnSynergyActivated -= HandleSynergy;
+        if (weapons != null) weapons.OnWeaponMerged -= HandleMerged;
     }
 
     void HandleUpgradeApplied(UpgradeData data, int tier) => Show(data.GetBonusSummary(tier));
+
+    // İki skill birleşince: "SYNERGY: Conductive!" + ne yaptığı.
+    // Sinerji, skill slota eklenirken (acquired bildiriminden ÖNCE) tetiklenir; bir kare
+    // bekleyip sıraya öyle giriyor ki önce "Frost Nova acquired!", sonra sinerji görünsün.
+    void HandleSynergy(SkillSynergies.Def d)
+        => StartCoroutine(ShowNextFrame(
+            $"<color={SkillUpgradeData.SynergyColor}>SYNERGY: {d.name}!</color>\n<size=70%>{d.description}</size>"));
+
+    // "Bat merged -> Tier II!" (zincirleme birleşmede her kademe ayrı bildirilir)
+    void HandleMerged(Weapon w, int freedSlot)
+    {
+        if (w == null || w.Data == null) return;
+        Show($"<color={WeaponTiers.Hex(w.Tier)}>{w.Data.weaponName} merged -> Tier {WeaponTiers.RomanNumeral(w.Tier)}!</color>");
+    }
+
+    IEnumerator ShowNextFrame(string msg)
+    {
+        yield return null;   // timeScale 0'da da bir sonraki karede devam eder
+        Show(msg);
+    }
 
     // Dışarıdan bildirim (ör. "Second Chance!" dirilme mesajı). Sıraya eklenir.
     public void Show(string msg)

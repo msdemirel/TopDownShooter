@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a791f9860a08d648ab3e65a369145e6, type: 3}
-  m_Name: Sword II
+  m_Name: Greatsword
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponName: Sword II
+  weaponName: Greatsword
   sprite: {fileID: -2188655523723985976, guid: b03a6f0ce6c727549bf8fe67c9deda7b, type: 3}
   icon: {fileID: 21300000, guid: 0d1da19ca1d647d5b3613d6b40e5263f, type: 3}
   weaponType: 1
-  damage: 18
+  damage: 24
   fireRate: 1.6
   range: 2.2
   projectilePrefab: {fileID: 0}

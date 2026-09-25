@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90aaa9c3f029f966ca44d83196f252a2, type: 3}
+  m_Name: Difficulty_HARD
+  m_EditorClassIdentifier: Assembly-CSharp::DifficultyData
+  id: hard
+  title: HARD
+  description: Tougher, faster enemies. Better rewards.
+  color: {r: 1, g: 0.8039216, b: 0.45882353, a: 1}
+  enemyHealth: 1.6
+  enemyDamage: 1.4
+  enemySpeed: 1.1
+  coreMultiplier: 1.5
+  requires: {fileID: 11400000, guid: c8c648ce086b8f051804fffcb542e782, type: 2}
+  requiredWave: 10

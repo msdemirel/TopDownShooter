@@ -4,7 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 
 // Paketteki silah sprite'larından (Assets/Art/1.png) yeni silahlar üretir:
-//   - WeaponData asset'i (Guns/<Ad>.asset): ateşliler Pistol'den, yakın dövüşler Sword II'den kopyalanır
+//   - WeaponData asset'i (Guns/<Ad>.asset): ateşliler Pistol'den, yakın dövüşler Greatsword'den kopyalanır
 //   - Satın alma kartı ([W_UP] <Ad>.asset): fiyat, dalga kilidi, açıklama, ikon
 //   - Kartlar sahnedeki UpgradeManager havuzuna eklenir
 //
@@ -35,27 +35,27 @@ public static class WeaponContentBuilder
         public int cost, unlock;
     }
 
-    // Referans: Pistol 12 hasar x 2/sn (24 DPS), 20 para, 6. dalga. Sword II 18 x 1.6, 12 para, 4. dalga.
+    // Fiyat/dalga değerleri denge turundaki tabloyla aynı (Tools/Balance/apply_balance.py).
     static readonly Def[] Weapons =
     {
         new Def { name = "SMG", slice = "1_60", icon = "weapon_smg", desc = "Sprays a fast stream of light bullets.",
-                  damage = 5, fireRate = 7, range = 4.5f, projSpeed = 14, inaccuracy = 10, crit = 0.03f, cost = 18, unlock = 3 },
+                  damage = 5, fireRate = 7, range = 4.5f, projSpeed = 14, inaccuracy = 10, crit = 0.03f, cost = 25, unlock = 3 },
         new Def { name = "Shotgun", slice = "1_57", icon = "weapon_shotgun", desc = "Blasts a wide cone of pellets up close.",
-                  damage = 7, fireRate = 0.9f, range = 3.5f, projSpeed = 11, count = 5, spread = 36, inaccuracy = 4, cost = 28, unlock = 5 },
+                  damage = 7, fireRate = 0.9f, range = 3.5f, projSpeed = 11, count = 5, spread = 36, inaccuracy = 4, cost = 42, unlock = 5 },
         new Def { name = "Revolver", slice = "1_68", icon = "weapon_revolver", desc = "Slow, heavy shots with a high crit chance.",
-                  damage = 26, fireRate = 1.1f, range = 6, projSpeed = 16, inaccuracy = 2, crit = 0.2f, critMult = 2.5f, cost = 22, unlock = 4 },
+                  damage = 26, fireRate = 1.1f, range = 6, projSpeed = 16, inaccuracy = 2, crit = 0.2f, critMult = 2.5f, cost = 36, unlock = 4 },
         new Def { name = "Assault Rifle", slice = "1_55", icon = "weapon_rifle", desc = "Steady, accurate automatic fire.",
-                  damage = 9, fireRate = 4.5f, range = 6, projSpeed = 15, inaccuracy = 5, cost = 38, unlock = 7 },
+                  damage = 9, fireRate = 4.5f, range = 6, projSpeed = 15, inaccuracy = 5, cost = 58, unlock = 7 },
         new Def { name = "Sniper Rifle", slice = "1_49", icon = "weapon_sniper", desc = "Long-range shots that pierce through enemies.",
-                  damage = 55, fireRate = 0.55f, range = 10, projSpeed = 26, inaccuracy = 0, pierce = true, crit = 0.2f, critMult = 3f, cost = 45, unlock = 8 },
+                  damage = 55, fireRate = 0.55f, range = 10, projSpeed = 26, inaccuracy = 0, pierce = true, crit = 0.2f, critMult = 3f, cost = 68, unlock = 8 },
         new Def { name = "Minigun", slice = "1_52", icon = "weapon_minigun", desc = "Shreds everything in front of it.",
-                  damage = 4, fireRate = 12, range = 5, projSpeed = 14, inaccuracy = 14, crit = 0.03f, cost = 60, unlock = 10 },
+                  damage = 4, fireRate = 12, range = 5, projSpeed = 14, inaccuracy = 14, crit = 0.03f, cost = 90, unlock = 10 },
         new Def { name = "Katana", slice = "1_26", icon = "weapon_katana", desc = "Lightning-fast cuts in a narrow arc.", melee = true,
-                  damage = 14, fireRate = 3, range = 2.4f, arc = 80, lunge = 2.2f, swing = 0.2f, crit = 0.1f, cost = 20, unlock = 3 },
+                  damage = 14, fireRate = 3, range = 2.4f, arc = 80, lunge = 2.2f, swing = 0.2f, crit = 0.1f, cost = 30, unlock = 3 },
         new Def { name = "Laser Sword", slice = "1_58", icon = "weapon_laser_sword", desc = "An energy blade that cleaves wide.", melee = true,
-                  damage = 30, fireRate = 1.8f, range = 2.4f, arc = 160, lunge = 1.8f, swing = 0.3f, crit = 0.08f, cost = 35, unlock = 6 },
+                  damage = 30, fireRate = 1.8f, range = 2.4f, arc = 160, lunge = 1.8f, swing = 0.3f, crit = 0.08f, cost = 52, unlock = 6 },
         new Def { name = "Bat", slice = "1_41", icon = "weapon_bat", desc = "Wide, heavy swings that hit everything nearby.", melee = true,
-                  damage = 20, fireRate = 1.1f, range = 1.9f, arc = 200, lunge = 1f, swing = 0.35f, cost = 12, unlock = 2 },
+                  damage = 20, fireRate = 1.1f, range = 1.9f, arc = 200, lunge = 1f, swing = 0.35f, cost = 12, unlock = 1 },
     };
 
     // Silahın denge değerleri (sadece ilk oluşturmada yazılır)
@@ -115,7 +115,7 @@ public static class WeaponContentBuilder
             bool newWeapon = AssetDatabase.LoadAssetAtPath<WeaponData>(wPath) == null;
             if (newWeapon)
             {
-                AssetDatabase.CopyAsset(d.melee ? Guns + "Sword II.asset" : Guns + "Pistol.asset", wPath);
+                AssetDatabase.CopyAsset(d.melee ? Guns + "Greatsword.asset" : Guns + "Pistol.asset", wPath);
                 created++;
             }
             var weapon = AssetDatabase.LoadAssetAtPath<WeaponData>(wPath);

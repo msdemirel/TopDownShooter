@@ -29,13 +29,17 @@ public class MetaApplier : MonoBehaviour
     // Start: diğer bileşenlerin Awake/Start'ı (can, hız, silahlar) kurulduktan sonra uygula
     IEnumerator Start()
     {
+        // Görünüm HEMEN: ilk karede orijinal (kırmızı) karakter görünmesin
+        var p = GameObject.FindGameObjectWithTag("Player");
+        if (p != null) ApplySkin(p, CharacterSelection.Current);
+
         yield return null;   // PlayerWeapons.Start başlangıç silahını taksın, HUD'lar abone olsun
 
-        var p = GameObject.FindGameObjectWithTag("Player");
         var catalog = MetaProgress.Catalog;
         if (p == null || catalog == null) yield break;
 
         ctx = new PlayerContext(p);
+        ApplyCharacter(CharacterSelection.Current);
         foreach (var u in catalog.upgrades)
             if (u != null && u.Level > 0) Apply(u.effect, u.TotalValue);
 
@@ -45,6 +49,31 @@ public class MetaApplier : MonoBehaviour
     void OnDestroy()
     {
         if (ctx != null && ctx.health != null) ctx.health.OnRevived -= HandleRevived;
+    }
+
+    // Seçili karakterin görünümü: animasyon karelerini karakterin sheet'ine çevirir
+    static void ApplySkin(GameObject p, CharacterData c)
+    {
+        if (c == null || c.skinSprites == null || c.skinSprites.Length == 0) return;
+        if (p.GetComponent<SpriteRenderer>() == null) return;
+
+        var skin = p.GetComponent<CharacterSkin>();
+        if (skin == null) skin = p.AddComponent<CharacterSkin>();
+        skin.Setup(c);
+    }
+
+    // Seçili karakterin pasif bonusları (başlangıç silahını PlayerWeapons verir)
+    void ApplyCharacter(CharacterData c)
+    {
+        if (c == null) return;
+
+        if (c.maxHealth != 0f && ctx.health != null)
+            ctx.health.SetMaxHealth(Mathf.Max(1f, ctx.health.Max + c.maxHealth), true);
+        if (c.damage != 0f && ctx.weapons != null) ctx.weapons.AddDamageMultiplier(c.damage);
+        if (c.fireRate != 0f && ctx.weapons != null) ctx.weapons.AddFireRateMultiplier(c.fireRate);
+        if (c.critChance != 0f && ctx.weapons != null) ctx.weapons.AddCritChance(c.critChance);
+        if (c.moveSpeed != 0f && ctx.movement != null) ctx.movement.MoveSpeed *= 1f + c.moveSpeed;
+        if (c.magnetRange != 0f && ctx.collector != null) ctx.collector.MagnetRange *= 1f + c.magnetRange;
     }
 
     void Apply(MetaEffect effect, float v)

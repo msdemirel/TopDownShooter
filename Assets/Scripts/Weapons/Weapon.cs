@@ -29,8 +29,14 @@ public class Weapon : MonoBehaviour
     bool restCaptured;
 
     // WeaponData bir asset olduğu için üstünde oynamıyoruz; çarpanları burada uyguluyoruz.
-    float CurrentDamage => data.damage * (owner != null ? owner.DamageMultiplier : 1f);
-    float CurrentCooldown => data.FireCooldown / (owner != null ? owner.FireRateMultiplier : 1f);
+    float CurrentDamage => data.damage * WeaponTiers.DamageMultiplier(Tier)
+                           * (owner != null ? owner.DamageMultiplier : 1f);
+    float CurrentCooldown => data.FireCooldown / WeaponTiers.FireRateMultiplier(Tier)
+                             / (owner != null ? owner.FireRateMultiplier : 1f);
+
+    // Birleştirme kademesi (1-4). PlayerWeapons aynı silahtan iki tane olunca yükseltir.
+    public int Tier { get; private set; } = 1;
+    SpriteRenderer tierGlow;
     float CurrentCritChance => data.critChance + (owner != null ? owner.CritChanceBonus : 0f);
 
     void Awake()
@@ -47,11 +53,45 @@ public class Weapon : MonoBehaviour
     public WeaponData Data => data;
 
     // Slota takılırken PlayerWeapons çağırır.
-    public void SetData(WeaponData newData)
+    public void SetData(WeaponData newData, int tier = 1)
     {
         data = newData;
         nextFireTime = 0f;
         ApplyVisual();
+        SetTier(tier);
+    }
+
+    // Birleşince kademe yükselir: silahın arkasında kademe renginde bir parıltı belirir.
+    public void SetTier(int tier)
+    {
+        Tier = Mathf.Clamp(tier, 1, WeaponTiers.MaxTier);
+
+        if (Tier <= 1)
+        {
+            if (tierGlow != null) tierGlow.enabled = false;
+            return;
+        }
+        if (sr == null) return;
+
+        if (tierGlow == null)
+        {
+            var go = new GameObject("TierGlow");
+            go.transform.SetParent(sr.transform, false);
+            tierGlow = go.AddComponent<SpriteRenderer>();
+            tierGlow.sprite = RuntimeSprite.Glow;
+            tierGlow.material = VfxSprite.VfxMaterial;   // ışıktan etkilenmesin
+            tierGlow.sortingLayerID = sr.sortingLayerID;
+            tierGlow.sortingOrder = sr.sortingOrder - 1;
+        }
+        tierGlow.enabled = true;
+        Color c = WeaponTiers.Color(Tier);
+        c.a = 0.35f + 0.1f * Tier;
+        tierGlow.color = c;
+        // Parıltı silah sprite'ından biraz büyük (Glow sprite'ı 1x1 dünya birimi)
+        Vector3 size = sr.sprite != null ? sr.sprite.bounds.size : Vector3.one * 0.5f;
+        float d = Mathf.Max(size.x, size.y) * (1.3f + 0.15f * Tier);
+        tierGlow.transform.localScale = new Vector3(d, d, 1f);
+        tierGlow.transform.localPosition = sr.sprite != null ? sr.sprite.bounds.center : Vector3.zero;
     }
 
     void ApplyVisual()

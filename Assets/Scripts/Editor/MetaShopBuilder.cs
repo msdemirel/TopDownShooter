@@ -88,10 +88,11 @@ public static class MetaShopBuilder
         var coreText = Text("Value", coreBox, "0", 40f, White, TextAlignmentOptions.Left,
                             new Vector2(40f, 0f), new Vector2(170f, 60f));
 
+        // Sekmeler: ikon ile yazı birbirine değmesin diye geniş kutu + biraz küçük yazı
         var tabUp = MakeButton("TabUpgrades", shop, "UPGRADES", V2 + "HUD/icon_core.png",
-                               new Vector2(-150f, 340f), new Vector2(280f, 66f), 26f, Cyan, null);
+                               new Vector2(-175f, 340f), new Vector2(330f, 66f), 24f, Cyan, null);
         var tabUn = MakeButton("TabUnlocks", shop, "UNLOCKS", GameOverIcons + "ui_trophy.png",
-                               new Vector2(150f, 340f), new Vector2(280f, 66f), 26f, White, null);
+                               new Vector2(175f, 340f), new Vector2(330f, 66f), 24f, White, null);
 
         var upContent = Empty("UpgradesContent", shop, new Vector2(0f, -20f), new Vector2(1700f, 600f));
         var unContent = Empty("UnlocksContent", shop, new Vector2(0f, -20f), new Vector2(1700f, 600f));

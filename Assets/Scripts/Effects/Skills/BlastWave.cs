@@ -17,6 +17,8 @@ public class BlastWave : MonoBehaviour
     static readonly Color Deep = new Color(0.85f, 0.22f, 0.08f, 1f);
 
     float maxRadius, expandTime, damage, age;
+    float slowedDamageMultiplier = 1f;   // Thermal Shock sinerjisi: yavaşlamış düşmana ek hasar
+    static readonly Color Ice = new Color(0.7f, 0.95f, 1f, 1f);
     readonly HashSet<EnemyBase> hit = new HashSet<EnemyBase>();
     SpriteRenderer ring, fill, hotFill;
     Transform core;
@@ -25,7 +27,7 @@ public class BlastWave : MonoBehaviour
     float coreScale = 1f;
 
     public static void Spawn(Vector3 pos, float radius, float expandTime, float damage,
-                             GameObject corePrefab = null, float coreScale = 1f)
+                             GameObject corePrefab = null, float coreScale = 1f, float slowedDamageMultiplier = 1f)
     {
         var go = new GameObject("BlastWave");
         go.transform.position = pos;
@@ -34,6 +36,7 @@ public class BlastWave : MonoBehaviour
         b.expandTime = Mathf.Max(0.05f, expandTime);
         b.damage = damage;
         b.coreScale = Mathf.Max(0.1f, coreScale);
+        b.slowedDamageMultiplier = Mathf.Max(1f, slowedDamageMultiplier);
         b.Build(corePrefab);
     }
 
@@ -170,7 +173,14 @@ public class BlastWave : MonoBehaviour
             hit.Add(e);
             SkillVfx.Flash(e.transform.position, Fire, 0.8f, 0.15f);
             SkillVfx.SparkBurst(e.transform.position, Fire, 5, 3.5f, 0.28f, 0.3f);
-            if (e.TryGetComponent<Health>(out var h)) h.TakeDamage(damage);
+
+            float dmg = damage;
+            if (slowedDamageMultiplier > 1f && e.IsSlowed)
+            {
+                dmg *= slowedDamageMultiplier;
+                SkillVfx.SparkBurst(e.transform.position, Ice, 8, 5f, 0.3f, 0.35f);   // buz kırılması
+            }
+            if (e.TryGetComponent<Health>(out var h)) h.TakeDamage(dmg);
         }
     }
 }

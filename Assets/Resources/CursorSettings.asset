@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8636cf0d3d7f3561090c5e52ea94c0cf, type: 3}
+  m_Name: CursorSettings
+  m_EditorClassIdentifier: Assembly-CSharp::CursorSettings
+  pointer: {fileID: 2800000, guid: b00d3cf9e1bc4eb19e0f4b103f5030b1, type: 3}
+  hotspot: {x: 0, y: 0}
+  hideDuringGameplay: 1

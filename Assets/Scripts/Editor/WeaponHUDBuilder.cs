@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Sağ alttaki silah slotu panelini (WeaponHUD) kurar ve Generated_v2 sprite'larını bağlar:
 //   - HUD Canvas'ına "WeaponHUD" objesi (varsa eskisi silinip yeniden kurulur)
-//   - Silah asset'lerine HUD ikonları (WeaponData.icon) — Sword II ayrı renkte
+//   - Silah asset'lerine HUD ikonları (WeaponData.icon) — Greatsword ayrı renkte
 //   - SkillHUD'un Bar Frame alanı boşsa skill bar çerçevesi
 //
 // Kullanım: MainGame sahnesi açıkken Menü > TopDownShooter > UI > Silah Slotlarını Kur
@@ -16,7 +16,7 @@ public static class WeaponHUDBuilder
     static readonly (string weapon, string icon)[] WeaponIcons =
     {
         ("Assets/Prefabs/Data/Guns/Sword.asset", "Icons/weapon_sword.png"),
-        ("Assets/Prefabs/Data/Guns/Sword II.asset", "Icons/weapon_sword2.png"),
+        ("Assets/Prefabs/Data/Guns/Greatsword.asset", "Icons/weapon_sword2.png"),
         ("Assets/Prefabs/Data/Guns/Pistol.asset", "Icons/weapon_pistol.png"),
     };
 

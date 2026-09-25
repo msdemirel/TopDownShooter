@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 Minigun
   description: Shreds everything in front of it.
   icon: {fileID: 21300000, guid: 1b2fc3bcdc6f487a82a8218fb66be3e6, type: 3}
-  unlockWave: 1
+  unlockWave: 10
   lastWave: 0
   unlockCondition: 1
   unlockThreshold: 15
   weapon: {fileID: 11400000, guid: 3eaf8435d0b15ed55a7446eaf966e5ac, type: 2}
-  cost: 1
+  cost: 90

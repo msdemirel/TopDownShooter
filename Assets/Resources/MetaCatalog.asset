@@ -33,3 +33,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2676106804615617fb949f66dc6f4439, type: 2}
   - {fileID: 11400000, guid: 70a152d21231c4278ad13321dfde56e9, type: 2}
   - {fileID: 11400000, guid: 1a0908d8592fe0f9193989aaeb1375ca, type: 2}
+  difficulties:
+  - {fileID: 11400000, guid: c8c648ce086b8f051804fffcb542e782, type: 2}
+  - {fileID: 11400000, guid: b241e4c0c0493bf3393fc4bb9a984946, type: 2}
+  - {fileID: 11400000, guid: 94555b77c40852ca98c6236e9e7556ba, type: 2}
+  characters:
+  - {fileID: 11400000, guid: a809885d243af3134a48f01547a0a211, type: 2}
+  - {fileID: 11400000, guid: 0799772f36e51e82c9c194a5e10dd209, type: 2}
+  - {fileID: 11400000, guid: f9c0f5a87c5ccb4d5ada5513941007ee, type: 2}
+  - {fileID: 11400000, guid: ee0862051945dd4a4ad15b98c93c0501, type: 2}

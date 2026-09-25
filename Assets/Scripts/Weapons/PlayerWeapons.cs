@@ -2,7 +2,11 @@ using System;
 using UnityEngine;
 
 // Oyuncunun silah slotları. Slotlar oyuncunun etrafında eşit açıyla çembere dizilir.
-// Oyun 1 silahla başlar; upgrade sistemi ileride AddWeapon ile boş slotlara silah ekler.
+// Oyun 1 silahla başlar; upgrade sistemi AddWeapon ile boş slotlara silah ekler.
+//
+// BİRLEŞTİRME: Aynı silahtan aynı kademede iki tane olunca otomatik birleşir (I + I -> II),
+// zincirleme devam eder (II + II -> III), en fazla WeaponTiers.MaxTier. Birleşme bir slot
+// boşaltır; slotlar doluyken sahip olunan bir silah alınırsa swap yerine birleşir.
 public class PlayerWeapons : MonoBehaviour
 {
     [Header("Slotlar")]
@@ -23,6 +27,9 @@ public class PlayerWeapons : MonoBehaviour
 
     Transform[] slots;
     Weapon[] weapons;
+
+    // Upgrade kartları "bu silah birleşir" yazabilsin diye sahnedeki oyuncunun silahları
+    public static PlayerWeapons Current { get; private set; }
 
     public int SlotCount => slotCount;
     public int WeaponCount { get; private set; }
@@ -55,14 +62,26 @@ public class PlayerWeapons : MonoBehaviour
     // Upgrade paneli / HUD bunu dinleyebilir
     public event Action<Weapon> OnWeaponAdded;
 
+    // İki silah birleşip kademe atlayınca: (yükselen silah, boşalan slot). HUD + bildirim dinler.
+    public event Action<Weapon, int> OnWeaponMerged;
+
     void Awake()
     {
         BuildSlots();
+        Current = this;
+    }
+
+    void OnDestroy()
+    {
+        if (Current == this) Current = null;
     }
 
     void Start()
     {
-        if (startingWeapon != null) AddWeapon(startingWeapon);
+        // Seçili karakterin başlangıç silahı (yoksa prefab'daki)
+        var character = CharacterSelection.Current;
+        WeaponData start = character != null && character.startingWeapon != null ? character.startingWeapon : startingWeapon;
+        if (start != null) AddWeapon(start);
     }
 
     // Slot objelerini oyuncunun child'ı olarak çembere dizer.
@@ -103,10 +122,73 @@ public class PlayerWeapons : MonoBehaviour
             return false;
         }
 
+        // Önce birleşme: aynı silahtan 1. kademede bir tane varsa yeni slot kullanılmaz
+        int partner = FindMergePartner(data, 1, -1);
+        if (partner >= 0)
+        {
+            MergeInto(partner, -1);
+            return true;
+        }
+
         for (int i = 0; i < slotCount; i++)
             if (weapons[i] == null) return PlaceWeapon(i, data);
 
         return false;  // tüm slotlar dolu
+    }
+
+    // Bu silah alınırsa mevcut bir kopyasıyla birleşir mi? (kart notu + swap gerekip gerekmediği)
+    public bool CanMerge(WeaponData data) => FindMergePartner(data, 1, -1) >= 0;
+
+    // Birleşince ulaşılacak kademe (zincirleme dahil). Birleşmezse 1.
+    public int MergeResultTier(WeaponData data)
+    {
+        int tier = 1;
+        int skip = -1;
+        while (tier < WeaponTiers.MaxTier)
+        {
+            int p = FindMergePartner(data, tier, skip);
+            if (p < 0) break;
+            tier++;
+            skip = p;   // aynı silahı iki kez sayma (kendisiyle birleşmesin)
+        }
+        return tier;
+    }
+
+    public int GetSlotTier(int index)
+        => weapons != null && index >= 0 && index < weapons.Length && weapons[index] != null ? weapons[index].Tier : 0;
+
+    // data + tier eşleşen, 'except' dışındaki ilk slot (yoksa -1). Maks kademedekiler birleşmez.
+    int FindMergePartner(WeaponData data, int tier, int except)
+    {
+        if (data == null || tier >= WeaponTiers.MaxTier) return -1;
+        for (int i = 0; i < slotCount; i++)
+            if (i != except && weapons[i] != null && weapons[i].Data == data && weapons[i].Tier == tier)
+                return i;
+        return -1;
+    }
+
+    // 'index'teki silah bir kademe atlar; aynı kademede başka bir kopyası varsa onunla da
+    // birleşir (zincirleme). freedSlot: bu birleşmede boşalan slot (yeni alınan silahsa -1).
+    void MergeInto(int index, int freedSlot)
+    {
+        Weapon w = weapons[index];
+        w.SetTier(w.Tier + 1);
+
+        // Birleşme efekti: silahın üstünde kademe renginde flaş + kıvılcım
+        Color c = WeaponTiers.Color(w.Tier);
+        SkillVfx.Flash(w.transform.position, c, 1.2f, 0.3f);
+        SkillVfx.SparkBurst(w.transform.position, c, 12, 4f, 0.3f, 0.4f);
+
+        OnWeaponMerged?.Invoke(w, freedSlot);
+
+        int next = FindMergePartner(w.Data, w.Tier, index);
+        if (next >= 0)
+        {
+            Destroy(weapons[next].gameObject);
+            weapons[next] = null;
+            WeaponCount--;
+            MergeInto(index, next);
+        }
     }
 
     // Boş i. slota silahı takar.
@@ -136,6 +218,9 @@ public class PlayerWeapons : MonoBehaviour
     public bool ReplaceWeapon(int index, WeaponData data)
     {
         if (data == null || weaponPrefab == null || index < 0 || index >= slotCount) return false;
+
+        // Swap ekranına ancak birleşme yoksa gelinir; yine de varsa birleştir (slot kaybetme)
+        if (CanMerge(data)) return AddWeapon(data);
 
         if (weapons[index] != null)
         {

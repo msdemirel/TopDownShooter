@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3560bc1c9886f1adca507af4f2cc54e1, type: 3}
+  m_Name: Character_GUNSLINGER
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  id: gunslinger
+  title: GUNSLINGER
+  description: Lives for the perfect shot.
+  color: {r: 0.25490198, g: 0.6509804, b: 0.9647059, a: 1}
+  skinSprites:
+  - {fileID: -1950125668, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -2098300455, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1736313857, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 30270943, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 434676847, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1616212187, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -2120090141, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1423843921, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -913499651, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1004822041, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1770527059, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1098822787, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1955659308, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 39187209, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1549260681, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -461674186, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -520219573, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 28922667, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 676522102, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1331748696, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -7838906, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1702397609, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -899543234, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -2041283444, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -562027716, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1119039187, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 680590717, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1857093502, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1936726023, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -850019659, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 455953877, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 533041306, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 392199479, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1975320254, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1785810574, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -832497888, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 940052510, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 439929361, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -501161988, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -184314804, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -876987298, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1930442308, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -501638591, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -967552015, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -139168740, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -805642507, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1993475828, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 2071586897, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1457822030, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -93255288, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -105926454, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -752168187, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1191186720, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -989121581, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -346292854, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1877099527, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -662368572, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1337729545, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1747833413, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 764461226, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -866619832, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1898931985, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -769686700, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1608273540, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1002322861, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1494428453, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -947805938, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 877502958, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 639585831, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1374013365, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 81756794, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1581961220, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1413250920, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1819608730, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1207923236, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 1002977566, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 870880390, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 883417182, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  cellOffset: {x: 0, y: 0}
+  cellRemap: []
+  previewFrames:
+  - {fileID: -520219573, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 28922667, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: 676522102, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  - {fileID: -1331748696, guid: f5a89baaa11d451ab1227ff012db5d11, type: 3}
+  startingWeapon: {fileID: 11400000, guid: 59720dcd1273923efa5d8ffe189ec32a, type: 2}
+  maxHealth: 0
+  damage: 0
+  fireRate: 0.15
+  moveSpeed: 0
+  critChance: 0.1
+  magnetRange: 0
+  unlockCondition: 3
+  unlockThreshold: 250

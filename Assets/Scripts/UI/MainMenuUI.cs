@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 //   Butonların OnClick'i:  Play -> StartGame,  Options -> OpenOptions,
 //                          Quit -> QuitGame,   Back (Options) -> ShowMain
 //                          Upgrades -> OpenShop, Back (mağaza) -> ShowMain
+//   Zorluk seçimi kuruluysa Play -> Play (önce zorluk ekranı açılır; kart seçimi oyunu başlatır)
 // Mağaza paneli: Menü > TopDownShooter > UI > Mağazayı Kur
 //
 // Klavye: ENTER = oyna (ana ekrandayken), ESC = Options'tan / mağazadan geri dön.
@@ -27,6 +28,10 @@ public class MainMenuUI : MonoBehaviour
 
     [Tooltip("Kalıcı upgrade mağazası (MetaShopUI). Opsiyonel. Başlangıçta kapatılır.")]
     [SerializeField] GameObject shopPanel;
+    [Tooltip("PLAY'e basınca açılan zorluk seçimi (DifficultySelectUI). Boşsa PLAY oyunu direkt başlatır.")]
+    [SerializeField] GameObject difficultyPanel;
+    [Tooltip("PLAY'e basınca İLK açılan karakter seçimi (CharacterSelectUI). Seçimden sonra zorluk ekranı gelir.")]
+    [SerializeField] GameObject characterPanel;
     [Tooltip("Ana ekrandaki Core bakiyesi yazısı. Opsiyonel.")]
     [SerializeField] TMP_Text coreBalanceText;
 
@@ -76,6 +81,9 @@ public class MainMenuUI : MonoBehaviour
 
     bool OptionsOpen => optionsPanel != null && optionsPanel.activeSelf;
     bool ShopOpen => shopPanel != null && shopPanel.activeSelf;
+    bool DifficultyOpen => difficultyPanel != null && difficultyPanel.activeSelf;
+    bool CharacterOpen => characterPanel != null && characterPanel.activeSelf;
+    bool SubPanelOpen => OptionsOpen || ShopOpen || DifficultyOpen || CharacterOpen;
 
     void Start()
     {
@@ -99,9 +107,11 @@ public class MainMenuUI : MonoBehaviour
         var kb = Keyboard.current;
         if (kb != null && !starting)
         {
-            if (kb.escapeKey.wasPressedThisFrame && (OptionsOpen || ShopOpen)) ShowMain();
-            else if (!OptionsOpen && !ShopOpen && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
-                StartGame();
+            // Zorluk ekranından ESC karakter seçimine döner (ikisi bir akışın adımları)
+            if (kb.escapeKey.wasPressedThisFrame && DifficultyOpen && characterPanel != null) SwitchTo(characterPanel, null);
+            else if (kb.escapeKey.wasPressedThisFrame && SubPanelOpen) ShowMain();
+            else if (!SubPanelOpen && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
+                Play();
         }
 
         float t = Time.unscaledTime;
@@ -138,6 +148,20 @@ public class MainMenuUI : MonoBehaviour
     {
         if (screenFader != null) yield return Fade(screenFader, screenFader.alpha, 1f, fadeDuration);
         SceneManager.LoadScene(gameSceneName);
+    }
+
+    // PLAY butonu: karakter seçimi -> zorluk seçimi -> oyun. Kurulu olmayan adım atlanır.
+    public void Play()
+    {
+        if (characterPanel != null) SwitchTo(characterPanel, null);
+        else OpenDifficulty();
+    }
+
+    // Karakter seçilince (CharacterSelectUI) çağrılır.
+    public void OpenDifficulty()
+    {
+        if (difficultyPanel != null) SwitchTo(difficultyPanel, null);
+        else StartGame();
     }
 
     public void OpenOptions() => SwitchTo(optionsPanel, optionsFirstSelected);
@@ -196,7 +220,7 @@ public class MainMenuUI : MonoBehaviour
     // Verilen paneli açar, diğerlerini kapatır.
     void SwitchTo(GameObject show, GameObject select, bool instant = false)
     {
-        foreach (var p in new[] { mainPanel, optionsPanel, shopPanel })
+        foreach (var p in new[] { mainPanel, optionsPanel, shopPanel, difficultyPanel, characterPanel })
             if (p != null && p != show) p.SetActive(false);
 
         if (show != null)

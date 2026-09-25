@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 Laser Sword
   description: An energy blade that cleaves wide.
   icon: {fileID: 21300000, guid: a8d62f6676f743a7822b0dbc9baa9588, type: 3}
-  unlockWave: 1
+  unlockWave: 6
   lastWave: 0
   unlockCondition: 1
   unlockThreshold: 8
   weapon: {fileID: 11400000, guid: 15fce1197fa7d39da9a9e88fc4286f74, type: 2}
-  cost: 1
+  cost: 52

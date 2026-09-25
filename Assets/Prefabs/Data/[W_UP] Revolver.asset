@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 Revolver
   description: Slow, heavy shots with a high crit chance.
   icon: {fileID: 21300000, guid: c852a41a2d424e6893e20d187f610530, type: 3}
-  unlockWave: 1
+  unlockWave: 4
   lastWave: 0
   unlockCondition: 3
   unlockThreshold: 100
   weapon: {fileID: 11400000, guid: 59720dcd1273923efa5d8ffe189ec32a, type: 2}
-  cost: 1
+  cost: 36

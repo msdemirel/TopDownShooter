@@ -15,9 +15,9 @@ MonoBehaviour:
   title: Buy +1 Assault Rifle
   description: Steady, accurate automatic fire.
   icon: {fileID: 21300000, guid: 3edff3a50d2e4c17a7d90441f5b39f7e, type: 3}
-  unlockWave: 1
+  unlockWave: 7
   lastWave: 0
   unlockCondition: 4
   unlockThreshold: 10
   weapon: {fileID: 11400000, guid: 152741634968669debe59ecbed7e4f8c, type: 2}
-  cost: 1
+  cost: 58

@@ -128,8 +128,9 @@ public class GameOverUI : MonoBehaviour
         // Rekorları HEMEN kaydet: oyuncu paneli beklemeden sahneden çıksa da kaybolmasın
         RunResult run = runStats.Snapshot();
         var lockedBefore = MetaProgress.CurrentlyLocked();   // rekorlar güncellenmeden önce
+        var charsBefore = MetaProgress.CurrentlyLockedCharacters();
         BestRecords.NewBestFlags flags = BestRecords.Submit(run, out RunResult previous);
-        MetaProgress.EndRun(run, lockedBefore);               // Core + toplamlar + yeni açılanlar
+        MetaProgress.EndRun(run, lockedBefore, charsBefore);  // Core + toplamlar + yeni açılanlar
 
         StartCoroutine(ShowRoutine(run, previous, flags));
     }
@@ -181,7 +182,13 @@ public class GameOverUI : MonoBehaviour
         if (newRecordBanner != null) newRecordBanner.SetActive(false);
 
         if (subtitleText != null)
-            subtitleText.text = $"WAVE {run.wave}  -  RUN #{BestRecords.TotalRuns}";
+        {
+            var diff = Difficulty.Current;
+            var ch = CharacterSelection.Current;
+            string diffTag = diff != null ? $"  -  <color=#{ColorUtility.ToHtmlStringRGB(diff.color)}>{diff.title}</color>" : "";
+            string charTag = ch != null ? $"  -  <color=#{ColorUtility.ToHtmlStringRGB(ch.color)}>{ch.title}</color>" : "";
+            subtitleText.text = $"WAVE {run.wave}{diffTag}{charTag}  -  RUN #{BestRecords.TotalRuns}";
+        }
 
         // "BEST" = bu oyun dahil en iyi değer (rekor kırıldıysa yeni değer)
         SetBest(timeRow, FormatTime(Mathf.Max(run.timeSurvived, previous.timeSurvived)));
@@ -199,7 +206,11 @@ public class GameOverUI : MonoBehaviour
         {
             coreBreakdownText.text = report == null ? "" :
                 $"WAVES +{report.coreFromWaves}   KILLS +{report.coreFromKills}" +
-                (report.coreFromBosses > 0 ? $"   BOSS +{report.coreFromBosses}" : "");
+                (report.coreFromBosses > 0 ? $"   BOSS +{report.coreFromBosses}" : "") +
+                (report.coreFromDifficulty > 0 && report.difficulty != null
+                    ? $"   <color=#{ColorUtility.ToHtmlStringRGB(report.difficulty.color)}>{report.difficulty.title} " +
+                      $"x{report.difficulty.coreMultiplier:0.##} +{report.coreFromDifficulty}</color>"
+                    : "");
         }
         if (coreTotalText != null) coreTotalText.text = $"TOTAL {MetaProgress.Core:N0}";
         if (unlockSection != null) unlockSection.SetActive(false);
@@ -209,27 +220,35 @@ public class GameOverUI : MonoBehaviour
 
     IEnumerator ShowUnlocks(MetaProgress.RunReport report)
     {
-        if (unlockSection == null || report == null || report.newlyUnlocked.Count == 0) yield break;
+        if (unlockSection == null || report == null
+            || report.newlyUnlocked.Count + report.newCharacters.Count == 0) yield break;
 
+        // Karakterler önce (büyük haber), sonra silah/skill'ler
         var names = new System.Collections.Generic.List<string>();
-        foreach (var u in report.newlyUnlocked) names.Add(DisplayName(u));
+        var sprites = new System.Collections.Generic.List<Sprite>();
+        foreach (var c in report.newCharacters)
+        {
+            names.Add($"<color=#{ColorUtility.ToHtmlStringRGB(c.color)}>{c.title}</color>");
+            sprites.Add(c.previewFrames != null && c.previewFrames.Length > 0 ? c.previewFrames[0] : null);
+        }
+        foreach (var u in report.newlyUnlocked) { names.Add(DisplayName(u)); sprites.Add(u.icon); }
         if (unlockText != null)
             unlockText.text = $"NEW UNLOCK{(names.Count > 1 ? "S" : "")}: <color=#F4F4F4>{string.Join(", ", names)}</color>";
 
         if (unlockIcons != null)
         {
             for (int i = unlockIcons.childCount - 1; i >= 0; i--) Destroy(unlockIcons.GetChild(i).gameObject);
-            for (int i = 0; i < report.newlyUnlocked.Count; i++)
+            for (int i = 0; i < sprites.Count; i++)
             {
                 var go = new GameObject("Unlock", typeof(RectTransform), typeof(Image));
                 var rt = (RectTransform)go.transform;
                 rt.SetParent(unlockIcons, false);
                 rt.sizeDelta = Vector2.one * unlockIconSize;
                 // Ortalanmış yatay dizi
-                float x = (i - (report.newlyUnlocked.Count - 1) * 0.5f) * (unlockIconSize + 8f);
+                float x = (i - (sprites.Count - 1) * 0.5f) * (unlockIconSize + 8f);
                 rt.anchoredPosition = new Vector2(x, 0f);
                 var img = go.GetComponent<Image>();
-                img.sprite = report.newlyUnlocked[i].icon;
+                img.sprite = sprites[i];
                 img.preserveAspect = true;
                 img.raycastTarget = false;
             }

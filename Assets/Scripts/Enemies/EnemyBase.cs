@@ -57,7 +57,7 @@ public abstract class EnemyBase : MonoBehaviour
     // Yavaşlatma (Frost Nova): süre bitene kadar hız bu çarpanla çarpılır.
     float slowMultiplier = 1f;
     float slowUntil;
-    bool IsSlowed => Time.time < slowUntil;
+    public bool IsSlowed => Time.time < slowUntil;   // skill sinerjileri okur (Conductive, Thermal Shock)
 
     // Separation için paylaşılan tampon: her karede yeni dizi ayırmamak için.
     // 16'dan fazla komşu varsa ilk 16'sı dikkate alınır (ayrılma için fazlasıyla yeterli).
@@ -95,7 +95,7 @@ public abstract class EnemyBase : MonoBehaviour
     // Spawner Instantiate'ten hemen sonra çağırır ve seviyeyi uygular.
     public virtual void Init(EnemyLevelStats levelStats)
     {
-        stats = levelStats;
+        stats = Difficulty.Scale(levelStats);   // seçili zorluğun çarpanları (kopya üzerinde)
         health.SetMaxHealth(stats.maxHealth);
     }
 

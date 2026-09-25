@@ -16,7 +16,7 @@ using UnityEngine;
 // - Tüm düşmanlar kamikaze (ExploderEnemy): hasar = TEMAS BAŞINA tek seferlik patlama.
 //   Patlayan düşman drop vermez; drop sadece oyuncu öldürünce düşer.
 // - Ölçek: Fly Lv1 = 15 can, başlangıç kılıcı 10 hasar (2 vuruş). Oyuncu 50 can.
-// - Exp eğrisi: dalga başına ~1 level. Coin: Sword ~2., Sword II ~5., Pistol ~7. dalgada alınır.
+// - Exp eğrisi: dalga başına ~1 level. Coin: Sword ~2., Greatsword ~5., Pistol ~7. dalgada alınır.
 public static class BalanceSetup
 {
     const string Data = "Assets/Prefabs/Data/";
@@ -92,19 +92,19 @@ public static class BalanceSetup
         // ---- 5) Silahlar ----
         var sword = Load<WeaponData>(Data + "Guns/Sword.asset");
         var pistol = Load<WeaponData>(Data + "Guns/Pistol.asset");
-        var sword2 = LoadOrCopy<WeaponData>(Data + "Guns/Sword II.asset", Data + "Guns/Sword.asset");
+        var sword2 = LoadOrCopy<WeaponData>(Data + "Guns/Greatsword.asset", Data + "Guns/Sword.asset");
 
         SetWeapon(sword, "Sword", damage: 10, fireRate: 1.5f, range: 2f);
-        SetWeapon(sword2, "Sword II", damage: 18, fireRate: 1.6f, range: 2.2f);
+        SetWeapon(sword2, "Greatsword", damage: 18, fireRate: 1.6f, range: 2.2f);
         SetWeapon(pistol, "Pistol", damage: 12, fireRate: 2f, range: 5f);
 
         // ---- 6) Silah satın alma kartları: fiyat + dalga kilidi ----
         var upSword = Load<WeaponUpgradeData>(Data + "[W_UP] Sword.asset");
         var upPistol = Load<WeaponUpgradeData>(Data + "[W_UP]Pistol.asset");
-        var upSword2 = LoadOrCopy<WeaponUpgradeData>(Data + "[W_UP] Sword II.asset", Data + "[W_UP] Sword.asset");
+        var upSword2 = LoadOrCopy<WeaponUpgradeData>(Data + "[W_UP] Greatsword.asset", Data + "[W_UP] Sword.asset");
 
         SetWeaponUp(upSword, "Buy +1 Sword", "Adds 1 more sword to an empty slot", sword, cost: 5, unlock: 1, last: 8);
-        SetWeaponUp(upSword2, "Buy +1 Sword II", "A heavier blade for tougher waves", sword2, cost: 12, unlock: 4, last: 0);
+        SetWeaponUp(upSword2, "Buy +1 Greatsword", "A heavier blade for tougher waves", sword2, cost: 12, unlock: 4, last: 0);
         SetWeaponUp(upPistol, "Buy +1 Pistol", "Shoots enemies from a distance", pistol, cost: 20, unlock: 6, last: 0);
 
         // ---- 7) Stat upgrade'leri (kademe miktarları) ----

@@ -32,7 +32,7 @@ public abstract class UpgradeData : ScriptableObject
              "Ör: 6 yazarsan 5. dalga bitip 6. dalga başlayınca panelde çıkmaya başlar.")]
     [Min(1)] public int unlockWave = 1;
     [Tooltip("Bu dalgadan SONRA artık teklif edilmez (0 = hiç kapanmaz). " +
-             "Zayıf silah sürümlerini emekli etmek için: Sword I -> 8 yazıp Sword II'yi 5'te açmak gibi.")]
+             "Zayıf silah sürümlerini emekli etmek için: Sword -> 8 yazıp Greatsword'ü 5'te açmak gibi.")]
     [Min(0)] public int lastWave = 0;
 
     [Header("Kalıcı Kilit (meta)")]

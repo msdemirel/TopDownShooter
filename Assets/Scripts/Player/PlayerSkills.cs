@@ -50,6 +50,9 @@ public class PlayerSkills : MonoBehaviour
     readonly List<SkillUpgradeData> skills = new List<SkillUpgradeData>();
     readonly List<int> skillLevels = new List<int>();   // slot bazında: skill'in mevcut seviyesi (0-tabanlı)
     float[] readyTimes;      // slot bazında: bu zamandan önce tekrar kullanılamaz
+    float[] cooldownUsed;    // slot bazında: son kullanımda uygulanan cooldown (Afterburner kısaltabilir)
+    int overdriveActive;     // süren Overdrive sayısı (Afterburner / Supercharge sinerjileri okur)
+    readonly HashSet<SynergyId> activeSynergies = new HashSet<SynergyId>();
     int shieldCount;         // iç içe kalkanlar birbirinin dokunulmazlığını bozmasın
     InputAction[] actions;   // slot tuşları: referanslar + asset'te adıyla bulunan ek slotlar
     int ignoreInputFrame = -1;   // swap ekranında slot tuşuyla seçim yapılan kare
@@ -59,6 +62,12 @@ public class PlayerSkills : MonoBehaviour
 
     // Bir slot skill değiştirince (swap) HUD ikonu güncellemek için dinler
     public event Action<int, SkillUpgradeData> OnSkillReplaced;
+
+    // İki skill birlikte slota girince bir sinerji açılır (HUD bildirimi dinler)
+    public event Action<SkillSynergies.Def> OnSynergyActivated;
+
+    // Upgrade kartları "bu skill şu sinerjiyi açar" yazabilsin diye sahnedeki oyuncunun skilleri
+    public static PlayerSkills Current { get; private set; }
 
     public int SlotCount => Actions.Length;
     public int SkillCount => skills.Count;
@@ -73,6 +82,13 @@ public class PlayerSkills : MonoBehaviour
         health = GetComponent<Health>();
         weapons = GetComponentInChildren<PlayerWeapons>();
         readyTimes = new float[SlotCount];
+        cooldownUsed = new float[SlotCount];
+        Current = this;
+    }
+
+    void OnDestroy()
+    {
+        if (Current == this) Current = null;
     }
 
     // Inspector'daki referanslar + aynı asset'te sıradaki "Skill{N}" aksiyonları.
@@ -157,6 +173,7 @@ public class PlayerSkills : MonoBehaviour
         readyTimes[skills.Count - 1] = 0f;   // yeni skill hemen kullanılabilir
 
         OnSkillAdded?.Invoke(skills.Count - 1, skill);
+        RefreshSynergies();
     }
 
     // Swap: slottaki skill'i yenisiyle (ilk seviyesiyle) değiştirir. Eski skill'in
@@ -173,6 +190,43 @@ public class PlayerSkills : MonoBehaviour
         ignoreInputFrame = Time.frameCount;   // seçim tuşu (Space/E/R/Q) aynı karede skill'i ateşlemesin
 
         OnSkillReplaced?.Invoke(slot, skill);
+        RefreshSynergies();
+    }
+
+    // ---- Sinerjiler ----
+    public bool HasSkillType(SkillType t)
+    {
+        foreach (var s in skills) if (s != null && s.skillType == t) return true;
+        return false;
+    }
+
+    public bool HasSynergy(SynergyId id) => activeSynergies.Contains(id);
+
+    // Slottaki o türden skill'in mevcut seviye değerleri (yoksa false)
+    bool TryGetSkill(SkillType t, out SkillUpgradeData data, out SkillLevelStats lv)
+    {
+        for (int i = 0; i < skills.Count; i++)
+            if (skills[i] != null && skills[i].skillType == t)
+            {
+                data = skills[i];
+                lv = skills[i].GetLevel(skillLevels[i]);
+                return true;
+            }
+        data = null;
+        lv = null;
+        return false;
+    }
+
+    // Skiller değişince aktif sinerjileri yeniden hesapla; yeni açılanları bildir.
+    // (Swap ile bir skill giderse o sinerji sessizce kapanır.)
+    void RefreshSynergies()
+    {
+        foreach (var d in SkillSynergies.All)
+        {
+            bool on = HasSkillType(d.a) && HasSkillType(d.b);
+            if (on && activeSynergies.Add(d.id)) OnSynergyActivated?.Invoke(d);
+            else if (!on) activeSynergies.Remove(d.id);
+        }
     }
 
     // ---- HUD'un okuduğu bilgiler ----
@@ -187,7 +241,7 @@ public class PlayerSkills : MonoBehaviour
         SkillUpgradeData s = GetSkill(slot);
         if (s == null) return 0f;
 
-        float cooldown = s.GetLevel(skillLevels[slot]).cooldown;
+        float cooldown = cooldownUsed[slot] > 0f ? cooldownUsed[slot] : s.GetLevel(skillLevels[slot]).cooldown;
         if (cooldown <= 0f) return 0f;
 
         float remaining = readyTimes[slot] - Time.time;
@@ -231,7 +285,12 @@ public class PlayerSkills : MonoBehaviour
         SkillUpgradeData s = skills[slot];
         SkillLevelStats lv = s.GetLevel(skillLevels[slot]);   // mevcut seviyenin değerleri
 
-        readyTimes[slot] = Time.time + Mathf.Max(0.1f, lv.cooldown);
+        float cooldown = Mathf.Max(0.1f, lv.cooldown);
+        // Afterburner: Overdrive sürerken Dash cooldown'u kısalır
+        if (s.skillType == SkillType.Dash && overdriveActive > 0 && HasSynergy(SynergyId.Afterburner))
+            cooldown = Mathf.Max(0.1f, cooldown * SkillSynergies.AfterburnerCooldownFactor);
+        readyTimes[slot] = Time.time + cooldown;
+        cooldownUsed[slot] = cooldown;
         AudioManager.PlaySkill();
 
         switch (s.skillType)
@@ -241,13 +300,15 @@ public class PlayerSkills : MonoBehaviour
                 if (movement != null) dashDir = movement.StartDash(lv.dashSpeed, lv.dashDuration);
                 DashTrail.Play(gameObject, dashDir, lv.dashDuration, dashColor);
                 SpawnDirectedEffect(s, dashDir);   // iz dash yönüne dönük, arkada kalır
+                if (HasSynergy(SynergyId.BlazingDash)) StartCoroutine(BlazingDashRoutine(lv.dashDuration));
                 break;
 
             case SkillType.AreaBlast:
                 // Dışa büyüyen ateş patlaması: cephe düşmana değince hasar verir (görsel kenar = hasar kenarı).
                 // effectPrefab (Fire Ball animasyonu) merkezde büyüyüp söner.
                 BlastWave.Spawn(transform.position, lv.blastRadius, blastExpandTime, lv.blastDamage,
-                                s.effectPrefab, s.effectVisualScale);
+                                s.effectPrefab, s.effectVisualScale,
+                                HasSynergy(SynergyId.ThermalShock) ? SkillSynergies.ThermalShockMultiplier : 1f);
                 break;
 
             case SkillType.Shield:
@@ -267,6 +328,10 @@ public class PlayerSkills : MonoBehaviour
                 if (health != null) health.Heal(lv.healAmount);
                 SkillVfx.Heal(transform, healColor);
                 SpawnEffect(s, 1f);
+                // Guardian: iyileşme kısa bir kalkan da verir (Shield skill'inin görseliyle)
+                if (HasSynergy(SynergyId.Guardian) && TryGetSkill(SkillType.Shield, out var shieldSkill, out _))
+                    StartCoroutine(ShieldRoutine(shieldSkill,
+                        new SkillLevelStats { shieldDuration = SkillSynergies.GuardianShieldDuration }));
                 break;
 
             case SkillType.FrostNova:
@@ -312,6 +377,7 @@ public class PlayerSkills : MonoBehaviour
     {
         if (weapons == null) yield break;
 
+        overdriveActive++;
         float dmg = lv.overdriveDamageBonus;
         float rate = lv.overdriveFireRateBonus;
         weapons.AddDamageMultiplier(dmg);
@@ -326,6 +392,7 @@ public class PlayerSkills : MonoBehaviour
         if (fx != null) Destroy(fx);
         weapons.AddDamageMultiplier(-dmg);
         weapons.AddFireRateMultiplier(-rate);
+        overdriveActive--;
     }
 
     // Oyuncuya en yakın düşmandan başlar, her seferinde henüz vurulmamış en yakın
@@ -338,6 +405,8 @@ public class PlayerSkills : MonoBehaviour
         chainTargets.Clear();
         Vector2 from = transform.position;
         int count = Mathf.Max(1, lv.chainCount);
+        // Supercharge: Overdrive sürerken şimşek daha çok düşmana seker
+        if (overdriveActive > 0 && HasSynergy(SynergyId.Supercharge)) count += SkillSynergies.SuperchargeExtraChains;
 
         for (int i = 0; i < count; i++)
         {
@@ -355,9 +424,19 @@ public class PlayerSkills : MonoBehaviour
             points[i + 1] = chainTargets[i].transform.position;
         LightningArc.Spawn(points, lightningColor, lightningThickness, 0.25f, pulseWaveSortingOrder);
 
+        // Conductive: yavaşlamış (buzlu) düşmana çift hasar
+        bool conductive = HasSynergy(SynergyId.Conductive);
         foreach (var e in chainTargets)
-            if (e != null && !e.IsDead && e.TryGetComponent<Health>(out var h))
-                h.TakeDamage(lv.chainDamage);
+        {
+            if (e == null || e.IsDead || !e.TryGetComponent<Health>(out var h)) continue;
+            float dmg = lv.chainDamage;
+            if (conductive && e.IsSlowed)
+            {
+                dmg *= SkillSynergies.ConductiveMultiplier;
+                SkillVfx.Flash(e.transform.position, frostColor, 1.1f, 0.18f);
+            }
+            h.TakeDamage(dmg);
+        }
     }
 
     static EnemyBase FindNearestEnemy(Vector2 from, float range, List<EnemyBase> exclude)
@@ -377,8 +456,16 @@ public class PlayerSkills : MonoBehaviour
         return best;
     }
 
+    // Blazing Dash: dash bitince (varış noktasında) Fire Burst'ün mermileri zayıflatılmış halde fırlar
+    IEnumerator BlazingDashRoutine(float dashDuration)
+    {
+        yield return new WaitForSeconds(dashDuration);
+        if (TryGetSkill(SkillType.Burst, out var burst, out var blv))
+            DoBurst(burst, blv, SkillSynergies.BlazingDashDamageFactor);
+    }
+
     // Karakterin etrafındaki N noktadan dışa doğru eşit açılı mermi fırlatır (fire spell gibi).
-    void DoBurst(SkillUpgradeData s, SkillLevelStats lv)
+    void DoBurst(SkillUpgradeData s, SkillLevelStats lv, float damageFactor = 1f)
     {
         if (s.burstProjectile == null) return;
 
@@ -402,7 +489,7 @@ public class PlayerSkills : MonoBehaviour
             if (go.TryGetComponent<Projectile>(out var proj))
             {
                 proj.team = Team.Player;
-                proj.damage = lv.burstDamage;
+                proj.damage = lv.burstDamage * damageFactor;
             }
         }
     }
@@ -415,12 +502,25 @@ public class PlayerSkills : MonoBehaviour
         {
             // Her halka, O ANKİ konumda doğar ve orada sabit kalır. Oyuncu hareket ederse
             // her pulse farklı yerde bırakılır (arkanda bir dizi halka).
-            ShockwaveRing.Spawn(transform.position, lv.waveRadius, lv.waveExpandTime, lv.waveDamage,
-                                pulseWaveColor, pulseWaveThickness, pulseWaveSortingOrder);
+            SpawnPulseRing(lv);
 
             if (i < count - 1)
                 yield return new WaitForSeconds(lv.waveInterval);
         }
+    }
+
+    // Tek bir pulse halkası. Cold Front sinerjisi aktifse halka değdiğini yavaşlatır.
+    void SpawnPulseRing(SkillLevelStats lv)
+    {
+        float slow = 0f, slowDur = 0f;
+        if (HasSynergy(SynergyId.ColdFront) && TryGetSkill(SkillType.FrostNova, out _, out var flv))
+        {
+            slow = flv.slowPercent * SkillSynergies.ColdFrontSlowFactor;
+            slowDur = SkillSynergies.ColdFrontSlowDuration;
+        }
+        ShockwaveRing.Spawn(transform.position, lv.waveRadius, lv.waveExpandTime, lv.waveDamage,
+                            slow > 0f ? Color.Lerp(pulseWaveColor, frostColor, 0.5f) : pulseWaveColor,
+                            pulseWaveThickness, pulseWaveSortingOrder, slow, slowDur);
     }
 
     IEnumerator ShieldRoutine(SkillUpgradeData s, SkillLevelStats lv)
@@ -440,6 +540,10 @@ public class PlayerSkills : MonoBehaviour
 
         shieldCount--;
         if (shieldCount <= 0 && health != null) health.Invulnerable = false;
+
+        // Repulsor: kalkan biterken bir pulse dalgası yayar (Pulse Wave'in mevcut seviyesiyle)
+        if (HasSynergy(SynergyId.Repulsor) && TryGetSkill(SkillType.PulseWave, out _, out var plv))
+            SpawnPulseRing(plv);
     }
 
     // Yönlü efekt (dash izi gibi): oyuncunun konumunda, verilen yöne DÖNÜK doğar.

@@ -171,6 +171,8 @@ public static class MainMenuBuilder
 
         // Mağaza: UPGRADES butonu + panel (Options/Quit'i bir adım aşağı kaydırır)
         MetaShopBuilder.Build(menu, root, main, mso);
+        DifficultyPanelBuilder.Build(menu, root, main, mso);   // PLAY -> zorluk seçimi
+        CharacterPanelBuilder.Build(menu, root, main, mso);    // PLAY -> karakter -> zorluk
         fader.transform.SetAsLastSibling();   // perde mağazanın da önünde kalsın
         mso.ApplyModifiedPropertiesWithoutUndo();
 

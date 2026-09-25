@@ -40,16 +40,26 @@ public static class MetaProgress
     public class RunReport
     {
         public int coreFromWaves, coreFromKills, coreFromBosses;
-        public int CoreTotal => coreFromWaves + coreFromKills + coreFromBosses;
+        public int coreFromDifficulty;          // zorluk çarpanının getirdiği ek (Hard x1.5 -> +%50)
+        public DifficultyData difficulty;
+        public int CoreBase => coreFromWaves + coreFromKills + coreFromBosses;
+        public int CoreTotal => CoreBase + coreFromDifficulty;
         public readonly List<UpgradeData> newlyUnlocked = new List<UpgradeData>();
+        public readonly List<CharacterData> newCharacters = new List<CharacterData>();
     }
 
-    public static RunReport CalculateReward(RunResult run) => new RunReport
+    public static RunReport CalculateReward(RunResult run)
     {
-        coreFromWaves = CorePerWave * Mathf.Max(0, run.wave - 1),
-        coreFromKills = run.kills / KillsPerCore,
-        coreFromBosses = CorePerBoss * run.bossKills,
-    };
+        var r = new RunReport
+        {
+            coreFromWaves = CorePerWave * Mathf.Max(0, run.wave - 1),
+            coreFromKills = run.kills / KillsPerCore,
+            coreFromBosses = CorePerBoss * run.bossKills,
+            difficulty = Difficulty.Current,
+        };
+        r.coreFromDifficulty = Mathf.RoundToInt(r.CoreBase * (Difficulty.CoreMultiplier - 1f));
+        return r;
+    }
 
     // ---- Oyun sonu ----
     public static List<UpgradeData> CurrentlyLocked()
@@ -61,9 +71,19 @@ public static class MetaProgress
         return list;
     }
 
+    public static List<CharacterData> CurrentlyLockedCharacters()
+    {
+        var list = new List<CharacterData>();
+        if (Catalog == null) return list;
+        foreach (var c in Catalog.characters)
+            if (c != null && !c.IsUnlocked) list.Add(c);
+        return list;
+    }
+
     // Core'u ve ömür boyu toplamları kaydeder, bu oyunla açılan içerikleri bulur.
     // BestRecords.Submit'ten SONRA çağrılmalı (rekor tabanlı koşullar güncel olsun).
-    public static RunReport EndRun(RunResult run, List<UpgradeData> lockedBefore)
+    public static RunReport EndRun(RunResult run, List<UpgradeData> lockedBefore,
+                                   List<CharacterData> charactersLockedBefore = null)
     {
         RunReport report = CalculateReward(run);
 
@@ -72,10 +92,14 @@ public static class MetaProgress
         AddInt(KeyBossKills, run.bossKills);
         AddInt(KeyCore, report.CoreTotal);
         AddInt(KeyCoreEarned, report.CoreTotal);
+        Difficulty.RecordWave(run.wave);
 
         if (lockedBefore != null)
             foreach (var u in lockedBefore)
                 if (u != null && IsMet(u.unlockCondition, u.unlockThreshold)) report.newlyUnlocked.Add(u);
+        if (charactersLockedBefore != null)
+            foreach (var c in charactersLockedBefore)
+                if (c != null && c.IsUnlocked) report.newCharacters.Add(c);
 
         PlayerPrefs.Save();
         LastReport = report;
@@ -159,6 +183,8 @@ public static class MetaProgress
         if (Catalog != null)
             foreach (var u in Catalog.upgrades)
                 if (u != null) PlayerPrefs.DeleteKey(KeyLevelPrefix + u.id);
+        Difficulty.ResetForTesting();
+        CharacterSelection.ResetForTesting();
         PlayerPrefs.Save();
         LastReport = null;
     }

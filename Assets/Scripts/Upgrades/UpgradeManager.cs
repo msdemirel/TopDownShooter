@@ -30,6 +30,9 @@ public class UpgradeManager : MonoBehaviour
     [Header("Ayarlar")]
     [Tooltip("Panelde kaç seçenek gösterilsin.")]
     [SerializeField] int choiceCount = 3;
+    [Tooltip("Bir panelde paralı (silah) kart çıkma ihtimali. 1 = her seferinde (alınabilir silah varsa). " +
+             "Düşük = silaha ulaşmak zorlaşır.")]
+    [Range(0f, 1f)] [SerializeField] float weaponCardChance = 0.45f;
 
     [Header("Reroll")]
     [Tooltip("Kartları yenilemenin ilk fiyatı. -1 = reroll kapalı.")]
@@ -182,8 +185,10 @@ public class UpgradeManager : MonoBehaviour
            && ctx.skills != null && !ctx.skills.HasFreeSlot
            && skillHud != null;
 
+    // Slotlar dolu VE sahip olunan bir kopyayla birleşmiyorsa swap gerekir
     bool NeedsWeaponSwap(UpgradeData data)
-        => data is WeaponUpgradeData && ctx.weapons != null && !ctx.weapons.HasFreeSlot && weaponHud != null;
+        => data is WeaponUpgradeData w && ctx.weapons != null && !ctx.weapons.HasFreeSlot
+           && !ctx.weapons.CanMerge(w.weapon) && weaponHud != null;
 
     // Parası varsa öde; yetmezse seçimi işleme (normalde buton pasif olduğu için buraya gelinmez)
     bool TryPay(UpgradeChoice c)
@@ -257,7 +262,8 @@ public class UpgradeManager : MonoBehaviour
 
     // Havuzdan, şu an teklif edilebilir olanlar arasından rastgele ve TEKRARSIZ seç.
     // Her upgrade için sıradaki kademesi teklif edilir.
-    // KURAL: Panelde EN FAZLA 1 paralı (weapon) kart olur; diğerleri bedava (stat/skill).
+    // KURAL: Panelde EN FAZLA 1 paralı (weapon) kart olur, o da weaponCardChance ihtimalle;
+    // diğerleri bedava (stat/skill). Bedavalar yetmezse panel paralılarla tamamlanır.
     void PickChoices()
     {
         freeCandidates.Clear();
@@ -286,8 +292,9 @@ public class UpgradeManager : MonoBehaviour
 
         choices.Clear();
 
-        // En fazla 1 paralı kart
-        if (paidCandidates.Count > 0)
+        // En fazla 1 paralı kart, o da her panelde değil (silaha ulaşmak kolay olmasın)
+        bool offerWeapon = paidCandidates.Count > 0 && Random.value < weaponCardChance;
+        if (offerWeapon)
             choices.Add(paidCandidates[0]);
 
         // Kalanları bedavalardan doldur
@@ -295,7 +302,7 @@ public class UpgradeManager : MonoBehaviour
             choices.Add(freeCandidates[i]);
 
         // Bedava yetmediyse (hepsi alınmış/slot dolu) kalan paralılarla tamamla — panel eksik kalmasın
-        for (int i = 1; i < paidCandidates.Count && choices.Count < choiceCount; i++)
+        for (int i = offerWeapon ? 1 : 0; i < paidCandidates.Count && choices.Count < choiceCount; i++)
             choices.Add(paidCandidates[i]);
 
         // Paralı kart hep aynı sırada görünmesin diye son bir karıştırma

@@ -21,6 +21,8 @@ gorunecekleri EN-BOY ORANINDA cizildi: 1 sprite pikseli ~ 2 ekran pikseli.
     HUD/skill_bar_frame.png 48x48   SkillHUD.barFrame (9-slice, kutularin toplam alanina gore)
     HUD/button_frame.png    32x20   genel buton, reroll (9-slice, kenar 8)
     HUD/icon_core.png       24x24   kalici para "Core" ikonu (Game Over, magaza)
+    Cursors/cursor_pointer.png 32x32 menu cursor'i (doku tipi Cursor, CursorManager kullanir)
+    Characters/players_*.png         oyuncu sheet'inin renk varyantlari (Scout yesil, Gunslinger mavi)
     HUD/minimap_*.png               MinimapUI (220x220 ekranda; cerceve 110, zemin/tarama 96,
                                     oyuncu 9, dusman 5, kenar oku 7x5 - gri tonlu, rengi tint verir)
     Icons/*.png             64x64   upgrade/skill ikonlari (32px orijinalden Scale2x + isik/golge)
@@ -547,7 +549,94 @@ def make_core_icon():
     return cv.save("HUD/icon_core.png")
 
 
+def make_cursor():
+    # Menu cursor'i: 16x16 pixel ok, 2x buyutulmus (32x32, donanim cursor'u icin ideal boyut).
+    # Ucu sol ustte (hotspot 0,0). Doku tipi 'Cursor' + okunabilir import edilir (write_cursor_meta).
+    rows = [
+        "X...............",
+        "XX..............",
+        "XcX.............",
+        "XcwX............",
+        "XcwwX...........",
+        "XcwwwX..........",
+        "XcwwwwX.........",
+        "XcwwwwwX........",
+        "XcwwwwwwX.......",
+        "XcwwwwwwwX......",
+        "XcwwwwXXXXX.....",
+        "XcwXwwX.........",
+        "XcX.XwwX........",
+        "XX..XwwX........",
+        "X....XwwX.......",
+        ".....XXX........",
+    ]
+    cmap = {"X": OUTL, "w": (244, 244, 244), "c": CY}
+    cv = Canvas(16, 16)
+    for j, r in enumerate(rows):
+        for i, ch in enumerate(r):
+            if ch in cmap:
+                cv.set(i, j, cmap[ch])
+    big = cv.im.resize((32, 32), Image.NEAREST)
+    path = os.path.join(OUT, "Cursors", "cursor_pointer.png")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    big.save(path)
+    return path
+
+
+def write_cursor_meta(path):
+    """Cursor doku tipi (7), okunabilir, Point, sikistirmasiz. guid korunur."""
+    write_meta(path, 0)
+    meta = path + ".meta"
+    text = open(meta).read()
+    text = (text.replace("textureType: 8", "textureType: 7")
+                .replace("isReadable: 0", "isReadable: 1")
+                .replace("spriteMode: 1", "spriteMode: 0")
+                .replace("alphaIsTransparency: 1", "alphaIsTransparency: 1"))
+    open(meta, "w").write(text)
+
+
 SLICED_BORDERS = {"skill_bar_frame.png": 14, "button_frame.png": 8}
+
+
+# ================================================================ KARAKTERLER
+# Oyuncu sprite sheet'inin renk varyantlari (palet degisimi): sadece kirmizi zirh + koyu golgesi
+# degisir; ten, goz, silah, dis cizgi ayni kalir. .meta orijinalden kopyalanir (ayni dilimler,
+# ayni sprite adlari) -> CharacterSkin kareleri KONUMLA eslestirir, animasyonlar ortak kalir.
+PLAYER_SHEET = os.path.join(ROOT, "Assets/Art/Tech Dungeon Roguelite - Asset Pack (v7)/Players/players red x1.png")
+ARMOR, ARMOR_DARK = (177, 62, 83), (93, 39, 93)
+CHARACTER_SKINS = {
+    "players_green": {ARMOR: (56, 183, 100), ARMOR_DARK: (37, 113, 121)},
+    "players_blue": {ARMOR: (59, 93, 201), ARMOR_DARK: (41, 54, 111)},
+}
+
+
+def make_character_sheets():
+    src = Image.open(PLAYER_SHEET).convert("RGBA")
+    src_meta = open(PLAYER_SHEET + ".meta").read()
+    paths = []
+    for name, remap in CHARACTER_SKINS.items():
+        im = src.copy()
+        px = im.load()
+        for y in range(im.height):
+            for x in range(im.width):
+                c = px[x, y]
+                if c[3] and c[:3] in remap:
+                    px[x, y] = remap[c[:3]] + (c[3],)
+        path = os.path.join(OUT, "Characters", name + ".png")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        im.save(path)
+
+        # Dilimler orijinalle birebir; guid varsa korunur (referanslar kopmasin)
+        meta = path + ".meta"
+        guid = uuid.uuid4().hex
+        if os.path.exists(meta):
+            for line in open(meta):
+                if line.startswith("guid: "):
+                    guid = line.split()[1]
+        text = "\n".join(("guid: " + guid) if l.startswith("guid: ") else l for l in src_meta.split("\n"))
+        open(meta, "w").write(text)
+        paths.append(path)
+    return paths
 
 
 # ================================================================ MINIMAP
@@ -1123,13 +1212,17 @@ def main():
     smooth = [make_minimap_sweep()]
     icons = make_icons()
 
+    cursor = make_cursor()
+    characters = make_character_sheets()   # .meta'lari kendi yazar (orijinal dilimler)
+
     write_folder_meta(OUT)
-    for sub in ("Cards", "HUD", "Icons"):
+    for sub in ("Cards", "HUD", "Icons", "Cursors", "Characters"):
         write_folder_meta(os.path.join(OUT, sub))
     for p in pixel:
         write_meta(p, 0)      # Point: keskin pixel art
     for p in icons + smooth:
-        write_meta(p, 1)      # Bilinear: 64px ikon ~48px'e kuculuyor, Point'te pikseller dusuyor
+        write_meta(p, 1)
+    write_cursor_meta(cursor)      # Bilinear: 64px ikon ~48px'e kuculuyor, Point'te pikseller dusuyor
     print(f"{len(pixel) + len(smooth)} HUD/kart + {len(icons)} ikon -> {OUT}")
 
 

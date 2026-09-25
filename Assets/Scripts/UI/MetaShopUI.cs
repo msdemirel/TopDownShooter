@@ -27,7 +27,7 @@ public class MetaShopUI : MonoBehaviour
 
     [Header("Yerleşim")]
     [SerializeField] int upgradeColumns = 4;
-    [SerializeField] Vector2 upgradeCardSize = new Vector2(400f, 220f);
+    [SerializeField] Vector2 upgradeCardSize = new Vector2(400f, 244f);
     [SerializeField] int unlockColumns = 2;
     [SerializeField] Vector2 unlockRowSize = new Vector2(800f, 76f);
     [SerializeField] Vector2 spacing = new Vector2(20f, 16f);
@@ -102,7 +102,9 @@ public class MetaShopUI : MonoBehaviour
                             GridPos(i, n, upgradeColumns, upgradeCardSize), upgradeCardSize);
 
             Pic(card.root, "Icon", data.icon, new Vector2(20f, -20f), new Vector2(72f, 72f));
-            Label(card.root, "Title", data.title, 28f, White, new Vector2(108f, -20f), new Vector2(280f, 34f));
+            // Uzun başlık ("STARTING FUNDS") karta sığmazsa küçülür
+            AutoSize(Label(card.root, "Title", data.title, 28f, White, new Vector2(108f, -20f),
+                           new Vector2(upgradeCardSize.x - 108f - 16f, 34f)), 18f);
 
             // Seviye göstergesi: dolu = alınmış
             card.pips = new Image[data.MaxLevel];
@@ -110,8 +112,15 @@ public class MetaShopUI : MonoBehaviour
             for (int p = 0; p < data.MaxLevel; p++)
                 card.pips[p] = Pic(card.root, $"Pip{p}", null, new Vector2(108f + p * (pipW + 6f), -64f), new Vector2(pipW, 12f));
 
-            Label(card.root, "Desc", data.description, 18f, Muted, new Vector2(20f, -98f), new Vector2(upgradeCardSize.x - 40f, 26f));
-            card.effect = Label(card.root, "Effect", "", 20f, Gold, new Vector2(20f, -128f), new Vector2(upgradeCardSize.x - 40f, 26f));
+            // Açıklama iki satıra kayar; yine sığmazsa küçülür (kartın dışına taşmasın)
+            var desc = Label(card.root, "Desc", data.description, 18f, Muted, new Vector2(20f, -86f),
+                             new Vector2(upgradeCardSize.x - 40f, 48f));
+            desc.textWrappingMode = TextWrappingModes.Normal;
+            desc.alignment = TextAlignmentOptions.TopLeft;
+            AutoSize(desc, 13f);
+            // Etki satırı: sağ alttaki satın alma butonunun ÜSTÜNDE kalır
+            card.effect = AutoSize(Label(card.root, "Effect", "", 20f, Gold, new Vector2(20f, -140f),
+                                         new Vector2(upgradeCardSize.x - 40f, 26f)), 14f);
 
             // Satın alma butonu (sağ alt): fiyat + Core ikonu, ya da MAXED
             var btnRt = Box("Buy", card.root, buttonSprite, Vector2.zero, new Vector2(170f, 48f));
@@ -122,9 +131,19 @@ public class MetaShopUI : MonoBehaviour
             btnImg.raycastTarget = true;
             card.buy = btnRt.gameObject.AddComponent<Button>();
             card.buy.targetGraphic = btnImg;
+            // Buton olduğu belli olsun: üstüne gelince belirgin aydınlanır ve büyür, basınca kararır
+            var colors = card.buy.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(1.6f, 1.75f, 1.8f, 1f);
+            colors.selectedColor = new Color(1.3f, 1.4f, 1.45f, 1f);
+            colors.pressedColor = new Color(0.7f, 0.7f, 0.75f, 1f);
+            colors.disabledColor = new Color(0.45f, 0.45f, 0.5f, 1f);
+            colors.fadeDuration = 0.08f;
+            card.buy.colors = colors;
+            btnRt.gameObject.AddComponent<UIHoverScale>();
             var captured = card;
             card.buy.onClick.AddListener(() => Buy(captured));
-            card.cost = Label(btnRt, "Cost", "", 24f, White, new Vector2(14f, -8f), new Vector2(100f, 32f));
+            card.cost = AutoSize(Label(btnRt, "Cost", "", 24f, White, new Vector2(14f, -8f), new Vector2(100f, 32f)), 16f);
             card.cost.alignment = TextAlignmentOptions.MidlineRight;
             card.costIcon = Pic(btnRt, "CoreIcon", coreIcon, new Vector2(122f, -10f), new Vector2(28f, 28f));
 
@@ -157,6 +176,8 @@ public class MetaShopUI : MonoBehaviour
 
             if (d.IsMaxed)
             {
+                // İkon yok: yazı butonun tamamını kullanır, ortalanır (dar fiyat kutusundan taşmasın)
+                SetCostLayout(c, full: true);
                 c.cost.text = "MAXED";
                 c.cost.color = Gold;
                 c.costIcon.enabled = false;
@@ -164,12 +185,32 @@ public class MetaShopUI : MonoBehaviour
             }
             else
             {
+                SetCostLayout(c, full: false);
                 bool affordable = MetaProgress.Core >= d.NextCost;
                 c.cost.text = d.NextCost.ToString();
                 c.cost.color = affordable ? White : Red;
                 c.costIcon.enabled = true;
                 c.buy.interactable = affordable;
             }
+        }
+    }
+
+    // Fiyat yazısı: normalde ikonun solunda sağa hizalı, MAXED'de butonun tamamında ortalı.
+    static void SetCostLayout(UpgradeCard c, bool full)
+    {
+        var rt = c.cost.rectTransform;
+        var btn = (RectTransform)c.buy.transform;
+        if (full)
+        {
+            rt.anchoredPosition = new Vector2(8f, -8f);
+            rt.sizeDelta = new Vector2(btn.sizeDelta.x - 16f, 32f);
+            c.cost.alignment = TextAlignmentOptions.Center;
+        }
+        else
+        {
+            rt.anchoredPosition = new Vector2(14f, -8f);
+            rt.sizeDelta = new Vector2(100f, 32f);
+            c.cost.alignment = TextAlignmentOptions.MidlineRight;
         }
     }
 
@@ -198,15 +239,20 @@ public class MetaShopUI : MonoBehaviour
             icon.color = open ? Color.white : new Color(0.22f, 0.25f, 0.34f, 1f);   // kilitliyken silüet
 
             string kind = u is WeaponUpgradeData ? "WEAPON" : u is SkillUpgradeData ? "SKILL" : "UPGRADE";
-            Label(row, "Name", $"{DisplayName(u)}  <size=65%><color=#94B0C2>{kind}</color></size>", 24f,
-                  open ? White : Muted, new Vector2(82f, -10f), new Vector2(420f, 30f));
-            Label(row, "Condition", MetaProgress.Describe(u.unlockCondition, u.unlockThreshold), 18f,
-                  open ? Muted : Gold, new Vector2(82f, -42f), new Vector2(420f, 24f));
+            // Sağdaki ilerleme çubuğuna/UNLOCKED yazısına binmesin: sığmazsa küçülür
+            float textW = unlockRowSize.x - 82f - 290f;
+            AutoSize(Label(row, "Name", $"{DisplayName(u)}  <size=65%><color=#94B0C2>{kind}</color></size>", 24f,
+                           open ? White : Muted, new Vector2(82f, -10f), new Vector2(textW, 30f)), 16f);
+            AutoSize(Label(row, "Condition", MetaProgress.Describe(u.unlockCondition, u.unlockThreshold), 18f,
+                           open ? Muted : Gold, new Vector2(82f, -42f), new Vector2(textW, 24f)), 13f);
 
             if (open)
             {
-                Pic(row, "Check", checkIcon, new Vector2(unlockRowSize.x - 190f, -20f), new Vector2(36f, 36f));
-                Label(row, "Status", "UNLOCKED", 22f, Green, new Vector2(unlockRowSize.x - 146f, -24f), new Vector2(130f, 30f));
+                // Tik + yazı sağ kenardan içeride biter (yazı ~150 birim, sığmazsa küçülür)
+                Pic(row, "Check", checkIcon, new Vector2(unlockRowSize.x - 222f, -20f), new Vector2(36f, 36f));
+                var status = AutoSize(Label(row, "Status", "UNLOCKED", 22f, Green,
+                                            new Vector2(unlockRowSize.x - 180f, -23f), new Vector2(160f, 30f)), 14f);
+                status.alignment = TextAlignmentOptions.MidlineLeft;
             }
             else
             {
@@ -287,6 +333,16 @@ public class MetaShopUI : MonoBehaviour
         t.overflowMode = TextOverflowModes.Overflow;
         t.richText = true;
         t.raycastTarget = false;
+        return t;
+    }
+
+    // Kutuya sığmazsa yazı min boyuta kadar küçülür (mevcut boyut en büyük değer olur)
+    static TMP_Text AutoSize(TMP_Text t, float min)
+    {
+        t.fontSizeMax = t.fontSize;
+        t.fontSizeMin = min;
+        t.enableAutoSizing = true;
+        t.overflowMode = TextOverflowModes.Ellipsis;   // en küçükte bile sığmazsa "..." ile kesilir
         return t;
     }
 

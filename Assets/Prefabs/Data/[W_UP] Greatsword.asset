@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6ff2e8effa51904493795fbaf9aced2, type: 3}
-  m_Name: '[W_UP] Sword II'
+  m_Name: '[W_UP] Greatsword'
   m_EditorClassIdentifier: Assembly-CSharp::WeaponUpgradeData
-  title: Buy +1 Sword II
+  title: Buy +1 Greatsword
   description: A heavier blade for tougher waves.
   icon: {fileID: 21300000, guid: c7ca16043cba4adc8b8ddfd86f111991, type: 3}
-  unlockWave: 1
+  unlockWave: 4
   lastWave: 0
   unlockCondition: 0
   unlockThreshold: 0
   weapon: {fileID: 11400000, guid: 33973d2f230222fdca97bf53e0dca3b8, type: 2}
-  cost: 1
+  cost: 32
