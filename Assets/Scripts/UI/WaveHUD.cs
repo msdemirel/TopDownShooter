@@ -14,6 +14,9 @@ public class WaveHUD : MonoBehaviour
     [Header("UI (hepsi opsiyonel)")]
     [SerializeField] TMP_Text waveText;        // "Wave 3"
     [SerializeField] string waveFormat = "Wave {0}";
+    // Dalga yazısı ve süre kutularını doldurur; uzun çevirilerde (ONDATA 12, 第 12 波) küçülerek sığar
+    [SerializeField] float waveFontMax = 36f;
+    [SerializeField] float waveFontMin = 16f;
     [SerializeField] TMP_Text waveTimerText;   // dalganın kalan süresi (sürekli görünür)
     [SerializeField] TMP_Text countdownText;   // 5 4 3 2 1 (sadece dalga sonunda)
     int lastCountdown = -1;
@@ -22,6 +25,17 @@ public class WaveHUD : MonoBehaviour
     {
         if (waveManager == null) waveManager = FindFirstObjectByType<WaveManager>();
         if (countdownText != null) countdownText.gameObject.SetActive(false);
+        FitToBox(waveText);
+        FitToBox(waveTimerText);
+    }
+
+    void FitToBox(TMP_Text t)
+    {
+        if (t == null) return;
+        t.textWrappingMode = TextWrappingModes.NoWrap;   // alt satıra kaymasın, küçülsün
+        t.enableAutoSizing = true;
+        t.fontSizeMax = waveFontMax;
+        t.fontSizeMin = waveFontMin;
     }
 
     void Update()
